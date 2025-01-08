@@ -2,6 +2,8 @@ from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
 from app.models import db,User, Portfolio, Stock, PortfolioStocks
 from datetime import datetime
+# from app.models.portfolio import update_total_value
+import logging
 
 portfolio_routes = Blueprint('portfolio', __name__)
 
@@ -68,7 +70,7 @@ def update_portfolio(user_id, portfolio_id):
     """
     if user_id != current_user.id:
         return {"error": "Unauthorized access"}, 403
-
+    
     portfolio = Portfolio.query.filter_by(id=portfolio_id, user_id= user_id).first()
 
     if not portfolio:
@@ -98,7 +100,64 @@ def update_portfolio(user_id, portfolio_id):
             portfolio_stock.purchase_price = purchase_price
         else:
             return {"error": "This stock is not in this portfolio"}, 400
+    
+    def update_total_value(portfolio):
+        """
+        This function updates the total value of the portfolio by summing
+        stock prices * quantities.
+        """
+        total_value = 0
+        for portfolio_stock in portfolio.portfolio_stocks:
+            stock = portfolio_stock.stock
+            total_value += portfolio_stock.quantity * stock.price
+        portfolio.total_value = total_value
+        db.session.commit()  
+
+    update_total_value(portfolio)
 
     db.session.commit()
 
     return jsonify({"Updated portfolio": portfolio.to_dict()}), 200
+
+# @portfolio_routes.route('/<int:user_id>/<int:portfolio_id>', methods= ['DELETE'])
+# @login_required
+# def update_portfolio(user_id, portfolio_id):
+#     """
+#     Delete portfolio
+#     """
+#     if user_id != current_user.id:
+#         return {"error": "Unauthorized access"}, 403
+
+#     portfolio = Portfolio.query.filter_by(id=portfolio_id, user_id= user_id).first()
+
+#     if not portfolio:
+#         return {"error": "No portfolio found"},404
+    
+#     balance = request.json.get('balance', None)
+#     if balance is not None:
+#         portfolio.balance = balance
+
+#     stocks = request.json.get('stocks', [])
+#     for data in stocks:
+#         stock_id= data.get('stock_id')
+#         quantity = data.get('quantity')
+#         purchase_price = data.get('purchase_price')
+
+#         if not stock_id or not quantity or not purchase_price:
+#             return {"error": "Missing required stock data"}, 400
+
+#         stock = Stock.query.get(stock_id)
+#         if not stock:
+#             return{"error": "Stock not found"},404
+    
+#         portfolio_stock = PortfolioStocks.query.filter_by(portfolio_id=portfolio_id, stock_id=stock_id).first()
+
+#         if portfolio_stock:
+#             portfolio_stock.quantity = quantity
+#             portfolio_stock.purchase_price = purchase_price
+#         else:
+#             return {"error": "This stock is not in this portfolio"}, 400
+
+#     db.session.commit()
+
+#     return jsonify({"Updated portfolio": portfolio.to_dict()}), 200

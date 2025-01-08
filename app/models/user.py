@@ -18,6 +18,7 @@ class User(db.Model, UserMixin):
     first_name = db.Column(db.String(255), nullable=False)
     last_name = db.Column(db.String(255), nullable=False)
     created_at = db.Column (db.DateTime, nullable=False, server_default=func.now())
+    account_balance = db.Column(db.Integer, nullable= True, default= 0)
 
     watchlists = db.relationship('Watchlist', back_populates = 'user')
     portfolio = db.relationship('Portfolio', back_populates='user')
@@ -40,5 +41,6 @@ class User(db.Model, UserMixin):
             'email': self.email,
             'first_name': self.first_name,
             'last_name': self.last_name,
-            'created_at': self.created_at
+            'created_at': self.created_at,
+            'account_balance': self.account_balance,
         }
