@@ -301,6 +301,68 @@ Returns your portfolio if you are signed in
     ]
   }
     ```
+## Get your portfolio with specific ID
+
+Returns your specific portfolio if you are signed in
+
+
+* Require Authentication: true
+* Request
+  * Method: GET
+  * Route path: api/portfolio/:user_id/:portfolio_id
+  * Body: none
+
+
+* Successful Response
+* Status Code: 200
+* Headers:
+* Content-Type: application/json
+* Body:
+
+
+    ```json
+   {
+    "portfolios": {
+        "balance": 1500,
+        "created_at": "Wed, 08 Jan 2025 22:34:56 GMT",
+        "id": 1,
+        "stocks": [
+            {
+                "date_purchased": "Wed, 08 Jan 2025 22:34:56 GMT",
+                "name": "AAPL",
+                "price": 250,
+                "purchase_price": 50,
+                "quantity": 100,
+                "stock_id": 1
+            },
+            {
+                "date_purchased": "Wed, 08 Jan 2025 22:34:56 GMT",
+                "name": "NVDA",
+                "price": 150,
+                "purchase_price": 100,
+                "quantity": 5000,
+                "stock_id": 2
+            }
+        ],
+        "user_id": 1
+    }
+  }
+    ```
+
+* Error response: Portfolio not found
+* Status Code: 404
+* Headers:
+* Content-Type: application/json
+* Body:
+
+
+    ```json
+    {
+        "error": "Portfolio not found"
+    }
+    ```
+
+
 ### Create a portfolio
 
 
@@ -434,10 +496,10 @@ Create a portfolio if you are signed in
 
     ```
 * Error response: Portfolio not found
-  * Status Code: 404
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+* Status Code: 404
+* Headers:
+* Content-Type: application/json
+* Body:
 
 
     ```json

@@ -23,6 +23,22 @@ def get_portfolio(user_id):
     all_portfolios = [portfolio.to_dict() for portfolio in portfolios]
     return jsonify({"portfolios": all_portfolios}), 200
 
+@portfolio_routes.route('/<int:user_id>/<int:portfolio_id>', methods=['GET'])
+@login_required
+def get_specific_portfolio(user_id, portfolio_id):
+    """
+    Get specific portfolio of logged in user
+    """
+    if user_id != current_user.id:
+        return {"error": "Unauthorized access"}, 403
+
+    portfolio = Portfolio.query.filter_by(user_id=user_id,id= portfolio_id).first()
+
+    if not portfolio:
+        return jsonify({"error": "Portfolio not found"})
+
+    return jsonify({"Portfolio": portfolio.to_dict()}), 200
+
 
 @portfolio_routes.route('/<int:user_id>', methods=['POST'])
 @login_required
