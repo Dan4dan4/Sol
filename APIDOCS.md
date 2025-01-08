@@ -372,11 +372,16 @@ Create a portfolio if you are signed in
   * Body:
 
     ```json
+  {
+  "balance": 1500,
+  "stocks": [
     {
-        "stock_id" : 1,
-        "quantity": 60,
-        "purchase_price": 155
+      "stock_id": 1,
+      "quantity": 100,
+      "purchase_price": 50
     }
+    ]
+  }
 
     ```
 * Successful Response
@@ -388,16 +393,30 @@ Create a portfolio if you are signed in
 
     ```json
     {
-    "message": "Portfolio entry updated successfully.",
-    "portfolio_entry": {
-    "id": 1,
-    "stock_id": 2,
-    "stock_name": "Apple Inc.",
-    "quantity": 60,
-    "purchase_price": 155,
-    "total_value": 9300,
-    "date_purchased": "2023-05-15T08:00:00Z"
-        }
+    "Updated portfolio": {
+        "balance": 1500,
+        "created_at": "Wed, 08 Jan 2025 22:34:56 GMT",
+        "id": 1,
+        "stocks": [
+            {
+                "date_purchased": "Wed, 08 Jan 2025 22:34:56 GMT",
+                "name": "AAPL",
+                "price": 250,
+                "purchase_price": 50,
+                "quantity": 100,
+                "stock_id": 1
+            },
+            {
+                "date_purchased": "Wed, 08 Jan 2025 22:34:56 GMT",
+                "name": "NVDA",
+                "price": 150,
+                "purchase_price": 100,
+                "quantity": 5000,
+                "stock_id": 2
+            }
+        ],
+        "user_id": 1
+      }
     }
 
 * Error Response: Body validation errors
@@ -423,8 +442,7 @@ Create a portfolio if you are signed in
 
     ```json
     {
-        "error": "Not Found",
-        "message": "Portfolio entry not found."
+        "error": "No portfolio found"
     }
     ```
 
