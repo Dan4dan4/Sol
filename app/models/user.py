@@ -19,8 +19,8 @@ class User(db.Model, UserMixin):
     last_name = db.Column(db.String(255), nullable=False)
     created_at = db.Column (db.DateTime, nullable=False, server_default=func.now())
 
-    watchlists = db.relationship('Watchlist', back_populates = 'users')
-    portfolio = db.relationship('Portfolio', back_populates='users')
+    watchlists = db.relationship('Watchlist', back_populates = 'user')
+    portfolio = db.relationship('Portfolio', back_populates='user')
 
     @property
     def password(self):

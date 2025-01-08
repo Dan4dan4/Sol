@@ -1,7 +1,7 @@
 from .db import db, environment, SCHEMA, add_prefix_for_prod
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
-from .portfolio import portfolio_stocks
+# from .portfolio import portfolio_stocks
 # from .watchlist import Watchlist 
 
 
@@ -19,9 +19,9 @@ class Stock(db.Model):
     listed_at = db.Column (db.DateTime, nullable=False, server_default=func.now())
 
     watchlists = db.relationship('Watchlist', back_populates = 'stocks')
-    portfolios = db.relationship('Portfolio',secondary=portfolio_stocks, back_populates='stocks')
-    users = db.relationship("User", back_populates="stocks")
-    portfolio_stocks = db.relationship('portfolio_stocks', back_populates='stock')
+    portfolios = db.relationship('Portfolio',secondary='portfolio_stocks', back_populates='stocks')
+    # users = db.relationship("User", back_populates="stocks")
+    portfolio_stocks = db.relationship('PortfolioStocks', back_populates='stock')
 
 
     def to_dict(self):
