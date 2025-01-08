@@ -250,7 +250,7 @@ user's information.
     }
     ```
 
-## PORTFOLIO
+# PORTFOLIO
 
 ## Get your portfolio
 
@@ -272,28 +272,34 @@ Returns your portfolio if you are signed in
 
 
     ```json
-    {
-  "portfolio": [
-    {
-      "stock_id": 1,
-      "stock_id": 2,
-      "stock_name": "Apple Inc.",
-      "quantity": 50,
-      "purchase_price": 150,
-      "total_value": 7500,
-      "date_purchased": "2023-05-15T08:00:00Z"
-    },
-    {
-      "stock_id": 2,
-      "stock_id": 5,
-      "stock_name": "Tesla Inc.",
-      "quantity": 20,
-      "purchase_price": 500,
-      "total_value": 10000,
-      "date_purchased": "2023-06-10T08:00:00Z"
-    }
-        ] 
-    }
+   {
+    "portfolios": [
+        {
+            "balance": 5000,
+            "created_at": "Wed, 08 Jan 2025 21:28:26 GMT",
+            "id": 1,
+            "stocks": [
+                {
+                    "date_purchased": "Wed, 08 Jan 2025 21:28:26 GMT",
+                    "name": "AAPL",
+                    "price": 250,
+                    "purchase_price": 250,
+                    "quantity": 100,
+                    "stock_id": 1
+                },
+                {
+                    "date_purchased": "Wed, 08 Jan 2025 21:28:26 GMT",
+                    "name": "NVDA",
+                    "price": 150,
+                    "purchase_price": 150,
+                    "quantity": 50,
+                    "stock_id": 2
+                }
+            ],
+            "user_id": 1
+        }
+    ]
+  }
     ```
 ### Create a portfolio
 
@@ -303,60 +309,56 @@ Create a portfolio if you are signed in
 
 * Require Authentication: true
 * Request
-  * Method: POST
-  * Route path: api/portfolio
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+* Method: POST
+* Route path: api/portfolio
+* Headers:
+* Content-Type: application/json
+* Body: 
 
+  ```json
 
-    ```json
-  {
-  "stock_id": 2,
-  "quantity": 50,
-  "purchase_price": 150
-    }
-    ```
+  {"balance" : 25000}
 
 
 * Successful Response
-  * Status Code: 201
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+* Status Code: 201
+* Headers:
+* Content-Type: application/json
+* Body:
 
 
   ```json
-    {
-  "message": "Portfolio entry created successfully.",
-  "portfolio_entry": {
-    "id": 1,
-    "stock_id": 2,
-    "stock_name": "Apple",
-    "quantity": 50,
-    "purchase_price": 150,
-    "total_value": 7500,
-    "date_purchased": "2023-05-15T08:00:00Z"
-        }
+  {
+    "New portfolio created": {
+        "balance": 25000,
+        "created_at": "Wed, 08 Jan 2025 21:21:58 GMT",
+        "id": 3,
+        "stocks": [],
+        "user_id": 1
     }
+  }
 
     ```
 
+* Successful Response if no balance 
+* Status Code: 201
+* Headers:
+* Content-Type: application/json
+* Body:
 
-* Error Response: Body validation errors
-  * Status Code: 400
-  * Headers:
-    * Content-Type: application/json
-  * Body:
 
-
-    ```json
-    {
-    "error": "Bad Request",
-    "message": "Missing required fields: stock_id, quantity, purchase_price."
+  ```json
+  {
+    "New portfolio created": {
+        "balance": 0,
+        "created_at": "Wed, 08 Jan 2025 21:21:58 GMT",
+        "id": 3,
+        "stocks": [],
+        "user_id": 1
     }
+  }
 
-  ```
+    ```
 
 ## Update your portfolio
 
@@ -427,7 +429,7 @@ Create a portfolio if you are signed in
     ```
 
 
-# Delete your portfolio
+## Delete your portfolio
 
 Deletes an existing portfolio.
 
@@ -481,7 +483,7 @@ Deletes an existing portfolio.
     }
     ```
 
-## Stocks
+# Stocks
 
 ## Get all stocks
 
@@ -714,7 +716,7 @@ Updates an order and returns portfolio
         "messsage": "Stock order successfully deleted"
     }
 
-## Watchlist
+# Watchlist
 
 ## Get all watchlists
 
@@ -903,7 +905,7 @@ Deletes an existing watchlist, based on watchlist id.
     }
    ```
    
-## Search
+# Search
 
 ## Search a stock by name or id
 

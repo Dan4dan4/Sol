@@ -5,7 +5,7 @@ from sqlalchemy.orm import relationship
 def seed_portfolios():
 
     portfolio = Portfolio(
-        user_id=1
+        user_id=1, balance= 5000
     )
 
 
