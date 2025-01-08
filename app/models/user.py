@@ -19,8 +19,9 @@ class User(db.Model, UserMixin):
     last_name = db.Column(db.String(255), nullable=False)
     created_at = db.Column (db.DateTime, nullable=False, server_default=func.now())
 
-    watchlists = db.relationship('Watchlist', back_populates = 'user')
-    portfolio = db.relationship('Portfolio', back_populates='user')
+    watchlists = db.relationship('Watchlist', back_populates = 'users')
+    portfolio = db.relationship('Portfolio', back_populates='users')
+
     @property
     def password(self):
         return self.hashed_password
@@ -39,4 +40,5 @@ class User(db.Model, UserMixin):
             'email': self.email,
             'first_name': self.first_name,
             'last_name': self.last_name,
+            'created_at': self.created_at
         }

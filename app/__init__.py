@@ -9,6 +9,9 @@ from .api.user_routes import user_routes
 from .api.auth_routes import auth_routes
 from .seeds import seed_commands
 from .config import Config
+# from .portfolio import portfolio_stocks, Portfolio
+# from .stock import Stock
+# from .watchlist import Watchlist
 
 app = Flask(__name__, static_folder='../react-vite/dist', static_url_path='/')
 
