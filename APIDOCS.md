@@ -260,7 +260,7 @@ Returns your portfolio if you are signed in
 * Require Authentication: true
 * Request
   * Method: GET
-  * Route path: api/portfolio
+  * Route path: api/portfolio/:user_id
   * Body: none
 
 
@@ -275,7 +275,7 @@ Returns your portfolio if you are signed in
     {
   "portfolio": [
     {
-      "id": 1,
+      "stock_id": 1,
       "stock_id": 2,
       "stock_name": "Apple Inc.",
       "quantity": 50,
@@ -284,7 +284,7 @@ Returns your portfolio if you are signed in
       "date_purchased": "2023-05-15T08:00:00Z"
     },
     {
-      "id": 2,
+      "stock_id": 2,
       "stock_id": 5,
       "stock_name": "Tesla Inc.",
       "quantity": 20,
