@@ -7,7 +7,7 @@ def seed_watchlists():
     Watchlist1 = Watchlist(
         name= "Main watch", user_id = 1, description="main watchlist for this year")
     Watchlist2 = Watchlist(
-        name= "Memes watch", user_id = 1, description="main watchlist for this year" )
+        name= "Memes watch", user_id = 1, description="MEME watchlist for this year" )
 
 
 

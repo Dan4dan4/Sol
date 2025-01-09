@@ -9,25 +9,25 @@ def seed_portfolios():
     )
 
 
-    portfolio_stock1 = PortfolioStocks(
-        portfolio_id=1,
-        stock_id=1,
-        quantity=100,
-        purchase_price=250,
-        date_purchased=func.now()
-    )
+    # portfolio_stock1 = PortfolioStocks(
+    #     portfolio_id=1,
+    #     stock_id=1,
+    #     quantity=100,
+    #     purchase_price=250,
+    #     date_purchased=func.now()
+    # )
 
-    portfolio_stock2 = PortfolioStocks(
-        portfolio_id=1,
-        stock_id=2,
-        quantity=50,
-        purchase_price=150,
-        date_purchased=func.now()
-    )
+    # portfolio_stock2 = PortfolioStocks(
+    #     portfolio_id=1,
+    #     stock_id=2,
+    #     quantity=50,
+    #     purchase_price=150,
+    #     date_purchased=func.now()
+    # )
 
     db.session.add(portfolio)
-    db.session.add(portfolio_stock1)
-    db.session.add(portfolio_stock2)
+    # db.session.add(portfolio_stock1)
+    # db.session.add(portfolio_stock2)
     
     db.session.commit()
     portfolio.update_total_value()

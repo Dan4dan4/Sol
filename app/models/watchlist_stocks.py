@@ -7,4 +7,4 @@ class WatchlistStocks(db.Model):
     __tablename__ = 'watchlist_stocks'
 
     watchlist_id = db.Column(db.Integer, db.ForeignKey('watchlists.id'), primary_key=True)
-    stock_id = db.Column(db.Integer, db.ForeignKey('stocks.id'), primary_key=True)
+    stock_id = db.Column(db.Integer, db.ForeignKey('stocks.id'), primary_key=True, nullable =True)

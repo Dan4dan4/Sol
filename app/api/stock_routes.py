@@ -51,6 +51,15 @@ def purchase_stock(stock_ticker, portfolio_id):
     data = stock.info
     price = data.get('currentPrice')
     name = data.get('longName')
+    industry = data.get('industry')
+    description = data.get('longBusinessSummary')
+
+    existing_stock = Stock.query.filter_by(name=name).first()  
+    if not existing_stock:
+        new_stock = Stock(name=name, price=price, industry=industry, description=description)
+        db.session.add(new_stock)
+        db.session.commit()
+        existing_stock = new_stock
 
     quantity = request.json.get('quantity')
     if not quantity:
@@ -64,27 +73,32 @@ def purchase_stock(stock_ticker, portfolio_id):
     portfolio.balance -= totalcost
     db.session.commit()
 
-    stock_in_portfolio = PortfolioStocks.query.filter_by(portfolio_id=portfolio.id, stock_id=stock_ticker).first()
+    stock_in_portfolio = PortfolioStocks.query.filter_by(portfolio_id=portfolio.id, stock_id=existing_stock.id).first()
 
     if stock_in_portfolio:
         stock_in_portfolio.quantity += quantity
     else:
         stock_in_portfolio = PortfolioStocks(
             portfolio_id=portfolio.id,
-            stock_id=stock_ticker,
+            stock_id=existing_stock.id,
             quantity=quantity,
             purchase_price=price,
             date_purchased=datetime.utcnow()
         )
         db.session.add(stock_in_portfolio)
 
-    portfolio.total_value += totalcost
+    portfolio.update_total_value()
     db.session.commit()
+
+    # if portfolio.total_value is None:
+    #     portfolio.total_value = 0
 
     portfolio.total_value += totalcost
     db.session.commit()
+    db.session.refresh(portfolio)
 
     return jsonify({"message": "Stock purchased!",
                     "name": name,
                     "quantity": quantity,
-                    "total_cost": totalcost})
+                    "total_cost": totalcost,
+                    "portfolio": portfolio.to_dict()})
