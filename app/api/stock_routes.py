@@ -93,9 +93,9 @@ def purchase_stock(stock_ticker, portfolio_id):
     # if portfolio.total_value is None:
     #     portfolio.total_value = 0
 
-    portfolio.total_value += totalcost
-    db.session.commit()
-    db.session.refresh(portfolio)
+    # portfolio.total_value += totalcost
+    # db.session.commit()
+    # db.session.refresh(portfolio)
 
     return jsonify({"message": "Stock purchased!",
                     "name": name,
