@@ -881,7 +881,7 @@ Adds stock based on watchlist id if user is watchlist owner.
 * Require Authentication: false
 * Request
 * Method: POST
-* Route path: api/watchlist/:watchlist_id
+* Route path: api/watchlist/:user_id/:watchlist_id
 * Body: none
 
 
@@ -893,10 +893,11 @@ Adds stock based on watchlist id if user is watchlist owner.
 
 
     ```json
-    {
-        "stock_id": 8
-    }
-
+   {
+    "stocks": [
+      {"stock_id": 2}
+    ]
+  }
 
     ```
 
@@ -910,14 +911,22 @@ Adds stock based on watchlist id if user is watchlist owner.
 
     ```json
     {
-    "message": "Stock added to watchlist successfully.",
+    "message": "Successfully updated watchlist",
     "watchlist": {
-    "id": 3,
-    "stock_id": 5,
-    "stock_name": "Microsoft Inc.",
-    "price": 300
+        "description": "this new watchlist is dope",
+        "id": 6,
+        "name": "this a new watchlist",
+        "stocks": [
+            {
+                "id": 2,
+                "industry": "Specialty Retail",
+                "name": "GameStop Corp.",
+                "price": 32.96
+              }
+          ],
+          "user_id": 1
         }
-    }
+      }
 
     ```
 
@@ -931,7 +940,7 @@ Adds stock based on watchlist id if user is watchlist owner.
 
     ```json
     {
-      "message": "Watchlist Not Found"
+      "message": "No watchlist found"
     }
     ```
 ### Users should be able to remove stocks from watchlist based on Watchlist Id

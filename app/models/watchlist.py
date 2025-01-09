@@ -24,7 +24,14 @@ class Watchlist(db.Model):
             'id': self.id,
             'name': self.name,
             'user_id': self.user_id,
-            # 'stock_id': self.stock_id,
-            'description': self.description,
-            'stocks': [stock.to_dict() for stock in self.stocks]
+            "description": self.description,
+            'stocks': [
+                {
+                    'id': stock.id,
+                    'name': stock.name,
+                    'price': stock.price,
+                    'industry': stock.industry
+                }
+                for stock in self.stocks
+            ]
         }

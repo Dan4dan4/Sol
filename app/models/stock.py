@@ -30,5 +30,5 @@ class Stock(db.Model):
             'price': self.price,
             'industry': self.industry,
             'description': self.description,
-            "listed_at": self.listed_at
+            # "listed_at": self.listed_at
         }
