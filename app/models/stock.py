@@ -16,7 +16,6 @@ class Stock(db.Model):
     price = db.Column(db.Integer, nullable=False)
     industry = db.Column(db.String(255), nullable=False)
     description = db.Column(db.String(255), nullable=True)
-    listed_at = db.Column (db.DateTime, nullable=False, server_default=func.now())
 
     watchlists = db.relationship('Watchlist',secondary='watchlist_stocks', back_populates = 'stocks')
     portfolios = db.relationship('Portfolio',secondary='portfolio_stocks', back_populates='stocks',overlaps="portfolio_stocks")

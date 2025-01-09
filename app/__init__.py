@@ -13,6 +13,7 @@ from .config import Config
 # from .stock import Stock
 # from .watchlist import Watchlist
 from .api.portfolio_routes import portfolio_routes
+from .api.stock_routes import stock_routes
 
 app = Flask(__name__, static_folder='../react-vite/dist', static_url_path='/')
 
@@ -33,6 +34,7 @@ app.config.from_object(Config)
 app.register_blueprint(user_routes, url_prefix='/api/users')
 app.register_blueprint(auth_routes, url_prefix='/api/auth')
 app.register_blueprint(portfolio_routes, url_prefix='/api/portfolio')
+app.register_blueprint(stock_routes, url_prefix='/api/stock')
 db.init_app(app)
 Migrate(app, db)
 
