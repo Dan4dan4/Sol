@@ -103,3 +103,59 @@ def purchase_stock(stock_ticker, portfolio_id):
                     "total_cost": totalcost,
                     # "portfolio": portfolio.to_dict()}
                     })
+
+@stock_routes.route('/buy/<string:stock_ticker>/<int:portfolio_id>', methods=['DELETE'])
+@login_required
+def sell_stock(stock_ticker, portfolio_id):
+    
+    """
+    Sell stock and add to portfolio
+    """
+    
+    portfolio = Portfolio.query.filter_by(id= portfolio_id, user_id=current_user.id).first()
+    
+    if not portfolio:
+        return jsonify({"error": "Portfolio not found for user"}), 404
+
+    stock = yf.Ticker(stock_ticker)
+    data = stock.info
+    price = data.get('currentPrice')
+    name = data.get('longName')
+    industry = data.get('industry')
+    description = data.get('longBusinessSummary')
+
+    existing_stock = Stock.query.filter_by(name=name).first()  
+    if not existing_stock:
+        new_stock = Stock(name=name, price=price, industry=industry, description=description)
+        db.session.add(new_stock)
+        db.session.commit()
+        existing_stock = new_stock
+
+    quantity = request.json.get('quantity')
+    if not quantity:
+        return jsonify({"error", "Please provide quantity"}), 404
+    
+    stock_in_portfolio = PortfolioStocks.query.filter_by(portfolio_id=portfolio.id, stock_id=existing_stock.id).first()
+    if not stock_in_portfolio or stock_in_portfolio.quantity < quantity:
+        return jsonify({"error": "Sell error, either stock isnt in portfolio or quanity exceeded"}), 400
+    
+    sell_cost = price * quantity
+    portfolio.balance += sell_cost
+    stock_in_portfolio.quantity -= quantity
+
+    if stock_in_portfolio.quantity ==0:
+        db.session.delete(stock_in_portfolio)
+
+    db.session.commit()
+
+    portfolio.update_total_value()
+    db.session.commit()
+
+    return jsonify({"message": "Stock sold!",
+                    "name": name,
+                    "quantity": quantity,
+                    "total_cost": sell_cost,
+                    "portfolio_balance": portfolio.balance,
+                    "portfolio_total_value": portfolio.total_value
+                    # "portfolio": portfolio.to_dict()}
+                    })

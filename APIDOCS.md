@@ -643,9 +643,9 @@ Returns the details of a stock specified by its id.
     ```json
     {"error": "Please enter valid stock ticker"}
     ```
-## Purchase a stock and add to portfolio
+## Buy a stock and add to portfolio
 
-Purchases a stock and adds to portfolio
+Buy a stock and adds to portfolio
 
 
 * Require Authentication: true
@@ -689,7 +689,7 @@ Purchases a stock and adds to portfolio
     "error": "Cannot complete order due to insufficient balance"
     }
 
-### Update a purchase order 
+<!-- ### Update a purchase order 
 
 
 Updates an order and returns portfolio
@@ -732,16 +732,16 @@ Updates an order and returns portfolio
     "total_value": 15300,
     "date_purchased": "2023-07-10T08:00:00Z"
         }
-    }
+    } -->
 
-### Deletes stock order.
+### Sell a stock and remove from portfolio
 
 
 * Require Authentication: true
-* Require proper authorization: Stock order must belong to the current user
+* Require proper authorization: true
 * Request
 * Method: DELETE
-* Route path: api/portfolio/stock_id
+* Route path: api/stock/buy/:stock_id/:portfolio_id
 * Body: none
 
 
@@ -754,12 +754,17 @@ Updates an order and returns portfolio
 
     ```json
     {
-      "message": "Stock order Successfully deleted"
+    "message": "Stock sold!",
+    "name": "GameStop Corp.",
+    "portfolio_balance": 4769.28,
+    "portfolio_total_value": 230.72,
+    "quantity": 1,
+    "total_cost": 32.96
     }
     ```
 
 
-* Error response: Couldn't find a Stock order with the specified id
+* Error response: Sell error, either stock isnt in portfolio or quanity exceeded
 * Status Code: 404
 * Headers:
 * Content-Type: application/json
@@ -768,7 +773,7 @@ Updates an order and returns portfolio
 
     ```json
     {
-        "messsage": "Stock order successfully deleted"
+    "error": "Sell error, either stock isnt in portfolio or quanity exceeded"
     }
 
 # Watchlist
