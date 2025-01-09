@@ -822,7 +822,57 @@ Get all watchlists
     "message": "Watchlist not found"
     }
    ```
+### Users should be able to Create watchlists 
 
+
+Creates a watchlist
+
+
+* Require Authentication: true
+* Require proper authorization: false
+* Request Method: POST
+* Route path: api/watchlist/:user_id
+* Body: 
+
+```json
+  {
+    "name": "this a new watchlist",
+    "description": "this new watchlist is dope"
+  }
+```
+
+* Successful Response
+* Status Code: 200
+* Headers:
+* Content-Type: application/json
+* Body:
+
+
+    ```json
+    {
+    "New Watchlist created": {
+        "description": "this is a new watchlist that is extremly good at watching",
+        "id": 3,
+        "name": "this a new watchlist",
+        "stocks": [],
+        "user_id": 1
+      }
+    }
+    ```
+
+
+* Error response: Couldn't find a Watchlist with the specified id
+* Status Code: 404
+* Headers:
+* Content-Type: application/json
+* Body:
+
+
+    ```json
+    {
+      "message": "Watchlist couldn't be found"
+    }
+   ```
 ## Add a stock to watchlist
 
 Adds stock based on watchlist id if user is watchlist owner.
