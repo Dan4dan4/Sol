@@ -511,50 +511,50 @@ Create a portfolio if you are signed in
 
 ## Delete your portfolio
 
-Deletes an existing portfolio.
+Deletes an existing portfolio and adds total balance to account balance
 
 
 * Require Authentication: true
 * Require proper authorization: true
 * Request
   * Method: DELETE
-  * Route path: api/portfolio/:portfolio_id
+  * Route path: api/portfolio/:user_id/:portfolio_id
   * Body: none
 
 
 * Successful Response
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+* Status Code: 200
+* Headers:
+* Content-Type: application/json
+* Body:
 
 
     ```json
     {
-      "message": "Portfolio successfully deleted"
+      "message": "Portfolio deleted and funds added to account balance"
     }
     ```
 
 
 * Error response: Couldn't find a portfolio with the specified id
-  * Status Code: 404
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+* Status Code: 404
+* Headers:
+* Content-Type: application/json
+* Body:
 
 
     ```json
     {
-      "message": "Portfolio couldn't be found"
+      "message": "No portfolio found"
     }
     ```
 
 
 * Error response: User not authorized to delete portfolio
-  * Status Code: 403
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+* Status Code: 403
+* Headers:
+* Content-Type: application/json
+* Body:
 
 
     ```json

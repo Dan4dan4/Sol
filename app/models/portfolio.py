@@ -13,9 +13,9 @@ class Portfolio(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     created_at = db.Column(db.DateTime, nullable=False, server_default=func.now())
     balance = db.Column(db.Integer, nullable= True, default= 0)
-    total_value = db.Column(db.Integer, nullable= True, default= 0)
+    total_value = db.Column(db.Integer, nullable= True)
 
-    portfolio_stocks = db.relationship("PortfolioStocks", back_populates="portfolio", overlaps="stocks")
+    portfolio_stocks = db.relationship("PortfolioStocks", back_populates="portfolio", overlaps="stocks", cascade='all, delete-orphan')
     user = relationship("User", back_populates="portfolio")
     stocks = db.relationship("Stock", secondary='portfolio_stocks', back_populates="portfolios",overlaps="portfolio_stocks")
 

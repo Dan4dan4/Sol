@@ -30,6 +30,8 @@ def seed_portfolios():
     db.session.add(portfolio_stock2)
     
     db.session.commit()
+    portfolio.update_total_value()
+    db.session.commit()
 
 def undo_portfolios():
     if environment == "production":
