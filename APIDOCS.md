@@ -741,7 +741,7 @@ Updates an order and returns portfolio
 * Require proper authorization: true
 * Request
 * Method: DELETE
-* Route path: api/stock/buy/:stock_id/:portfolio_id
+* Route path: api/stock/sell/:stock_id/:portfolio_id
 * Body: none
 
 

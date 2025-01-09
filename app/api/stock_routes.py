@@ -14,6 +14,7 @@ def get_stock_info(stock_ticker):
     """
     Get stock info based on stock ticker NOT NAME
     """
+    
     stock = yf.Ticker(stock_ticker)
 
     data = stock.info
@@ -41,6 +42,9 @@ def purchase_stock(stock_ticker, portfolio_id):
     """
     Buy stock and add to portfolio
     """
+
+    if not current_user.is_authenticated:
+        return jsonify({"error": "Authentication required"}), 401
     
     portfolio = Portfolio.query.filter_by(id= portfolio_id, user_id=current_user.id).first()
     
@@ -104,13 +108,15 @@ def purchase_stock(stock_ticker, portfolio_id):
                     # "portfolio": portfolio.to_dict()}
                     })
 
-@stock_routes.route('/buy/<string:stock_ticker>/<int:portfolio_id>', methods=['DELETE'])
+@stock_routes.route('/sell/<string:stock_ticker>/<int:portfolio_id>', methods=['DELETE'])
 @login_required
 def sell_stock(stock_ticker, portfolio_id):
     
     """
     Sell stock and add to portfolio
     """
+    if not current_user.is_authenticated:
+        return jsonify({"error": "Authentication required"}), 401
     
     portfolio = Portfolio.query.filter_by(id= portfolio_id, user_id=current_user.id).first()
     
