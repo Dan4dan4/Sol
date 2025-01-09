@@ -101,4 +101,5 @@ def purchase_stock(stock_ticker, portfolio_id):
                     "name": name,
                     "quantity": quantity,
                     "total_cost": totalcost,
-                    "portfolio": portfolio.to_dict()})
+                    # "portfolio": portfolio.to_dict()}
+                    })

@@ -14,10 +14,10 @@ All endpoints that require a current user to be logged in.
 
 * Request: endpoints that require authentication
 * Error Response: Require authentication
-  * Status Code: 401
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+* Status Code: 401
+* Headers:
+* Content-Type: application/json
+* Body:
 
     ```json
     {
@@ -32,10 +32,10 @@ correct role(s) or permission(s).
 
 * Request: endpoints that require proper authorization
 * Error Response: Require proper authorization
-  * Status Code: 403
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+* Status Code: 403
+* Headers:
+* Content-Type: application/json
+* Body:
 
     ```json
     {
@@ -49,15 +49,15 @@ Returns the information about the current user that is logged in.
 
 * Require Authentication: false
 * Request
-  * Method: GET
-  * Route path: /api/auth
-  * Body: none
+* Method: GET
+* Route path: /api/auth
+* Body: none
 
 * Successful Response when there is a logged in user
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+* Status Code: 200
+* Headers:
+* Content-Type: application/json
+* Body:
 
     ```json
   {
@@ -72,10 +72,10 @@ Returns the information about the current user that is logged in.
     ```
 
 * Successful Response when there is no logged in user
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+* Status Code: 200
+* Headers:
+* Content-Type: application/json
+* Body:
 
     ```json
     {
@@ -90,11 +90,11 @@ information.
 
 * Require Authentication: false
 * Request
-  * Method: POST
-  * Route path: /api/auth/login
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+* Method: POST
+* Route path: /api/auth/login
+* Headers:
+* Content-Type: application/json
+* Body:
 
     ```json
     {
@@ -104,10 +104,10 @@ information.
     ```
 
 * Successful Response
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+* Status Code: 200
+* Headers:
+* Content-Type: application/json
+* Body:
 
     ```json
     {
@@ -122,10 +122,10 @@ information.
     ```
 
 * Error Response: Invalid credentials
-  * Status Code: 401
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+* Status Code: 401
+* Headers:
+* Content-Type: application/json
+* Body:
 
     ```json
     
@@ -140,10 +140,10 @@ information.
     ```
 
 * Error response: Body validation errors
-  * Status Code: 401
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+* Status Code: 401
+* Headers:
+* Content-Type: application/json
+* Body:
 
     ```json
     {
@@ -159,11 +159,11 @@ information.
 Logs out current User
 * Require Authentication: True
 * Request
-  * Method: POST
-  * Route path: /api/auth/logout
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+* Method: POST
+* Route path: /api/auth/logout
+* Headers:
+* Content-Type: application/json
+* Body:
 
     ```json
     {
@@ -178,11 +178,11 @@ user's information.
 
 * Require Authentication: false
 * Request
-  * Method: POST
-  * Route path: /api/auth/signup
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+* Method: POST
+* Route path: /api/auth/signup
+* Headers:
+* Content-Type: application/json
+* Body:
 
     ```json
     {
@@ -195,10 +195,10 @@ user's information.
     ```
 
 * Successful Response
-  * Status Code: 201
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+* Status Code: 201
+* Headers:
+* Content-Type: application/json
+* Body:
 
     ```json
     {
@@ -214,10 +214,10 @@ user's information.
     ```
 
 * Error response: User already exists with the specified email or username
-  * Status Code: 500
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+* Status Code: 500
+* Headers:
+* Content-Type: application/json
+* Body:
 
     ```json
     {
@@ -233,10 +233,10 @@ user's information.
     ```
 
 * Error response: Body validation errors
-  * Status Code: 400
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+* Status Code: 400
+* Headers:
+* Content-Type: application/json
+* Body:
 
     ```json
     {
@@ -259,16 +259,16 @@ Returns your portfolio if you are signed in
 
 * Require Authentication: true
 * Request
-  * Method: GET
-  * Route path: api/portfolio/:user_id
-  * Body: none
+* Method: GET
+* Route path: api/portfolio/:user_id
+* Body: none
 
 
 * Successful Response
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+* Status Code: 200
+* Headers:
+* Content-Type: application/json
+* Body:
 
 
     ```json
@@ -308,9 +308,9 @@ Returns your specific portfolio if you are signed in
 
 * Require Authentication: true
 * Request
-  * Method: GET
-  * Route path: api/portfolio/:user_id/:portfolio_id
-  * Body: none
+* Method: GET
+* Route path: api/portfolio/:user_id/:portfolio_id
+* Body: none
 
 
 * Successful Response
@@ -427,11 +427,11 @@ Create a portfolio if you are signed in
 * Require Authentication: true
 * Require proper authorization: Portfolio must belong to the current user
 * Request
-  * Method: PUT
-  * Route path: api/portfolio/:portfolio_id
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+* Method: PUT
+* Route path: api/portfolio/:portfolio_id
+* Headers:
+* Content-Type: application/json
+* Body:
 
     ```json
   {
@@ -447,10 +447,10 @@ Create a portfolio if you are signed in
 
     ```
 * Successful Response
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+* Status Code: 200
+* Headers:
+* Content-Type: application/json
+* Body:
 
 
     ```json
@@ -482,10 +482,10 @@ Create a portfolio if you are signed in
     }
 
 * Error Response: Body validation errors
-  * Status Code: 400
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+* Status Code: 400
+* Headers:
+* Content-Type: application/json
+* Body:
 
 
     ```json
@@ -517,9 +517,9 @@ Deletes an existing portfolio and adds total balance to account balance
 * Require Authentication: true
 * Require proper authorization: true
 * Request
-  * Method: DELETE
-  * Route path: api/portfolio/:user_id/:portfolio_id
-  * Body: none
+* Method: DELETE
+* Route path: api/portfolio/:user_id/:portfolio_id
+* Body: none
 
 
 * Successful Response
@@ -613,16 +613,16 @@ Returns the details of a stock specified by its id.
 
 * Require Authentication: false
 * Request
-  * Method: GET
-  * Route path: api/stocks/:stock_id
-  * Body: none
+* Method: GET
+* Route path: api/stock/:stock_id
+* Body: none
 
 
 * Successful Response
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+* Status Code: 200
+* Headers:
+* Content-Type: application/json
+* Body:
 
 
     ```json
@@ -634,10 +634,10 @@ Returns the details of a stock specified by its id.
     }
 
 * Error response: Couldn't find a stock with the specified id
-  * Status Code: 404
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+* Status Code: 404
+* Headers:
+* Content-Type: application/json
+* Body:
 
 
     ```json
@@ -649,64 +649,44 @@ Purchases a stock and adds to portfolio
 
 
 * Require Authentication: true
-* Request
-  * Method: POST
-  * Route path: api/portfolio/stock
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+* Request Method: POST
+* Route path: api/stock/buy/:stock_id/:portfolio_id
+* Headers:
+* Content-Type: application/json
+* Body:
 
 
     ```json
-    {
-        "stock_id": 2,
-        "quantity": 20,
-        "purchase_price": 500
-    }
+  {
+    "quantity": 1
+  }
+  ```
 
 * Successful Response
-  * Status Code: 201
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+* Status Code: 201
+* Headers:
+* Content-Type: application/json
+* Body:
 
 
   ```json
   {
-  "message": "Stock purchased and added to portfolio successfully.",
-  "portfolio_entry": {
-    "id": 1,
-    "stock_id": 2,
-    "quantity": 20,
-    "purchase_price": 500,
-    "total_value": 10000,
-    "date_purchased": "2023-07-10T08:00:00Z"
-        }
-    }
-
-* Error Response: Body validation errors
-  * Status Code: 400
-  * Headers:
-    * Content-Type: application/json
-  * Body:
-
-
-    ```json
-    {
-        "error": "Bad Request",
-        "message": "Missing required fields: stock_id, quantity, purchase_price."
-    }
+    "message": "Stock purchased!",
+    "name": "GameStop Corp.",
+    "quantity": 6,
+    "total_cost": 197.76
+  }
 
 * Error Response: Not enough funds
-  * Status Code: 400
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+* Status Code: 400
+* Headers:
+* Content-Type: application/json
+* Body:
 
 
     ```json
     {
-        "message": "Not enough funds in account"
+    "error": "Cannot complete order due to insufficient balance"
     }
 
 ### Update a purchase order 
@@ -718,11 +698,11 @@ Updates an order and returns portfolio
 * Require Authentication: true
 * Require proper authorization: true
 * Request
-  * Method: PUT
-  * Route path: api/portfolio/:portfolio_id/stock
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+* Method: PUT
+* Route path: api/portfolio/:portfolio_id/stock
+* Headers:
+* Content-Type: application/json
+* Body:
 
 
     ```json
@@ -734,10 +714,10 @@ Updates an order and returns portfolio
     }
 
 * Successful Response
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+* Status Code: 200
+* Headers:
+* Content-Type: application/json
+* Body:
 
 
     ```json
@@ -760,16 +740,16 @@ Updates an order and returns portfolio
 * Require Authentication: true
 * Require proper authorization: Stock order must belong to the current user
 * Request
-  * Method: DELETE
-  * Route path: api/portfolio/stock_id
-  * Body: none
+* Method: DELETE
+* Route path: api/portfolio/stock_id
+* Body: none
 
 
 * Successful Response
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+* Status Code: 200
+* Headers:
+* Content-Type: application/json
+* Body:
 
 
     ```json
@@ -780,10 +760,10 @@ Updates an order and returns portfolio
 
 
 * Error response: Couldn't find a Stock order with the specified id
-  * Status Code: 404
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+* Status Code: 404
+* Headers:
+* Content-Type: application/json
+* Body:
 
 
     ```json
@@ -801,15 +781,15 @@ Get all watchlists
 * Require Authentication: true
 * Require proper authorization: false
 * Request
-  * Method: GET
-  * Route path: /api/watchlists
+* Method: GET
+* Route path: /api/watchlists
 
 
 * Successful Response
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+* Status Code: 200
+* Headers:
+* Content-Type: application/json
+* Body:
 
 
     ```json
@@ -826,10 +806,10 @@ Get all watchlists
 
 
 * Error response: Please enter all required fields
-  * Status Code: 404
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+* Status Code: 404
+* Headers:
+* Content-Type: application/json
+* Body:
 
 
     ```json
@@ -845,16 +825,16 @@ Adds stock based on watchlist id if user is watchlist owner.
 
 * Require Authentication: false
 * Request
-  * Method: POST
-  * Route path: api/watchlist/:watchlist_id
-  * Body: none
+* Method: POST
+* Route path: api/watchlist/:watchlist_id
+* Body: none
 
 
 * Successful Response
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+* Status Code: 200
+* Headers:
+* Content-Type: application/json
+* Body:
 
 
     ```json
@@ -866,11 +846,11 @@ Adds stock based on watchlist id if user is watchlist owner.
     ```
 
 
-    * Successful Response
-  * Status Code: 201
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+* Successful Response
+* Status Code: 201
+* Headers:
+* Content-Type: application/json
+* Body:
 
 
     ```json
@@ -888,10 +868,10 @@ Adds stock based on watchlist id if user is watchlist owner.
 
 
 * Error response: Couldn't find a Watchlist with the specified id
-  * Status Code: 404
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+* Status Code: 404
+* Headers:
+* Content-Type: application/json
+* Body:
 
 
     ```json
@@ -908,16 +888,16 @@ Removes stock from watchlist
 * Require Authentication: true
 * Require proper authorization: true
 * Request
-  * Method: DELETE
-  * Route path: api/watchlist/:watchlist_id/:stock_id
-  * Body: none
+* Method: DELETE
+* Route path: api/watchlist/:watchlist_id/:stock_id
+* Body: none
 
 
 * Successful Response
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+* Status Code: 200
+* Headers:
+* Content-Type: application/json
+* Body:
 
 
     ```json
@@ -928,10 +908,10 @@ Removes stock from watchlist
 
 
 * Error response: Couldn't find a watchlist with the specified id
-  * Status Code: 404
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+* Status Code: 404
+* Headers:
+* Content-Type: application/json
+* Body:
 
 
     ```json
@@ -948,16 +928,16 @@ Deletes an existing watchlist, based on watchlist id.
 * Require Authentication: true
 * Require proper authorization: Watchlist must belong to the current user
 * Request
-  * Method: DELETE
-  * Route path: api/watchlist/:watchlist_id
-  * Body: none
+* Method: DELETE
+* Route path: api/watchlist/:watchlist_id
+* Body: none
 
 
 * Successful Response
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+* Status Code: 200
+* Headers:
+* Content-Type: application/json
+* Body:
 
 
     ```json
@@ -968,10 +948,10 @@ Deletes an existing watchlist, based on watchlist id.
 
 
 * Error response: Couldn't find a Watchlist with the specified id
-  * Status Code: 404
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+* Status Code: 404
+* Headers:
+* Content-Type: application/json
+* Body:
 
 
     ```json
@@ -987,9 +967,9 @@ Deletes an existing watchlist, based on watchlist id.
 * Require Authentication: false
 * Require proper authorization: false
 * Request
-  * Method: GET
-  * Route path: api/stock/search/:stock_id
-  * Body: 
+* Method: GET
+* Route path: api/stock/search/:stock_id
+* Body: 
 
   ```json
 
@@ -999,10 +979,10 @@ Deletes an existing watchlist, based on watchlist id.
 
 
 * Successful Response
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+* Status Code: 200
+* Headers:
+* Content-Type: application/json
+* Body:
 
 
     ```json
@@ -1017,10 +997,10 @@ Deletes an existing watchlist, based on watchlist id.
 
 
 * Error response: Couldn't find a stock with the specified id
-  * Status Code: 404
-  * Headers:
-    * Content-Type: application/json
-  * Body:
+* Status Code: 404
+* Headers:
+* Content-Type: application/json
+* Body:
 
 
     ```json
