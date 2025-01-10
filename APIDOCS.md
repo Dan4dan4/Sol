@@ -944,7 +944,7 @@ Adds stock based on watchlist id if user is watchlist owner.
     }
     ```
 ### Users should be able to remove stocks from watchlist based on Watchlist Id
-
+MAYBE SWITCH THIS TO TAKE NO BODY AND TAKE FROM ROUTE
 
 Removes stock from watchlist
 
@@ -952,9 +952,18 @@ Removes stock from watchlist
 * Require Authentication: true
 * Require proper authorization: true
 * Request
-* Method: DELETE
+* Method: PUT
 * Route path: api/watchlist/:watchlist_id/:stock_id
-* Body: none
+* Body: 
+
+```json
+
+{
+  "stocks": [
+    {"stock_id": 1}
+  ]
+}
+```
 
 
 * Successful Response
