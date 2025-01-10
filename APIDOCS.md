@@ -565,7 +565,7 @@ Deletes an existing portfolio and adds total balance to account balance
 
 # Stocks
 
-<!-- ## Get all stocks
+## Get all stocks
 
 Returns all the stocks.
 
@@ -573,7 +573,7 @@ Returns all the stocks.
 * Require Authentication: false
 * Request
   * Method: GET
-  * Route path: api/stocks
+  * Route path: api/stock
   * Body: none
 
 
@@ -585,27 +585,25 @@ Returns all the stocks.
 
 
     ```json
+  [
     {
-  "stocks": [
-    {
-      "id": 1,
-      "name": "Apple Inc.",
-      "price": 150
+        "industry": "Consumer Electronics",
+        "name": "AAPL",
+        "price": 236.76
     },
     {
-      "id": 2,
-      "name": "Tesla Inc.",
-      "price": 500
+        "industry": "Software - Infrastructure",
+        "name": "MSFT",
+        "price": 420.6
     },
     {
-      "id": 3,
-      "name": "Amazon Inc.",
-      "price": 300
+        "industry": "Internet Content & Information",
+        "name": "GOOGL",
+        "price": 193.4509
     }
-        ]
-    }
+  ]
 
-    ``` -->
+    ```
 ## Get details on a stock
 
 Returns the details of a stock specified by its id.

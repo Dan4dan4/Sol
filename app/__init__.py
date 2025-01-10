@@ -15,6 +15,7 @@ from .config import Config
 from .api.portfolio_routes import portfolio_routes
 from .api.stock_routes import stock_routes
 from .api.watchlist_routes import watchlist_routes
+from .api.search_route import search_routes
 from .models import db, Stock
 import yfinance as yf
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -42,6 +43,7 @@ app.register_blueprint(auth_routes, url_prefix='/api/auth')
 app.register_blueprint(portfolio_routes, url_prefix='/api/portfolio')
 app.register_blueprint(stock_routes, url_prefix='/api/stock')
 app.register_blueprint(watchlist_routes, url_prefix='/api/watchlist')
+app.register_blueprint(search_routes, url_prefix='/api/')
 db.init_app(app)
 Migrate(app, db)
 
@@ -72,7 +74,7 @@ def refresh_stock_prices():
 
 def start_price_refresh_scheduler():
     scheduler = BackgroundScheduler()
-    scheduler.add_job(refresh_stock_prices, 'interval', seconds=3) 
+    scheduler.add_job(refresh_stock_prices, 'interval', minutes=3) 
     scheduler.start()
 
 start_price_refresh_scheduler()

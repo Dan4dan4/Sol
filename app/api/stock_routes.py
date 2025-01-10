@@ -5,15 +5,16 @@ from datetime import datetime
 # from app.models.portfolio import update_total_value
 # import logging
 import yfinance as yf
+# from ...app import refresh_stock_prices
 
 stock_routes = Blueprint('stock', __name__)
+
 
 @stock_routes.route('/', methods=['GET'])
 def get_all_stocks():
     """
     Get all stocks
     """
-    
     stocks = Stock.query.all()
 
     data = []
