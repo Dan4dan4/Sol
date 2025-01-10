@@ -1,0 +1,19 @@
+
+.landing-container {
+    padding: 20px; 
+}
+
+
+h1 {
+    font-size: 36px;
+    align-items: center;
+}
+
+.getstarted {
+    padding: 12px 25px; 
+    font-size: 18px; 
+    background-color: #e85d75 ;
+    color: white;
+    border-radius: 5px; 
+    cursor: pointer; 
+}

@@ -6,7 +6,7 @@ function Navigation() {
   return (
     <ul className="navbar">
       <li className="webname">
-        <NavLink to="/">Nyx or Summit</NavLink>
+        <NavLink to="/">Nyx</NavLink>
       </li>
 
       <li className="dropdown">
