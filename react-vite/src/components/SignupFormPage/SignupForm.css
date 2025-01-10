@@ -1,0 +1,57 @@
+.signup {
+    text-align: center;
+}
+  
+form {
+    background-color: #fff;
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+  
+input {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0 16px;
+    box-sizing: border-box;
+}
+  
+.submitbutton {
+    width: 100%;
+    padding: 12px;
+    background-color: #e85d75;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+} 
+  
+.submitbutton:hover {
+    background-color: green;
+}
+  
+p {
+    color: red;
+    font-size: 14px;
+    margin: 0;
+}
+  
+.errors {
+    color: red;
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+  
+.login-container{
+    max-width: 200px;
+    text-align: center;
+    margin: 20px auto;
+}
+
+.login-container p {
+    color: black;
+    padding-bottom: 5px;
+}

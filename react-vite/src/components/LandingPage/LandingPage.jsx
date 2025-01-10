@@ -8,8 +8,10 @@ import { useNavigate } from 'react-router';
 function LandingPage() {
     const navigate = useNavigate()
     const session = useSelector((state) => state.session.user)
+
     const getstarted = () => {
         navigate('/signup')
+        
     }
     return (
         <div className='landing-container'>

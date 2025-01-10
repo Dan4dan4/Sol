@@ -2,16 +2,18 @@ import { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FaUserCircle } from 'react-icons/fa';
 import { thunkLogout } from "../../redux/session";
-import OpenModalMenuItem from "./OpenModalMenuItem";
-import LoginFormModal from "../LoginFormModal";
-import SignupFormModal from "../SignupFormModal";
+// import OpenModalMenuItem from "./OpenModalMenuItem";
+// import LoginFormModal from "../LoginFormModal";
+// import SignupFormModal from "../SignupFormModal";
 import "./ProfileButton.css";
+import { useNavigate } from "react-router";
 
 function ProfileButton() {
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
   const user = useSelector((store) => store.session.user);
   const ulRef = useRef();
+  const navigate = useNavigate()
 
   const toggleMenu = (e) => {
     e.stopPropagation(); // Keep from bubbling up to document and triggering closeMenu
@@ -40,6 +42,16 @@ function ProfileButton() {
     closeMenu();
   };
 
+  const goToLogin = () => {
+    navigate("/login");
+    closeMenu();
+  };
+
+  const goToSignup = () => {
+    navigate("/signup");  
+    closeMenu();
+  };
+
   return (
     <>
       <button onClick={toggleMenu}>
@@ -57,16 +69,12 @@ function ProfileButton() {
             </>
           ) : (
             <>
-              <OpenModalMenuItem
-                itemText="Log In"
-                onItemClick={closeMenu}
-                modalComponent={<LoginFormModal />}
-              />
-              <OpenModalMenuItem
-                itemText="Sign Up"
-                onItemClick={closeMenu}
-                modalComponent={<SignupFormModal />}
-              />
+              <li>
+                <button onClick={goToLogin}>Log In</button>
+              </li>
+              <li>
+                <button onClick={goToSignup}>Sign Up</button>
+              </li>
             </>
           )}
         </ul>

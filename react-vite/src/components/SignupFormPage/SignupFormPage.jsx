@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useNavigate } from "react-router-dom";
 import { thunkSignup } from "../../redux/session";
+import './SignupForm.css';
 
 function SignupFormPage() {
   const dispatch = useDispatch();
@@ -44,9 +45,13 @@ function SignupFormPage() {
     }
   };
 
+  const login = () => {
+    navigate('/login')
+  }
+
   return (
     <>
-      <h1>Sign Up</h1>
+      <h1 className="signup">Sign Up</h1>
       {errors.server && <p>{errors.server}</p>}
       <form onSubmit={handleSubmit}>
         <label>
@@ -109,8 +114,12 @@ function SignupFormPage() {
           />
         </label>
         {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
-        <button type="submit">Sign Up</button>
+        <button type="submit" className="submitbutton">Sign Up</button>
       </form>
+      <div className="login-container">
+        <p>Already a Member?</p>
+      <button onClick={login} className='submitbutton'>Log In</button>
+      </div>
     </>
   );
 }
