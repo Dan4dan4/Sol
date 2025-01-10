@@ -15,6 +15,11 @@ from .config import Config
 from .api.portfolio_routes import portfolio_routes
 from .api.stock_routes import stock_routes
 from .api.watchlist_routes import watchlist_routes
+from .models import db, Stock
+import yfinance as yf
+from apscheduler.schedulers.background import BackgroundScheduler
+from datetime import datetime
+
 
 app = Flask(__name__, static_folder='../react-vite/dist', static_url_path='/')
 
@@ -43,6 +48,34 @@ Migrate(app, db)
 # Application Security
 CORS(app)
 
+def refresh_stock_prices():
+    with app.app_context():
+        stocks = Stock.query.all()
+
+        for stock in stocks:
+            try:
+                stock_data = yf.Ticker(stock.name)
+                stock_info = stock_data.info
+                price = stock_info.get('currentPrice')
+
+                if price is None:
+                    continue 
+
+                stock.price = price
+                stock.last_updated = datetime.utcnow()
+
+                db.session.commit()
+
+            except Exception as e:
+                print(f"Error fetching data for {stock.name}: {e}")
+
+
+def start_price_refresh_scheduler():
+    scheduler = BackgroundScheduler()
+    scheduler.add_job(refresh_stock_prices, 'interval', seconds=3) 
+    scheduler.start()
+
+start_price_refresh_scheduler()
 
 # Since we are deploying with Docker and Flask,
 # we won't be using a buildpack when we deploy to Heroku.

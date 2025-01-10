@@ -2,6 +2,7 @@ from app.models import db, Stock, environment, SCHEMA
 from sqlalchemy.sql import text
 import yfinance as yf
 
+
 stock_symbols = [
     'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA', 'META', 'BRK-B', 'UNH', 'V',
     'JNJ', 'WMT', 'HD', 'PYPL', 'MA', 'DIS', 'VZ', 'CSCO', 'PFE', 'KO',
@@ -10,6 +11,7 @@ stock_symbols = [
     'BMY', 'LLY', 'RTX', 'AMGN', 'UPS', 'MMM', 'ABT', 'DE', 'COST', 'ORCL',
     'TXN', 'LOW', 'QCOM', 'ZM', 'SPGI', 'REGN', 'MDT', 'AIG', 'LMT', 'AMT'
     ]
+
 def seed_stocks():
     
     for symbol in stock_symbols:

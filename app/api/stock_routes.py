@@ -8,6 +8,25 @@ import yfinance as yf
 
 stock_routes = Blueprint('stock', __name__)
 
+@stock_routes.route('/', methods=['GET'])
+def get_all_stocks():
+    """
+    Get all stocks
+    """
+    
+    stocks = Stock.query.all()
+
+    data = []
+    for stock in stocks:
+        stock_data = {
+            'name': stock.name,
+            'price': stock.price,
+            'industry': stock.industry,
+        }
+        data.append(stock_data)
+
+    return jsonify(data),200
+
 
 @stock_routes.route('/<string:stock_ticker>', methods=['GET'])
 def get_stock_info(stock_ticker):
