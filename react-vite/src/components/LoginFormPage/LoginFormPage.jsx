@@ -31,6 +31,10 @@ function LoginFormPage() {
     }
   };
 
+  const signup = () => {
+    navigate('/signup')
+  }
+
   return (
     <>
       <h1 className="login">Log In</h1>
@@ -59,6 +63,10 @@ function LoginFormPage() {
         {errors.password && <p>{errors.password}</p>}
         <button type="submit" className="submitbutton">Log In</button>
       </form>
+      <div className="login-container">
+        <p>Not a Member?</p>
+      <button onClick={signup} className='submitbutton'>Sign up</button>
+      </div>
     </>
   );
 }
