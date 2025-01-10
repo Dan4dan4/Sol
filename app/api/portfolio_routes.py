@@ -51,7 +51,7 @@ def create_portfolio(user_id):
     if user_id != current_user.id:
         return {"error": "Unauthorized access"}, 403
 
-    # print(request.json)
+    print(request.json)
 
     balance = request.json.get('balance')
 

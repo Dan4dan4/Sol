@@ -1,0 +1,38 @@
+.portfolio {
+    padding: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.portfolio h1 {
+    color: black;
+    text-align: center;
+}
+
+.portfolio ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.portfolio li {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.portfolio li:hover {
+    background-color: #e85d75;
+}
+
+.portfolio p {
+
+    color: black;
+}
+
+

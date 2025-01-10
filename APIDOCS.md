@@ -252,9 +252,9 @@ user's information.
 
 # PORTFOLIO
 
-## Get your portfolio
+## Get your portfolios
 
-Returns your portfolio if you are signed in
+Returns all portfolios if you are signed in
 
 
 * Require Authentication: true

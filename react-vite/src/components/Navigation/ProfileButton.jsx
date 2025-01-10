@@ -52,6 +52,11 @@ function ProfileButton() {
     closeMenu();
   };
 
+  const goToProfile = () => {
+    navigate(`/portfolio/${user.id}`);
+    closeMenu();
+  };
+
   return (
     <>
       <button onClick={toggleMenu}>
@@ -63,6 +68,9 @@ function ProfileButton() {
             <>
               <li>{user.username}</li>
               <li>{user.email}</li>
+              <li>
+                <button onClick={goToProfile}>Profile</button>
+              </li>
               <li>
                 <button onClick={logout}>Log Out</button>
               </li>
