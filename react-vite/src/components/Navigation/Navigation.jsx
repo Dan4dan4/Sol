@@ -4,12 +4,12 @@ import "./Navigation.css";
 
 function Navigation() {
   return (
-    <ul>
-      <li>
-        <NavLink to="/">Home</NavLink>
+    <ul className="navbar">
+      <li className="webname">
+        <NavLink to="/">Nyx or Summit</NavLink>
       </li>
 
-      <li>
+      <li className="dropdown">
         <ProfileButton />
       </li>
     </ul>
