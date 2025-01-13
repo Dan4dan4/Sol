@@ -104,12 +104,15 @@ function PortfolioPage() {
 
     return (
         <div className='portfolio'>
-            <h1>Portfolios</h1>
-            <p>Account Balance: ${userBalance}</p>
+            <h1> Account Balance: ${userBalance}</h1>
+            {/* <p className="account-balance">
+                Account Balance: ${userBalance}
+            </p> */}
+            {/* <h2>hell</h2> */}
             {portfolios.length === 0 ? (
                 <p>No portfolios available.</p>
             ) : (
-                <ul>
+                <ul><h1>Portfolios</h1>
                     {portfolios.map((portfolio) => (
                         <li className= "nvm" key={portfolio.id} onClick={() => portclick(portfolio.id)}>
                             <h3>Portfolio ID: {portfolio.id}</h3>

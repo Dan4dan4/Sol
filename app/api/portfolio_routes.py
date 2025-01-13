@@ -129,7 +129,7 @@ def update_portfolio(user_id, portfolio_id):
     user.account_balance += (old_balance - balance)
     db.session.commit()
 
-    db.session.commit()
+
 
     return jsonify({"Updated portfolio": portfolio.to_dict()}), 200
 
