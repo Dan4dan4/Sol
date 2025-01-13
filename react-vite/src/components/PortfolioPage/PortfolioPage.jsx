@@ -75,6 +75,10 @@ function PortfolioPage() {
             setError("Please enter a valid number.");
             return;
         }
+        if (parseFloat(newBalance) > userBalance) {
+            setError("Balance exceeds account balance, please enter a valid number");
+            return;
+        }
 
         try {
             const response = await fetch (`/api/portfolio/${user_id}`, {

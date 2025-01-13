@@ -51,9 +51,18 @@ def create_portfolio(user_id):
     if user_id != current_user.id:
         return {"error": "Unauthorized access"}, 403
 
-    print(request.json)
+    # print(request.json)
 
     balance = request.json.get('balance')
+
+    user = User.query.get(user_id)
+    if not user:
+        return {"error": "User not found"}, 404
+
+    if balance > user.account_balance:
+        return {"error": "Insufficient account balance to create portfolio"}, 400
+
+    user.account_balance -= balance
 
     new_portfolio = Portfolio(user_id = user_id, balance=balance)
 
@@ -76,6 +85,7 @@ def update_portfolio(user_id, portfolio_id):
     if not portfolio:
         return {"error": "No portfolio found"},404
     
+    old_balance = portfolio.balance
     balance = request.json.get('balance', None)
     if balance is not None:
         portfolio.balance = balance
@@ -106,7 +116,7 @@ def update_portfolio(user_id, portfolio_id):
         This function updates the total value of the portfolio by summing
         stock prices * quantities.
         """
-        total_value = 0
+        total_value = portfolio.balance
         for portfolio_stock in portfolio.portfolio_stocks:
             stock = portfolio_stock.stock
             total_value += portfolio_stock.quantity * stock.price
@@ -114,6 +124,10 @@ def update_portfolio(user_id, portfolio_id):
         db.session.commit()  
 
     update_total_value(portfolio)
+    user = User.query.get(user_id)
+
+    user.account_balance += (old_balance - balance)
+    db.session.commit()
 
     db.session.commit()
 
