@@ -4,6 +4,7 @@ import SignupFormPage from '../components/SignupFormPage';
 import Layout from './Layout';
 import LandingPage from '../components/LandingPage/LandingPage'
 import PortfolioPage from '../components/PortfolioPage/PortfolioPage';
+import SelectedPortfolio from '../components/PortfolioPage/SelectedPortfolio';
 
 export const router = createBrowserRouter([
   {
@@ -24,6 +25,10 @@ export const router = createBrowserRouter([
       {
         path: "portfolio/:user_id",
         element: <PortfolioPage />,
+      },
+      {
+        path: "portfolio/:user_id/:portfolio_id",
+        element: <SelectedPortfolio />,
       },
     ],
   },

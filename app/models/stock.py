@@ -3,6 +3,7 @@ from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
 # from .portfolio import portfolio_stocks
 # from .watchlist import Watchlist 
+from sqlalchemy import Numeric
 
 
 class Stock(db.Model):
@@ -13,7 +14,7 @@ class Stock(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(40), nullable=False, unique=True)
-    price = db.Column(db.Float, nullable=False)
+    price = db.Column(Numeric(10, 2), nullable=False)
     industry = db.Column(db.String(255), nullable=False)
     description = db.Column(db.String(255), nullable=True)
 

@@ -100,6 +100,11 @@ def purchase_stock(stock_ticker, portfolio_id):
     stock_in_portfolio = PortfolioStocks.query.filter_by(portfolio_id=portfolio.id, stock_id=existing_stock.id).first()
 
     if stock_in_portfolio:
+        total_quantity =stock_in_portfolio.quantity + quantity
+        total_spent = (stock_in_portfolio.purchase_price * stock_in_portfolio.quantity) + totalcost
+        new_average_price = total_spent / total_quantity
+        
+        stock_in_portfolio.purchase_price = round(new_average_price, 2)
         stock_in_portfolio.quantity += quantity
     else:
         stock_in_portfolio = PortfolioStocks(
