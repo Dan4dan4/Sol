@@ -74,7 +74,7 @@ def refresh_stock_prices():
 
 def start_price_refresh_scheduler():
     scheduler = BackgroundScheduler()
-    scheduler.add_job(refresh_stock_prices, 'interval', minutes=3) 
+    scheduler.add_job(refresh_stock_prices, 'interval', minutes=1) 
     scheduler.start()
 
 start_price_refresh_scheduler()

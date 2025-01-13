@@ -42,4 +42,8 @@
     cursor: pointer;
   }
   
+  .demo {
+    background-color: #e85d75;
+    color: white;
+  }
   
