@@ -18,3 +18,19 @@ h1 {
     color: black;
     margin-top: 10px;
 }
+
+.delete {
+    margin-top: 20px;
+    width: 100%;
+    padding: 12px;
+    background-color: #e85d75;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.delete:hover {
+    background-color: red;
+}

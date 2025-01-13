@@ -61,12 +61,12 @@ Returns the information about the current user that is logged in.
 
     ```json
   {
+    "account_balance": 13344,
+    "created_at": "Mon, 13 Jan 2025 18:18:50 GMT",
     "email": "demo@aa.io",
     "first_name": "Demo",
     "id": 1,
     "last_name": "User",
-    "watchlist": [],
-    "profile_image": "https://m.media-amazon.com/images/M/MV5BNzBmYjBjODktMzE1ZC00NDY1LWJiYzktMWFkM2VjZDVjZTA2XkEyXkFqcGc@._V1_.jpg",
     "username": "Demo"
   }
     ```

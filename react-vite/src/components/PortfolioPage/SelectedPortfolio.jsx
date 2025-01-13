@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import './SelectedPortfolio.css'
 
 function SelectedPortfolio(){
     const {user_id, portfolio_id} = useParams()
     const [portfolio , setPortfolio] = useState(null)
+    const navigate = useNavigate()
+    const [error, setError] = useState('');
 
     useEffect(() => {
         const fetchPortfolioDetails = async () => {
@@ -27,6 +29,26 @@ function SelectedPortfolio(){
 
         fetchPortfolioDetails();
     }, [user_id, portfolio_id]);
+
+    const deleteport = async () => {
+        try {
+            const response = await fetch(`/api/portfolio/${user_id}/${portfolio_id}`, {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+            });
+
+            if (response.ok) {
+                navigate(`/portfolio/${user_id}`);
+            } else {
+                const data = await response.json();
+                setError(data.error || "An error occurred while deleting the portfolio.");
+            }
+        } catch (error) {
+            console.error('Error deleting portfolio:', error);
+            setError("An error occurred while deleting the portfolio.");
+        }
+    };
+
 
     return(
         <div>
@@ -52,6 +74,11 @@ function SelectedPortfolio(){
                     ) : (
                         <p>No stocks available in this portfolio.</p>
                     )}
+                    <button onClick={deleteport} className="delete">
+                        Delete Portfolio
+                    </button>
+
+                    {error && <p className="error-message">{error}</p>}
             </div>
             )}
         </div>

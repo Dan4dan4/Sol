@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import {useDispatch, useSelector} from 'react-redux'
+import { thunkAuthenticate } from '../../redux/session';
 import './PortfolioPage.css'
 
 function PortfolioPage() {
@@ -9,6 +11,17 @@ function PortfolioPage() {
     const navigate = useNavigate()
     const [newBalance, setNewBalance] = useState('');
     const [error, setError] = useState('');
+    // const [userBalance, setUserBalance] = useState(null);
+    const dispatch = useDispatch()
+
+
+    const user = useSelector(state => state.session.user);
+    const userBalance = user ? user.account_balance : null;
+
+    useEffect(() => {
+        dispatch(thunkAuthenticate());
+    }, [dispatch])
+
 
     useEffect(() => {
         const fetchPortfolio = async () => {
@@ -31,6 +44,26 @@ function PortfolioPage() {
 
         fetchPortfolio();
     }, [user_id]);
+
+    //doesnt work
+    // useEffect(() => {
+    //     fetch('/auth/', {
+    //         method: 'GET',
+    //         headers: { 'Content-Type': 'application/json' },
+    //         credentials: 'include',
+    //     })
+    //     .then(response => response.json())
+    //     .then(data => {
+    //         if (data.user) {
+    //             if (data.user && data.account_balance !== undefined) {
+    //                 setUserBalance(data.account_balance); } 
+    //         } else {
+    //             setUserBalance(null);
+    //         }
+    //     })
+    //     .catch(error => console.error('Error fetching user account data:', error));
+    // }, []);
+    
 
     const portclick =(portfolio_id) => {
         navigate(`/portfolio/${user_id}/${portfolio_id}`)
@@ -68,6 +101,7 @@ function PortfolioPage() {
     return (
         <div className='portfolio'>
             <h1>Portfolios</h1>
+            <p>Account Balance: ${userBalance}</p>
             {portfolios.length === 0 ? (
                 <p>No portfolios available.</p>
             ) : (
