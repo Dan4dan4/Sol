@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
 import './Stock.css'
 
 function Stock() {
   const [stocks, setStocks] = useState([]);
+  const navigate = useNavigate();
 
-  // Fetch stocks when the component mounts
   useEffect(() => {
     const fetchStocks = async () => {
       try {
@@ -23,22 +24,33 @@ function Stock() {
     fetchStocks();
   }, []); 
 
+  const handleStockClick = (stock_ticker) => {
+    navigate(`/stocks/${stock_ticker}`);
+  };
+
+
   return (
     <>
-    <h1>All Stocks</h1>
-    <div className='stonks'>
-      <ul>
-        {stocks.map((stock, index) => (
-          <li key={index}>
-            {stock.name}<br />
-            Price: {stock.price}<br />
-            Industry: {stock.industry}
-          </li>
-        ))}
-      </ul>
-    </div>
+    <h1>All Stocks listed on Sol.com</h1>
+      <div className='stonks'>
+        <div className="stock-header">
+          <span className="stock-label">Ticker</span>
+          <span className="stock-label">Industry</span>
+          <span className="stock-label">Price</span>
+        </div>
+        <ul>
+          {stocks.map((stock, index) => (
+            <li key={index} className="stock-item" onClick={() => handleStockClick(stock.name)}>
+              <span className="stock-name">{stock.name}</span>
+              <span className="stock-industry">{stock.industry}</span>
+              <span className="stock-price">{stock.price}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
     </>
   );
 }
+
 
 export default Stock;

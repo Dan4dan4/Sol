@@ -15,8 +15,8 @@ function LandingPage() {
     }
     return (
         <div className='landing-container'>
-            <h1>Trading made easy</h1>
-            <h2>Sol Commission-free trading</h2>
+            <li>Trading made easy</li>
+            <li>Sol Commission-free trading</li>
             {!session && (
                 <button onClick={getstarted} className='getstarted'>Get started</button>
             )}

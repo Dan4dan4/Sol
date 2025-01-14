@@ -4,9 +4,9 @@
 }
 
 
-h1 {
-    font-size: 36px;
-    align-items: center;
+.landing-container li {
+    font-size: 30px;
+    list-style: none;
 }
 
 .getstarted {

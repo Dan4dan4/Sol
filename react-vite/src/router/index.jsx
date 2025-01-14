@@ -6,6 +6,7 @@ import LandingPage from '../components/LandingPage/LandingPage'
 import PortfolioPage from '../components/PortfolioPage/PortfolioPage';
 import SelectedPortfolio from '../components/PortfolioPage/SelectedPortfolio';
 import Stock from '../components/Stock/Stock';
+import StockDetails from '../components/Stock/StockDetails';
 
 export const router = createBrowserRouter([
   {
@@ -34,6 +35,10 @@ export const router = createBrowserRouter([
       {
         path: "stocks",
         element: <Stock />,
+      },
+      {
+        path: "stocks/:stock_id",
+        element: <StockDetails />,
       },
     ],
   },
