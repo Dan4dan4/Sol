@@ -37,16 +37,8 @@
     flex: 1; 
     text-align: center;
   }
-  
-  /* .stock-name {
-    text-align: left;
+
+  .stock-item:hover {
+    cursor: pointer;
+    background-color: #b7d5d4;
   }
-  
-  .stock-industry {
-    text-align: center;
-  }
-  
-  .stock-price {
-    text-align: right;
-  }
-   */

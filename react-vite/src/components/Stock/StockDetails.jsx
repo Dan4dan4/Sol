@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom"; // To read the URL params
+import { useParams } from "react-router-dom"; 
+import './StockDetails.css'
 
 function StockDetails() {
-  const { stock_id } = useParams(); // Get stock ticker from URL params
-  const [stock, setStock] = useState(null); // Store stock details
-  const [error, setError] = useState(null); // Handle any errors
+  const { stock_id } = useParams();
+  const [stock, setStock] = useState(null); 
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchStockDetails = async () => {
@@ -16,7 +17,7 @@ function StockDetails() {
 
         if (response.ok) {
           const data = await response.json();
-          setStock(data); // Set stock data
+          setStock(data); 
         } else {
           setError("Error fetching stock data");
         }
@@ -39,9 +40,9 @@ function StockDetails() {
   }
 
   return (
-    <div>
-      <h1>{stock.name}</h1>
-      <p>Price: {stock.price}</p>
+    <div className="stockdetails">
+      <p className="titleme">{stock.name} </p>
+      <p className="titleme">Price: ${stock.price}</p>
       <p>Industry: {stock.industry}</p>
       <p>{stock.description}</p>
     </div>
