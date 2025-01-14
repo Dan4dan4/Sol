@@ -49,11 +49,16 @@ function SelectedPortfolio(){
         }
     };
 
+    const tradenav = () => {
+        navigate('/stocks');
+    }
+    
 
     return(
         <div>
             <h1>Portfolio Details</h1>
             { portfolio && (
+            <div className="portfolio-container">
                 <div className="port-card">
                 <h2>Portfolio ID: {portfolio.id}</h2>
                 <p>Balance: ${portfolio.balance}</p>
@@ -79,12 +84,13 @@ function SelectedPortfolio(){
                     </button>
                     {error && <p className="error-message">{error}</p>}
             </div>
-            )}
-            <div>
-                <button>Trade
+            <div className="trade-button-container">
+                <button onClick={tradenav} className="trade-button">Trade on this portfolio
                 </button>
             </div>
         </div>
+        )}
+    </div>
     )
 }
 
