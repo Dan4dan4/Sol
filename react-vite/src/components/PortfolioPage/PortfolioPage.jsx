@@ -13,6 +13,8 @@ function PortfolioPage() {
     const [error, setError] = useState('');
     // const [userBalance, setUserBalance] = useState(null);
     const dispatch = useDispatch()
+    const [editPortfolioId, setEditPortfolioId] = useState(null); 
+    const [editBalance, setEditBalance] = useState('');
 
 
     const user = useSelector(state => state.session.user);
@@ -44,26 +46,6 @@ function PortfolioPage() {
 
         fetchPortfolio();
     }, [user_id]);
-
-    //doesnt work
-    // useEffect(() => {
-    //     fetch('/auth/', {
-    //         method: 'GET',
-    //         headers: { 'Content-Type': 'application/json' },
-    //         credentials: 'include',
-    //     })
-    //     .then(response => response.json())
-    //     .then(data => {
-    //         if (data.user) {
-    //             if (data.user && data.account_balance !== undefined) {
-    //                 setUserBalance(data.account_balance); } 
-    //         } else {
-    //             setUserBalance(null);
-    //         }
-    //     })
-    //     .catch(error => console.error('Error fetching user account data:', error));
-    // }, []);
-    
 
     const portclick =(portfolio_id) => {
         navigate(`/portfolio/${user_id}/${portfolio_id}`)
@@ -99,9 +81,43 @@ function PortfolioPage() {
                 console.error('Error fetching portfolio data:', error);
             }
             }
-        
     
+    const updatePortfolio = async () => {
+        if (editBalance === "" || isNaN(editBalance) || parseFloat(editBalance) <= 0) {
+            setError("Please enter a valid balance.");
+            return;
+        }
 
+        if (parseFloat(editBalance) > userBalance) {
+            setError("Balance exceeds account balance, please enter a valid number");
+            return;
+        }
+
+        try {
+            const response = await fetch(`/api/portfolio/${user_id}/${editPortfolioId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ balance: parseFloat(editBalance) }),
+            });
+
+            if (response.ok) {
+                const updatedPortfolio = await response.json();
+                setPortfolios((prevPortfolios) =>
+                    prevPortfolios.map((portfolio) =>
+                        portfolio.id === updatedPortfolio.id ? updatedPortfolio : portfolio
+                    )
+                );
+                setEditBalance('');
+                setEditPortfolioId(null);
+            } else {
+                console.error('Error updating portfolio:', response.status);
+            }
+        } catch (error) {
+            console.error('Error updating portfolio:', error);
+        }
+    };
+
+            
     return (
         <div className='portfolio'>
             <h1> Account Balance: ${userBalance}</h1>
@@ -114,14 +130,27 @@ function PortfolioPage() {
             ) : (
                 <ul><h1>Portfolios</h1>
                     {portfolios.map((portfolio) => (
-                        <li className= "nvm" key={portfolio.id} onClick={() => portclick(portfolio.id)}>
+                        <li className= "nvm" key={portfolio.id}  onClick={(e) => {
+                            // Only navigate if the list item itself (not the button) is clicked
+                            if (e.target.tagName !== 'BUTTON') {
+                                portclick(portfolio.id);
+                            }
+                        }}
+                    >
                             <h3>Portfolio ID: {portfolio.id}</h3>
                             <p>Balance ${portfolio.balance}</p>
                             <p>Created At: {new Date(portfolio.created_at).toLocaleString()}</p>
+                            <button onClick={() => {
+                                setEditPortfolioId(portfolio.id);
+                                setEditBalance(portfolio.balance);
+                            }}>
+                                Edit Portfolio
+                            </button>
                         </li>
                     ))}
                 </ul>
             )}
+            
             <div className="create-portfolio">
                 <h2>Create a New Portfolio</h2>
                 <input 
@@ -134,6 +163,21 @@ function PortfolioPage() {
                 <button onClick={newPort} disabled={newBalance === "" || isNaN(newBalance) || parseFloat(newBalance) <= 0}>Create Portfolio
                 </button>
             </div>
+
+            {editPortfolioId && (
+                <div className="edit-portfolio">
+                    <h2>Enter New Balance</h2>
+                    <input
+                        type="number"
+                        value={editBalance}
+                        onChange={(e) => setEditBalance(e.target.value)}
+                        placeholder="New balance"
+                    />
+                    {error && <p className="error-message">{error}</p>}
+                    <button onClick={updatePortfolio}>Update Portfolio</button>
+                    <button onClick={() => setEditPortfolioId(null)}>Cancel</button>
+                </div>
+            )}
         </div>
     );
 }

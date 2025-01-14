@@ -422,27 +422,20 @@ Create a portfolio if you are signed in
 
     ```
 
-## Update your portfolio
+## Update your portfolio balance
 
 * Require Authentication: true
 * Require proper authorization: Portfolio must belong to the current user
 * Request
 * Method: PUT
-* Route path: api/portfolio/:portfolio_id
+* Route path: api/portfolio/:user_id/:portfolio_id
 * Headers:
 * Content-Type: application/json
 * Body:
 
     ```json
   {
-  "balance": 1500,
-  "stocks": [
-    {
-      "stock_id": 1,
-      "quantity": 100,
-      "purchase_price": 50
-    }
-    ]
+  "balance": 1500
   }
 
     ```
