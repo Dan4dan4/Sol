@@ -77,10 +77,13 @@ function SelectedPortfolio(){
                     <button onClick={deleteport} className="delete">
                         Delete Portfolio
                     </button>
-
                     {error && <p className="error-message">{error}</p>}
             </div>
             )}
+            <div>
+                <button>Trade
+                </button>
+            </div>
         </div>
     )
 }
