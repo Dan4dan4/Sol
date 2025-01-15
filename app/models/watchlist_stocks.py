@@ -8,6 +8,10 @@ class WatchlistStocks(db.Model):
 
     if environment == "production":
         __table_args__ = {'schema': SCHEMA}
-        
+
     watchlist_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('watchlists.id')), primary_key=True)
     stock_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('stocks.id')), primary_key=True, nullable =True)
+
+
+    watchlist = db.relationship('Watchlist', back_populates='watchlist_stocks') 
+    stock = db.relationship('Stock', back_populates='watchlist_stocks') 

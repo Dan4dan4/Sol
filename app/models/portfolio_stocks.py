@@ -16,5 +16,5 @@ class PortfolioStocks(db.Model):
     date_purchased = db.Column(db.DateTime, nullable=False, server_default=func.now())
 
     portfolio = db.relationship('Portfolio', back_populates='portfolio_stocks', overlaps="stocks")
-    stock = db.relationship('Stock', back_populates='portfolio_stocks', overlaps="portfolios")
+    stock = db.relationship('Stock', back_populates='portfolio_stocks', overlaps="portfolio")
 

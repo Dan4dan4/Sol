@@ -22,6 +22,7 @@ class Stock(db.Model):
     portfolios = db.relationship('Portfolio',secondary='portfolio_stocks', back_populates='stocks', overlaps="portfolio_stocks")
     # users = db.relationship("User", back_populates="stocks")
     portfolio_stocks = db.relationship('PortfolioStocks', back_populates='stock')
+    watchlist_stocks = db.relationship('WatchlistStocks', back_populates='stock')
 
 
     def to_dict(self):
