@@ -10,7 +10,7 @@ class PortfolioStocks(db.Model):
         __table_args__ = {'schema': SCHEMA}
 
     portfolio_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('portfolio.id')), primary_key=True)
-    stock_id = db.Column(db.String, db.ForeignKey(add_prefix_for_prod('stocks.id')), primary_key=True)
+    stock_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('stocks.id')), primary_key=True)
     quantity = db.Column(db.Integer, nullable=False)
     purchase_price = db.Column(db.Float, nullable=False)
     date_purchased = db.Column(db.DateTime, nullable=False, server_default=func.now())
