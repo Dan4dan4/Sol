@@ -19,7 +19,7 @@ class Stock(db.Model):
     description = db.Column(db.String(255), nullable=True)
 
     watchlists = db.relationship('Watchlist',secondary='watchlist_stocks', back_populates = 'stocks')
-    portfolios = db.relationship('Portfolio',secondary='portfolio_stocks', back_populates='stocks')
+    portfolios = db.relationship('Portfolio',secondary='portfolio_stocks', back_populates='stocks', overlaps="portfolio_stocks")
     # users = db.relationship("User", back_populates="stocks")
     portfolio_stocks = db.relationship('PortfolioStocks', back_populates='stock')
 

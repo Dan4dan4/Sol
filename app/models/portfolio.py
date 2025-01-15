@@ -19,7 +19,7 @@ class Portfolio(db.Model):
 
     portfolio_stocks = db.relationship("PortfolioStocks", back_populates="portfolio", cascade='all, delete-orphan')
     user = relationship("User", back_populates="portfolio")
-    stocks = db.relationship("Stock", secondary='portfolio_stocks', back_populates="portfolios")
+    stocks = db.relationship("Stock", secondary='portfolio_stocks', back_populates="portfolios", overlaps="portfolio_stocks")
 
     def get_total_value(self):
         total = 0
