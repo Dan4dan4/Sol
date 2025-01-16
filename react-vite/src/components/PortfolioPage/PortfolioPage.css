@@ -50,8 +50,9 @@
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    height: 200px;
+    height: 220px;
     margin: 30px;
+    max-height: 400px;
 }
 
 .create-portfolio button {
@@ -76,6 +77,13 @@
     font-weight: bold;
 }
 
+.error-message2 {
+    color: red;
+    font-size: 14px;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
 .portfolio button {
     width: 100%;
     padding: 12px;
@@ -94,6 +102,6 @@
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    height: 230px;
+    height: 270px;
 }
 

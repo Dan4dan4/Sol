@@ -87,13 +87,18 @@ def update_portfolio(user_id, portfolio_id):
     
     old_balance = portfolio.balance
     balance = request.json.get('balance', None)
+
     if balance is not None:
-        if balance > current_user.account_balance:
-            return {"error": "Insufficient account balance to update portfolio"}, 400
-        current_user.account_balance -= ( balance - old_balance)
-    elif balance < old_balance:
+        if balance < 0:
+            return {"error": "Portfolio balance cannot be negative"}, 400
+        
+        if balance > old_balance:
+            if balance > current_user.account_balance + old_balance:
+                return {"error": "Insufficient account balance to increase portfolio value"}, 400
+            current_user.account_balance -= (balance - old_balance)
+        elif balance < old_balance:
             current_user.account_balance += (old_balance - balance)
-    portfolio.balance = balance
+        portfolio.balance = balance
 
     total_value = portfolio.balance 
     for portfolio_stock in portfolio.portfolio_stocks:
@@ -104,9 +109,9 @@ def update_portfolio(user_id, portfolio_id):
     portfolio.total_value = total_value  
     db.session.commit()
 
-    user = User.query.get(user_id)
-    user.account_balance += (old_balance - balance)  
-    db.session.commit()
+    # user = User.query.get(user_id)
+    # user.account_balance += (old_balance - balance)  
+    # db.session.commit()
 
     return jsonify({"Updated portfolio": portfolio.to_dict()}), 200
 

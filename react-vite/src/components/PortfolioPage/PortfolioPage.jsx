@@ -10,7 +10,9 @@ function PortfolioPage() {
     // const [selectedPortfolio, setSelectedPortfolio] = useState(null);
     const navigate = useNavigate()
     const [newBalance, setNewBalance] = useState('');
-    const [error, setError] = useState('');
+    // const [error, setError] = useState('');
+    const [createError, setCreateError] = useState('');  
+    const [editError, setEditError] = useState('');
     // const [userBalance, setUserBalance] = useState(null);
     const dispatch = useDispatch()
     const [editPortfolioId, setEditPortfolioId] = useState(null); 
@@ -54,11 +56,11 @@ function PortfolioPage() {
 
     const newPort = async () => {
         if (newBalance === "" || isNaN(newBalance) || parseFloat(newBalance) <= 0) {
-            setError("Please enter a valid number.");
+            setCreateError("Please enter a valid number.");
             return;
         }
         if (parseFloat(newBalance) > userBalance) {
-            setError("Balance exceeds account balance, please enter a valid number");
+            setCreateError("Balance exceeds account balance, please enter a valid number");
             return;
         }
 
@@ -74,6 +76,7 @@ function PortfolioPage() {
                     const data = await response.json()
                     setPortfolios(allports => [...allports, data])
                     setNewBalance('')
+                    setCreateError('')
                 } else {
                     console.error('Error creating portfolio:', response.status);
                 }
@@ -84,14 +87,22 @@ function PortfolioPage() {
     
     const updatePortfolio = async () => {
         if (editBalance === "" || isNaN(editBalance) || parseFloat(editBalance) <= 0) {
-            setError("Please enter a valid balance.");
+            setEditError("Please enter a valid balance.");
             return;
         }
 
-        if (parseFloat(editBalance) > userBalance) {
-            setError("Balance exceeds account balance, please enter a valid number");
+        const portfolioToUpdate = portfolios.find(p => p.id === editPortfolioId);
+        if (!portfolioToUpdate) {
+            setEditError("Portfolio not found.");
             return;
         }
+
+        const maxAllowedBalance = userBalance + portfolioToUpdate.balance;
+        if (parseFloat(editBalance) > maxAllowedBalance) {
+            setEditError("Balance exceeds account balance, please enter a valid number.");
+            return;
+        }
+
 
         try {
             const response = await fetch(`/api/portfolio/${user_id}/${editPortfolioId}`, {
@@ -109,6 +120,7 @@ function PortfolioPage() {
                 );
                 setEditBalance('');
                 setEditPortfolioId(null);
+                setEditError('')
             } else {
                 console.error('Error updating portfolio:', response.status);
             }
@@ -131,7 +143,6 @@ function PortfolioPage() {
                 <ul><h1>Portfolios</h1>
                     {portfolios.map((portfolio) => (
                         <li className= "nvm" key={portfolio.id}  onClick={(e) => {
-                            // Only navigate if the list item itself (not the button) is clicked
                             if (e.target.tagName !== 'BUTTON') {
                                 portclick(portfolio.id);
                             }
@@ -159,7 +170,7 @@ function PortfolioPage() {
                     value={newBalance} 
                     onChange={(e) => setNewBalance(e.target.value)} 
                 />
-                {error && <p className="error-message">{error}</p>}
+                {createError && <p className="error-message">{createError}</p>}
                 <button onClick={newPort} disabled={newBalance === "" || isNaN(newBalance) || parseFloat(newBalance) <= 0}>Create Portfolio
                 </button>
             </div>
@@ -173,7 +184,7 @@ function PortfolioPage() {
                         onChange={(e) => setEditBalance(e.target.value)}
                         placeholder="New balance"
                     />
-                    {error && <p className="error-message">{error}</p>}
+                    {editError && <p className="error-message">{editError}</p>}
                     <button onClick={updatePortfolio}>Update Portfolio</button>
                     <button onClick={() => setEditPortfolioId(null)}>Cancel</button>
                 </div>
