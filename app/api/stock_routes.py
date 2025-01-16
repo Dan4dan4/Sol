@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
-from app.models import db,User, Portfolio, Stock, PortfolioStocks
+from app.models import db,User, Portfolio, Stock
 from datetime import datetime
 # from app.models.portfolio import update_total_value
 # import logging

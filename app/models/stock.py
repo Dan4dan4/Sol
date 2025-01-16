@@ -18,12 +18,15 @@ class Stock(db.Model):
     industry = db.Column(db.String(255), nullable=False)
     description = db.Column(db.String(255), nullable=True)
 
-    watchlists = db.relationship('Watchlist',secondary='watchlist_stocks', back_populates = 'stocks')
-    portfolios = db.relationship('Portfolio',secondary='portfolio_stocks', back_populates='stocks', overlaps="portfolio_stocks")
-    # users = db.relationship("User", back_populates="stocks")
-    portfolio_stocks = db.relationship('PortfolioStocks', back_populates='stock')
-    watchlist_stocks = db.relationship('WatchlistStocks', back_populates='stock')
+    watchlist_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('watchlists.id')), nullable=True)
+    watchlist = db.relationship('Watchlist', back_populates = 'stocks')
 
+    portfolio_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('portfolio.id')), nullable=True)
+    portfolio = db.relationship('Portfolio', back_populates='stocks')
+    # portfolios = db.relationship('Portfolio',secondary='portfolio_stocks', back_populates='stocks', overlaps="portfolio_stocks")
+    # users = db.relationship("User", back_populates="stocks")
+    # portfolio_stocks = db.relationship('PortfolioStocks', back_populates='stock')
+    # watchlist_stocks = db.relationship('WatchlistStocks', back_populates='stock')
 
     def to_dict(self):
         return {
