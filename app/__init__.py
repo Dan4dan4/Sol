@@ -20,7 +20,7 @@ from .models import db, Stock
 import yfinance as yf
 from apscheduler.schedulers.background import BackgroundScheduler
 from datetime import datetime
-
+from .seeds.stocks import get_stock_data_from_polygon
 
 app = Flask(__name__, static_folder='../react-vite/dist', static_url_path='/')
 
@@ -50,35 +50,36 @@ Migrate(app, db)
 # Application Security
 CORS(app)
 
-# def refresh_stock_prices():
-#     with app.app_context():
-#         stocks = Stock.query.all()
+def refresh_stock_prices():
+    with app.app_context():
+        stocks = Stock.query.all()
 
-#         for stock in stocks:
-#             try:
-#                 stock_data = yf.Ticker(stock.name)
-#                 stock_info = stock_data.info
-#                 price = stock_info.get('currentPrice')
+        for stock in stocks:
+            try:
+                stock_info = get_stock_data_from_polygon(stock.name)
+                if stock_info:
+                    stock.open_price = stock_info.get('open_price', 0.0)
+                    stock.high_price = stock_info.get('high_price', 0.0)
+                    stock.low_price = stock_info.get('low_price', 0.0)
+                    stock.close_price = stock_info.get('close_price', 0.0)
+                    stock.volume = stock_info.get('volume', 0)
+                    stock.volume_weighted_avg_price = stock_info.get('volume_weighted_avg_price', 0.0)
 
-#                 if price is None:
-#                     continue 
+                    # stock.last_updated = datetime.utcnow()
 
-#                 stock.price = price
-#                 stock.last_updated = datetime.utcnow()
+                    db.session.commit()
 
-#                 db.session.commit()
-
-#             except Exception as e:
-#                 print(f"Error fetching data for {stock.name}: {e}")
+            except Exception as e:
+                print(f"Error fetching data for {stock.name}: {e}")
 
 
-# def start_price_refresh_scheduler():
-#     scheduler = BackgroundScheduler()
-#     scheduler.add_job(refresh_stock_prices, 'interval', seconds=5, misfire_grace_time=10) 
-#      misfire_grace_time=10
-#     scheduler.start()
+def start_price_refresh_scheduler():
+    scheduler = BackgroundScheduler()
+    scheduler.add_job(refresh_stock_prices, 'interval', seconds=1, misfire_grace_time=10) 
+    #  misfire_grace_time=10
+    scheduler.start()
 
-# start_price_refresh_scheduler()
+start_price_refresh_scheduler()
 
 # Since we are deploying with Docker and Flask,
 # we won't be using a buildpack when we deploy to Heroku.

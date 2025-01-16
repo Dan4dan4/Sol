@@ -43,38 +43,58 @@
   } */
 
   /* Stock.css */
-  
+
+
 .stonks {
-  margin: 20px;
+  padding: 20px;
 }
 
 .stock-header {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  display: flex;
+  justify-content: space-between;
   font-weight: bold;
+  border-bottom: 2px solid #ddd;
+  padding: 10px 0;
   margin-bottom: 10px;
+  background-color: #f4f4f4;
 }
 
 .stock-label {
+  flex: 1;
   text-align: center;
+  padding: 5px;
+}
+
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
 }
 
 .stock-item {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  display: flex;
+  justify-content: space-between;
   padding: 10px;
-  border-bottom: 1px solid #ccc;
+  margin: 5px 0;
+  border-bottom: 1px solid #eee;
+  background-color: #fff;
   cursor: pointer;
 }
 
 .stock-item:hover {
-  background-color: #f5f5f5;
+  background-color: #f0f0f0;
 }
+
 
 .stock-name,
 .stock-open-price,
 .stock-high-price,
 .stock-low-price,
-.stock-volume {
+.stock-volume,
+.stock-close-price,
+.stock-vwap {
+  flex: 1;
   text-align: center;
 }
+

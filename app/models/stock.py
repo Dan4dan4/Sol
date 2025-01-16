@@ -20,7 +20,16 @@ class Stock(db.Model):
     open_price = db.Column(Numeric(10, 2), nullable=True)  
     high_price = db.Column(Numeric(10, 2), nullable=True) 
     low_price = db.Column(Numeric(10, 2), nullable=True)   
-    volume = db.Column(db.Integer, nullable=True)           
+    volume = db.Column(db.Integer, nullable=True) 
+    close_price = db.Column(Numeric(10, 2), nullable=True)
+    volume = db.Column(db.Integer, nullable=True)
+    volume_weighted_avg_price = db.Column(Numeric(10, 2), nullable=True)
+    # last_updated = db.Column(db.DateTime, default=func.now(), nullable=False)          
+    # ask_price = db.Column(Numeric(10, 2), nullable=True)
+    # bid_price = db.Column(Numeric(10, 2), nullable=True)
+    # ask_size = db.Column(db.Integer, nullable=True)
+    # bid_size = db.Column(db.Integer, nullable=True)
+    # timestamp = db.Column(db.BigInteger, nullable=True)  
 
 
 
@@ -41,7 +50,14 @@ class Stock(db.Model):
             'open_price': self.open_price, 
             'high_price': self.high_price,  
             'low_price': self.low_price,   
-            'volume': self.volume 
+            'close_price': self.close_price,
+            'volume': self.volume,
+            'volume_weighted_avg_price': self.volume_weighted_avg_price,
+            # 'ask_price': self.ask_price,
+            # 'bid_price': self.bid_price,
+            # 'ask_size': self.ask_size,
+            # 'bid_size': self.bid_size,
+            # 'timestamp': self.timestamp 
             # 'price': self.price,
             # 'industry': self.industry,
             # 'description': self.description,

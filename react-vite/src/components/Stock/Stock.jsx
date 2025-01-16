@@ -34,11 +34,13 @@ function Stock() {
     <h1>All Stocks listed on Sol.com</h1>
       <div className='stonks'>
         <div className="stock-header">
-          <span className="stock-label">Ticker</span>
+        <span className="stock-label">Ticker</span>
           <span className="stock-label">Open Price</span>
           <span className="stock-label">High Price</span>
           <span className="stock-label">Low Price</span>
           <span className="stock-label">Volume</span>
+          <span className="stock-label">Close Price</span>  
+          <span className="stock-label">Price</span>
         </div>
         <ul>
           {stocks.map((stock, index) => (
@@ -48,6 +50,8 @@ function Stock() {
               <span className="stock-high-price">{stock.high_price}</span>
               <span className="stock-low-price">{stock.low_price}</span>
               <span className="stock-volume">{stock.volume}</span>
+              <span className="stock-close-price">{stock.close_price}</span> 
+              <span className="stock-vwap">{stock.volume_weighted_avg_price}</span> 
             </li>
           ))}
         </ul>

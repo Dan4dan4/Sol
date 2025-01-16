@@ -28,6 +28,9 @@ def get_all_stocks():
             'high_price': stock.high_price,
             'low_price': stock.low_price,
             'volume': stock.volume,
+            'close_price': stock.close_price,  
+            'volume_weighted_avg_price': stock.volume_weighted_avg_price, 
+            # 'last_updated': stock.last_updated 
         }
         data.append(stock_data)
 
@@ -39,33 +42,49 @@ def get_stock_info(stock_ticker):
     """
     Get stock info based on stock ticker NOT NAME
     """
-    
-    response = requests.get(
-        f"https://api.polygon.io/v2/aggs/ticker/{stock_ticker}/prev?adjusted=true&apiKey={POLYGON_API_KEY}"
-    )
+    stock = Stock.query.filter_by(name=stock_ticker.upper()).first()
 
-    if response.status_code == 200:
-        data = response.json()
-        results = data.get('results', [])[0]  
+    if stock:
+        stock_data = {
+            'name': stock.name,
+            'open_price': stock.open_price,
+            'high_price': stock.high_price,
+            'low_price': stock.low_price,
+            'volume': stock.volume,
+            'close_price': stock.close_price, 
+            'volume_weighted_avg_price': stock.volume_weighted_avg_price,  
+            'last_updated': stock.last_updated 
+        }
+        return jsonify(stock_data), 200
 
-        open_price = results.get('o')  
-        high_price = results.get('h')  
-        low_price = results.get('l')  
-        volume = results.get('v')      
+    else:
+        response = requests.get(
+            f"https://api.polygon.io/v2/aggs/ticker/{stock_ticker}/prev?adjusted=true&apiKey={POLYGON_API_KEY}"
+        )
 
-        if open_price and high_price and low_price and volume:
-            stock_data = {
-                'name': stock_ticker.upper(),
-                'open_price': open_price,
-                'high_price': high_price,
-                'low_price': low_price,
-                'volume': volume
-            }
+        if response.status_code == 200:
+            data = response.json()
+            results = data.get('results', [])[0]
+
+            open_price = results.get('o')
+            high_price = results.get('h')
+            low_price = results.get('l')
+            volume = results.get('v')
+
+            if open_price and high_price and low_price and volume:
+                stock_data = {
+                    'name': stock_ticker.upper(),
+                    'open_price': open_price,
+                    'high_price': high_price,
+                    'low_price': low_price,
+                    'volume': volume,
+                    'close_price': results.get('c'), 
+                    'volume_weighted_avg_price': results.get('vw')  
+                }
             return jsonify(stock_data), 200
         else:
             return jsonify({"error": "Data for this stock could not be found"}), 404
-    else:
-        return jsonify({"error": "Failed to fetch data from Polygon API"}), 500
+
 
 @stock_routes.route('/buy/<string:stock_ticker>/<int:portfolio_id>', methods=['POST'])
 @login_required
