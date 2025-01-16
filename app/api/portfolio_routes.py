@@ -90,26 +90,6 @@ def update_portfolio(user_id, portfolio_id):
     if balance is not None:
         portfolio.balance = balance
 
-    # stocks = request.json.get('stocks', [])
-    # for data in stocks:
-    #     stock_id= data.get('stock_id')
-    #     quantity = data.get('quantity')
-    #     purchase_price = data.get('purchase_price')
-
-    #     if not stock_id or not quantity or not purchase_price:
-    #         return {"error": "Missing required stock data"}, 400
-
-    #     stock = Stock.query.get(stock_id)
-    #     if not stock:
-    #         return{"error": "Stock not found"},404
-    
-    #     portfolio_stock = PortfolioStocks.query.filter_by(portfolio_id=portfolio_id, stock_id=stock_id).first()
-
-    #     if portfolio_stock:
-    #         portfolio_stock.quantity = quantity
-    #         portfolio_stock.purchase_price = purchase_price
-    #     else:
-    #         return {"error": "This stock is not in this portfolio"}, 400
     
     def update_total_value(portfolio):
         """
@@ -117,9 +97,8 @@ def update_portfolio(user_id, portfolio_id):
         stock prices * quantities.
         """
         total_value = portfolio.balance
-        for portfolio_stock in portfolio.portfolio_stocks:
-            stock = portfolio_stock.stock
-            total_value += portfolio_stock.quantity * stock.price
+        for stock in portfolio.stocks:
+            total_value += stock.quantity * stock.price
         portfolio.total_value = total_value
         db.session.commit()  
 
@@ -129,9 +108,8 @@ def update_portfolio(user_id, portfolio_id):
     user.account_balance += (old_balance - balance)
     db.session.commit()
 
-
-
     return jsonify({"Updated portfolio": portfolio.to_dict()}), 200
+
 
 @portfolio_routes.route('/<int:user_id>/<int:portfolio_id>', methods= ['DELETE'])
 @login_required
@@ -148,9 +126,8 @@ def delete_portfolio(user_id, portfolio_id):
         return {"error": "No portfolio found"},404
     
     total_value = portfolio.balance
-    for portfolio_stock in portfolio.portfolio_stocks:
-        stock = portfolio_stock.stock
-        total_value += portfolio_stock.quantity * stock.price
+    for stock in portfolio.stocks:
+        total_value += stock.quantity * stock.price
 
     user = User.query.get(user_id)
     if not user:

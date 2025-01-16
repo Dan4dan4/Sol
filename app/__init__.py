@@ -78,7 +78,7 @@ def start_price_refresh_scheduler():
     #  misfire_grace_time=10
     scheduler.start()
 
-start_price_refresh_scheduler()
+# start_price_refresh_scheduler()
 
 # Since we are deploying with Docker and Flask,
 # we won't be using a buildpack when we deploy to Heroku.
