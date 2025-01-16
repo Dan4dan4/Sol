@@ -50,33 +50,33 @@ Migrate(app, db)
 # Application Security
 CORS(app)
 
-def refresh_stock_prices():
-    with app.app_context():
-        stocks = Stock.query.all()
+# def refresh_stock_prices():
+#     with app.app_context():
+#         stocks = Stock.query.all()
 
-        for stock in stocks:
-            try:
-                stock_data = yf.Ticker(stock.name)
-                stock_info = stock_data.info
-                price = stock_info.get('currentPrice')
+#         for stock in stocks:
+#             try:
+#                 stock_data = yf.Ticker(stock.name)
+#                 stock_info = stock_data.info
+#                 price = stock_info.get('currentPrice')
 
-                if price is None:
-                    continue 
+#                 if price is None:
+#                     continue 
 
-                stock.price = price
-                stock.last_updated = datetime.utcnow()
+#                 stock.price = price
+#                 stock.last_updated = datetime.utcnow()
 
-                db.session.commit()
+#                 db.session.commit()
 
-            except Exception as e:
-                print(f"Error fetching data for {stock.name}: {e}")
+#             except Exception as e:
+#                 print(f"Error fetching data for {stock.name}: {e}")
 
 
-def start_price_refresh_scheduler():
-    scheduler = BackgroundScheduler()
-    scheduler.add_job(refresh_stock_prices, 'interval', minutes=5, misfire_grace_time=10) 
-    #  misfire_grace_time=10
-    scheduler.start()
+# def start_price_refresh_scheduler():
+#     scheduler = BackgroundScheduler()
+#     scheduler.add_job(refresh_stock_prices, 'interval', seconds=5, misfire_grace_time=10) 
+#      misfire_grace_time=10
+#     scheduler.start()
 
 # start_price_refresh_scheduler()
 

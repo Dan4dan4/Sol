@@ -778,7 +778,7 @@ Get all watchlists
 * Require proper authorization: false
 * Request
 * Method: GET
-* Route path: /api/watchlists
+* Route path: /api/watchlist/:user_id
 
 
 * Successful Response
