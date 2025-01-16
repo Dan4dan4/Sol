@@ -1,20 +1,25 @@
-# from .db import db, environment, SCHEMA, add_prefix_for_prod
-# from sqlalchemy.sql import func
-# from sqlalchemy.orm import relationship
+from .db import db, environment, SCHEMA, add_prefix_for_prod
+from sqlalchemy.sql import func
+from sqlalchemy.orm import relationship
 
 
-# class PortfolioStocks(db.Model):
-#     __tablename__ = 'portfolio_stocks'
+class PortfolioStocks(db.Model):
+    __tablename__ = 'portfolio_stocks'
 
-#     if environment == "production":
-#         __table_args__ = {'schema': SCHEMA}
+    if environment == "production":
+        __table_args__ = {'schema': SCHEMA}
 
-#     portfolio_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('portfolio.id')), primary_key=True)
-#     stock_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('stocks.id')), primary_key=True)
-#     quantity = db.Column(db.Integer, nullable=False)
-#     purchase_price = db.Column(db.Float, nullable=False)
-#     date_purchased = db.Column(db.DateTime, nullable=False, server_default=func.now())
+    id = db.Column(db.Integer, primary_key=True)
+    portfolio_id = db.Column(db.Integer, db.ForeignKey('portfolio.id'), nullable=False)
+    stock_id = db.Column(db.Integer, db.ForeignKey('stocks.id'), nullable=False)
+    quantity = db.Column(db.Integer, nullable=False)
 
-#     portfolio = db.relationship('Portfolio', back_populates='portfolio_stocks', overlaps="stocks")
-#     stock = db.relationship('Stock', back_populates='portfolio_stocks', overlaps="portfolio")
+    portfolio = db.relationship('Portfolio', back_populates='portfolio_stocks')
+    stock = db.relationship('Stock', back_populates='portfolio_stocks')
 
+    def to_dict(self):
+        return {
+            'portfolio_id': self.portfolio_id,
+            'stock_id': self.stock_id,
+            'quantity': self.quantity,
+        }

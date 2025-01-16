@@ -17,21 +17,22 @@ class Portfolio(db.Model):
     balance = db.Column(db.Integer, nullable= True, default= 0)
     total_value = db.Column(db.Integer, nullable= True)
 
-    # portfolio_stocks = db.relationship("PortfolioStocks", back_populates="portfolio", cascade='all, delete-orphan')
+    portfolio_stocks = db.relationship('PortfolioStocks', back_populates='portfolio')
     user = relationship("User", back_populates="portfolio")
     stocks = db.relationship('Stock', back_populates='portfolio', cascade='all, delete-orphan')
 
     def get_total_value(self):
-        total = 0
-        for stock in self.stocks:
-            total += stock.quantity * stock.price 
-        return total
+        total_value = 0
+        for portfolio_stock in self.portfolio_stocks:
+            stock = portfolio_stock.stock  
+            total_value += float(portfolio_stock.quantity) * float(stock.volume_weighted_avg_price) 
+        return total_value
 
     def update_total_value(self):
         total_value = 0
         for stock in self.stocks:
-            total_value += stock.quantity * stock.price  
-        self.total_value = total_value
+            total_value += float(stock.quantity * stock.volume_weighted_avg_price) 
+        self.total_value = total_value  
         db.session.commit()
 
     def to_dict(self):
@@ -43,11 +44,11 @@ class Portfolio(db.Model):
             'total_value': self.total_value,
             'stocks': [
                 {
-                    'id': stock.id if stock else None,
-                    'name': stock.name if stock else 'Unknown',
-                    'price': stock.price if stock else 0,
-                    'quantity': stock.quantity if stock else 0
+                    'stock_id': portfolio_stock.stock.id,
+                    'stock_name': portfolio_stock.stock.name,
+                    'quantity': portfolio_stock.quantity,
+                    'volume_weighted_avg_price': float(portfolio_stock.stock.volume_weighted_avg_price) if portfolio_stock.stock.volume_weighted_avg_price else None,
                 }
-                for stock in self.stocks
+                for portfolio_stock in self.portfolio_stocks
             ]
         }
