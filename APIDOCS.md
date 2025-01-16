@@ -372,7 +372,7 @@ Create a portfolio if you are signed in
 * Require Authentication: true
 * Request
 * Method: POST
-* Route path: api/portfolio/
+* Route path: api/portfolio/:user_id
 * Headers:
 * Content-Type: application/json
 * Body: 

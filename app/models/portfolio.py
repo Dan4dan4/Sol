@@ -3,6 +3,8 @@ from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
 from .stock import Stock
 import yfinance as yf
+from decimal import Decimal
+
 
 
 class Portfolio(db.Model):
@@ -29,11 +31,13 @@ class Portfolio(db.Model):
         return total_value
 
     def update_total_value(self):
-        total_value = 0
-        for stock in self.stocks:
-            total_value += float(stock.quantity * stock.volume_weighted_avg_price) 
+        total_value = float(self.balance) 
+        for portfolio_stock in self.portfolio_stocks:
+            stock = portfolio_stock.stock
+            stock_value = float(portfolio_stock.quantity) * float(stock.volume_weighted_avg_price) 
+            total_value += stock_value 
         self.total_value = total_value  
-        db.session.commit()
+        db.session.commit()  
 
     def to_dict(self):
         return {

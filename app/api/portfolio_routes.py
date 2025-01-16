@@ -88,24 +88,24 @@ def update_portfolio(user_id, portfolio_id):
     old_balance = portfolio.balance
     balance = request.json.get('balance', None)
     if balance is not None:
-        portfolio.balance = balance
+        if balance > current_user.account_balance:
+            return {"error": "Insufficient account balance to update portfolio"}, 400
+        current_user.account_balance -= ( balance - old_balance)
+    elif balance < old_balance:
+            current_user.account_balance += (old_balance - balance)
+    portfolio.balance = balance
 
-    
-    def update_total_value(portfolio):
-        """
-        updates the total value of the portfolio by summing
-        stock prices * quantities.
-        """
-        total_value = portfolio.balance
-        for stock in portfolio.stocks:
-            total_value += stock.quantity * stock.price
-        portfolio.total_value = total_value
-        db.session.commit()  
+    total_value = portfolio.balance 
+    for portfolio_stock in portfolio.portfolio_stocks:
+        stock = portfolio_stock.stock
+        stock_value = portfolio_stock.quantity * stock.volume_weighted_avg_price
+        total_value += stock_value  
 
-    update_total_value(portfolio)
+    portfolio.total_value = total_value  
+    db.session.commit()
+
     user = User.query.get(user_id)
-
-    user.account_balance += (old_balance - balance)
+    user.account_balance += (old_balance - balance)  
     db.session.commit()
 
     return jsonify({"Updated portfolio": portfolio.to_dict()}), 200
@@ -123,11 +123,13 @@ def delete_portfolio(user_id, portfolio_id):
     portfolio = Portfolio.query.filter_by(id=portfolio_id, user_id= user_id).first()
 
     if not portfolio:
-        return {"error": "No portfolio found"},404
+        return {"error": "No portfolio found"}, 404
     
     total_value = portfolio.balance
-    for stock in portfolio.stocks:
-        total_value += stock.quantity * stock.price
+    for portfolio_stock in portfolio.portfolio_stocks:  
+        stock = portfolio_stock.stock
+        stock_value = portfolio_stock.quantity * stock.volume_weighted_avg_price 
+        total_value += stock_value
 
     user = User.query.get(user_id)
     if not user:
