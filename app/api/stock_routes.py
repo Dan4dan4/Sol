@@ -153,7 +153,7 @@ def purchase_stock(stock_ticker, portfolio_id):
         db.session.add(portfolio_stock)
 
 
-    portfolio.update_total_value()
+    # portfolio.update_total_value()
     db.session.commit()
 
     return jsonify({
@@ -191,52 +191,43 @@ def sell_stock(stock_ticker, portfolio_id):
     if not results:
         return jsonify({"error": "Stock data not available from Polygon"}), 404
     
-    # Extract the stock details from the API response
     stock_data = results[0]
-    price = stock_data.get('vw', 0)  # VWAP (volume-weighted average price)
+    price = stock_data.get('vw', 0)  
     name = stock_ticker.upper()
     
-    # Check if the stock exists in the database
     existing_stock = Stock.query.filter_by(name=name).first()
     
     if not existing_stock:
-        # If the stock doesn't exist, create a new Stock entry
         existing_stock = Stock(name=name, price=price)
         db.session.add(existing_stock)
         db.session.commit()
 
-    # Get quantity from the request payload
     quantity = request.json.get('quantity')
     
     if not quantity or quantity <= 0:
         return jsonify({"error": "Please provide a valid quantity"}), 400
     
-    # Fetch the stock from the portfolio
+
     stock_in_portfolio = PortfolioStocks.query.filter_by(portfolio_id=portfolio.id, stock_id=existing_stock.id).first()
     
     if not stock_in_portfolio or stock_in_portfolio.quantity < quantity:
         return jsonify({"error": "Sell error, either stock isn't in portfolio or quantity exceeded"}), 400
     
-    # Calculate the sell cost (price * quantity)
+
     sell_cost = price * quantity
     
-    # Update portfolio balance with the sell cost
+
     portfolio.balance += sell_cost
     
-    # Decrease the stock quantity in the portfolio
+
     stock_in_portfolio.quantity -= quantity
     
-    # If the stock quantity becomes zero, delete it from the portfolio
     if stock_in_portfolio.quantity == 0:
         db.session.delete(stock_in_portfolio)
 
-    # Commit the changes
-    db.session.commit()
 
-    # Update total value of the portfolio after the sale
-    portfolio.update_total_value()
-    
-    # Commit the portfolio changes
+    db.session.commit()
+    # portfolio.update_total_value()
     db.session.commit()
 
 
@@ -244,7 +235,7 @@ def sell_stock(stock_ticker, portfolio_id):
         "message": "Stock sold successfully!",
         "name": name,
         "quantity": quantity,
-        "total_cost": sell_cost,
+        "sold for": sell_cost,
         "portfolio_balance": portfolio.balance,
         "portfolio_total_value": portfolio.total_value
     }), 200
