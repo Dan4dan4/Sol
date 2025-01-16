@@ -1,4 +1,4 @@
-.stonks {
+/* .stonks {
     padding: 20px;
   }
   
@@ -24,7 +24,6 @@
     background-color: #fff;
     border: 1px solid #000000;
     padding: 15px;
-    /* margin-bottom: 10px; */
     border-radius: 8px;
     transition: background-color 0.3s ease;
     display: flex;
@@ -41,4 +40,41 @@
   .stock-item:hover {
     cursor: pointer;
     background-color: #b7d5d4;
-  }
+  } */
+
+  /* Stock.css */
+  
+.stonks {
+  margin: 20px;
+}
+
+.stock-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.stock-label {
+  text-align: center;
+}
+
+.stock-item {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.stock-item:hover {
+  background-color: #f5f5f5;
+}
+
+.stock-name,
+.stock-open-price,
+.stock-high-price,
+.stock-low-price,
+.stock-volume {
+  text-align: center;
+}

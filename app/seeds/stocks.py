@@ -1,60 +1,67 @@
+import requests
 from app.models import db, Stock, environment, SCHEMA
 from sqlalchemy.sql import text
-import yfinance as yf
+from datetime import datetime
+
+POLYGON_API_KEY = 'LpNpfpZoN2hC7gx6ofNrv1nCiSEYkfDz'
+
+stock_symbols = ['AAPL', 'MSFT', 'TSLA', 'AMZN'] 
 
 
-stock_symbols = [
-    'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA', 'META', 'BRK-B', 'UNH', 'V',
-    'JNJ', 'WMT', 'HD', 'PYPL', 'MA', 'DIS', 'VZ', 'CSCO', 'PFE', 'KO',
-    'PEP', 'INTC', 'NFLX', 'XOM', 'NVDA', 'ADBE', 'MRK', 'INTU', 'T',
-    'AVGO', 'CVX', 'MCD', 'BA', 'IBM', 'WBA', 'GS', 'GE', 'CAT', 'CVS',
-    'BMY', 'LLY', 'RTX', 'AMGN', 'UPS', 'MMM', 'ABT', 'DE', 'COST', 'ORCL',
-    'TXN', 'LOW', 'QCOM', 'ZM', 'SPGI', 'REGN', 'MDT', 'AIG', 'LMT', 'AMT'
-    ]
+
+def get_stock_data_from_polygon(symbol):
+    response = requests.get(
+        f"https://api.polygon.io/v2/aggs/ticker/{symbol}/prev?adjusted=true&apiKey={POLYGON_API_KEY}"
+    )
+    if response.status_code == 200:
+        data = response.json()
+        results = data.get('results', [])[0] 
+
+        return {
+            "open_price": results.get('o'), 
+            "high_price": results.get('h'), 
+            "low_price": results.get('l'),   
+            "volume": results.get('v')      
+        }
+    else:
+        print(f"Failed to fetch data for {symbol}")
+        return None
+
 
 def seed_stocks():
-    
+    stock_symbols = ['AAPL', 'MSFT', 'TSLA', 'AMZN']  
+
     for symbol in stock_symbols:
-        # stock_data = yf.Ticker(symbol)
-        try:
-            stock_data = yf.Ticker(symbol)
-            stock_info = stock_data.info
+        stock_info = get_stock_data_from_polygon(symbol)
+        if stock_info:
+            name = symbol 
+            open_price = stock_info.get('open_price', 0.0)
+            high_price = stock_info.get('high_price', 0.0)
+            low_price = stock_info.get('low_price', 0.0)
+            volume = stock_info.get('volume', 0)
 
-            name = stock_info.get('symbol')
-            price = stock_info.get('currentPrice')
-            industry = stock_info.get('industry')
-            description = stock_info.get('longBusinessSummary')
-
-
-            if price is None:
-                continue  
-
+           
             new_stock = Stock(
                 name=name,
-                price=price,
-                industry=industry,
-                description=description
+                open_price=open_price,
+                high_price=high_price,
+                low_price=low_price,
+                volume=volume
             )
-
-
             db.session.add(new_stock)
-
-        except Exception as e:
-            print(f"Error fetching data for {symbol}: {e}")
-        
+            print(f"Added {name} to the database with open_price {open_price}, "
+                  f"high_price {high_price}, low_price {low_price}, and volume {volume}.")
+    
     db.session.commit()
+    print("Stocks have been successfully seeded.")
 
 
-# Uses a raw SQL query to TRUNCATE or DELETE the users table. SQLAlchemy doesn't
-# have a built in function to do this. With postgres in production TRUNCATE
-# removes all the data from the table, and RESET IDENTITY resets the auto
-# incrementing primary key, CASCADE deletes any dependent entities.  With
-# sqlite3 in development you need to instead use DELETE to remove all data and
-# it will reset the primary keys for you as well.
+
 def undo_stocks():
     if environment == "production":
         db.session.execute(f"TRUNCATE table {SCHEMA}.stocks RESTART IDENTITY CASCADE;")
     else:
         db.session.execute(text("DELETE FROM stocks"))
-        
+    
     db.session.commit()
+    print("Stocks table has been cleared.")

@@ -35,15 +35,19 @@ function Stock() {
       <div className='stonks'>
         <div className="stock-header">
           <span className="stock-label">Ticker</span>
-          <span className="stock-label">Industry</span>
-          <span className="stock-label">Price</span>
+          <span className="stock-label">Open Price</span>
+          <span className="stock-label">High Price</span>
+          <span className="stock-label">Low Price</span>
+          <span className="stock-label">Volume</span>
         </div>
         <ul>
           {stocks.map((stock, index) => (
             <li key={index} className="stock-item" onClick={() => handleStockClick(stock.name)}>
               <span className="stock-name">{stock.name}</span>
-              <span className="stock-industry">{stock.industry}</span>
-              <span className="stock-price">{stock.price}</span>
+              <span className="stock-open-price">{stock.open_price}</span>
+              <span className="stock-high-price">{stock.high_price}</span>
+              <span className="stock-low-price">{stock.low_price}</span>
+              <span className="stock-volume">{stock.volume}</span>
             </li>
           ))}
         </ul>

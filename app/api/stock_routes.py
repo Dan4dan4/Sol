@@ -4,11 +4,14 @@ from app.models import db,User, Portfolio, Stock
 from datetime import datetime
 # from app.models.portfolio import update_total_value
 # import logging
-import yfinance as yf
+# import yfinance as yf
 # from ...app import refresh_stock_prices
+import requests
+from flask import jsonify
 
 stock_routes = Blueprint('stock', __name__)
 
+POLYGON_API_KEY = 'LpNpfpZoN2hC7gx6ofNrv1nCiSEYkfDz'
 
 @stock_routes.route('/', methods=['GET'])
 def get_all_stocks():
@@ -21,8 +24,10 @@ def get_all_stocks():
     for stock in stocks:
         stock_data = {
             'name': stock.name,
-            'price': stock.price,
-            'industry': stock.industry,
+            'open_price': stock.open_price,
+            'high_price': stock.high_price,
+            'low_price': stock.low_price,
+            'volume': stock.volume,
         }
         data.append(stock_data)
 
@@ -35,25 +40,32 @@ def get_stock_info(stock_ticker):
     Get stock info based on stock ticker NOT NAME
     """
     
-    stock = yf.Ticker(stock_ticker)
+    response = requests.get(
+        f"https://api.polygon.io/v2/aggs/ticker/{stock_ticker}/prev?adjusted=true&apiKey={POLYGON_API_KEY}"
+    )
 
-    data = stock.info
+    if response.status_code == 200:
+        data = response.json()
+        results = data.get('results', [])[0]  
 
-    name = data.get('longName')
-    price = data.get('currentPrice')
-    industry = data.get('industry')
-    description = data.get('longBusinessSummary')
+        open_price = results.get('o')  
+        high_price = results.get('h')  
+        low_price = results.get('l')  
+        volume = results.get('v')      
 
-    if price and industry and description:
-        data = {
-            'name': name,
-            'price': price,
-            'industry': industry,
-            'description': description,
-        }
-        return jsonify(data), 200
+        if open_price and high_price and low_price and volume:
+            stock_data = {
+                'name': stock_ticker.upper(),
+                'open_price': open_price,
+                'high_price': high_price,
+                'low_price': low_price,
+                'volume': volume
+            }
+            return jsonify(stock_data), 200
+        else:
+            return jsonify({"error": "Data for this stock could not be found"}), 404
     else:
-        return jsonify({"error": "Please enter valid stock ticker"}), 404
+        return jsonify({"error": "Failed to fetch data from Polygon API"}), 500
 
 @stock_routes.route('/buy/<string:stock_ticker>/<int:portfolio_id>', methods=['POST'])
 @login_required

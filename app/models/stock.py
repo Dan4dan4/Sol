@@ -14,9 +14,15 @@ class Stock(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(40), nullable=False, unique=True)
-    price = db.Column(Numeric(10, 2), nullable=False)
-    industry = db.Column(db.String(255), nullable=False)
-    description = db.Column(db.String(255), nullable=True)
+    # price = db.Column(Numeric(10, 2), nullable=False)
+    # industry = db.Column(db.String(255), nullable=False)
+    # description = db.Column(db.String(255), nullable=True)
+    open_price = db.Column(Numeric(10, 2), nullable=True)  
+    high_price = db.Column(Numeric(10, 2), nullable=True) 
+    low_price = db.Column(Numeric(10, 2), nullable=True)   
+    volume = db.Column(db.Integer, nullable=True)           
+
+
 
     watchlist_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('watchlists.id')), nullable=True)
     watchlist = db.relationship('Watchlist', back_populates = 'stocks')
@@ -32,8 +38,12 @@ class Stock(db.Model):
         return {
             'id': self.id,
             'name': self.name,
-            'price': self.price,
-            'industry': self.industry,
-            'description': self.description,
+            'open_price': self.open_price, 
+            'high_price': self.high_price,  
+            'low_price': self.low_price,   
+            'volume': self.volume 
+            # 'price': self.price,
+            # 'industry': self.industry,
+            # 'description': self.description,
             # "listed_at": self.listed_at
         }
