@@ -42,9 +42,11 @@ function StockDetails() {
   return (
     <div className="stockdetails">
       <p className="titleme">{stock.name} </p>
-      <p className="titleme">Price: ${stock.price}</p>
-      <p>Industry: {stock.industry}</p>
-      <p>{stock.description}</p>
+      <p className="titleme">Price: ${stock.volume_weighted_avg_price}</p>
+      <p>Open Price: ${stock.open_price}</p>
+      <p>High Price: ${stock.high_price}</p>
+      <p>Low Price: ${stock.low_price}</p>
+      <p>Volume: {stock.volume}</p>
     </div>
   );
 }

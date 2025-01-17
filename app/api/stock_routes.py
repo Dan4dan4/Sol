@@ -53,7 +53,7 @@ def get_stock_info(stock_ticker):
             'volume': stock.volume,
             'close_price': stock.close_price, 
             'volume_weighted_avg_price': stock.volume_weighted_avg_price,  
-            'last_updated': stock.last_updated 
+            # 'last_updated': stock.last_updated 
         }
         return jsonify(stock_data), 200
 
