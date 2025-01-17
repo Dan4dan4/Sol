@@ -1,4 +1,4 @@
-const SET_PORTFOLIOS = 'portfolio/setPortfolios';
+const SET_PORTFOLIOS = 'portfolio/getPortfolios';
 const SET_SELECTED_PORTFOLIO = 'portfolio/setSelectedPortfolio';
 const REMOVE_PORTFOLIO = 'portfolio/removePortfolio';
 const CLEAR_SELECTED_PORTFOLIO = 'portfolio/clearPortfolio'

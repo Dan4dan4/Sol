@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
 import './SelectedPortfolio.css'
-import { thunkGetPortfolios, thunkDeletePortfolio , thunkSetPortfolio, clearSelectedPortfolio} from "../../redux/portfolio";
+import { thunkGetPortfolios, thunkDeletePortfolio , thunkSetPortfolio} from "../../redux/portfolio";
 import { useDispatch, useSelector } from "react-redux";
 
 function SelectedPortfolio(){
@@ -18,13 +18,15 @@ function SelectedPortfolio(){
     const error = useSelector(state => state.portfolio.error);
 
     useEffect(() => {
-        dispatch(thunkGetPortfolios(user_id));
-        dispatch(thunkSetPortfolio(parseInt(portfolio_id)));
-    
+        if (!portfolio) {
+            dispatch(thunkGetPortfolios(user_id));
+            dispatch(thunkSetPortfolio(parseInt(portfolio_id)));
+        }
+        
         return () => {
-          dispatch(clearSelectedPortfolio()); 
+        //   dispatch(clearSelectedPortfolio()); 
         };
-    }, [dispatch, user_id, portfolio_id]);
+    }, [dispatch, user_id, portfolio_id, portfolio]);
     
     
     const deletePortfolio = () => {

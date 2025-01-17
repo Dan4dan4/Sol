@@ -1,4 +1,4 @@
-.stockdetails{
+.details{
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -6,13 +6,53 @@
     max-width: 700px;
     height: 500px;
     margin: 30px ;
+    width: 500px;
 }
 
-.stockdetails p {
+.details p {
     color: black;
     margin-top: 20px;
 }
 
 .titleme {
     font-size: 50px;
+}
+
+.twobox{
+    display: flex;
+    justify-content: space-between;
+}
+
+.buy{
+    background-color: #05d338;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    max-width: 700px;
+    /* height: 300px; */
+    margin: 30px ;
+    width: 500px;
+
+}
+
+.buy p {
+    color: black;
+    margin-top: 20px;
+}
+
+.sell{
+    background-color: #f00b0b;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    max-width: 700px;
+    height: 300px;
+    margin: 30px ;
+    width: 500px;
+    gap: 100px;
+}
+
+.sell p {
+    color: black;
+    margin-top: 20px;
 }
