@@ -8,9 +8,14 @@ function StockDetails() {
   const [stock, setStock] = useState(null); 
   const [error, setError] = useState(null);
 
-  const [quantity, setQuantity] = useState(0);
+  // const [quantity, setQuantity] = useState(0);
   const [purchaseError, setPurchaseError] = useState(null);
+  const [sellError, setSellError] = useState(null);
 
+  const [buyQuantity, setBuyQuantity] = useState(0);
+  const [buyTotalValue, setBuyTotalValue] = useState(0);
+  const [sellQuantity, setSellQuantity] = useState(0);
+  const [sellTotalValue, setSellTotalValue] = useState(0);
 
   const selectedPortfolio = useSelector(state => state.portfolio.selectedPortfolio);
 
@@ -51,13 +56,13 @@ function StockDetails() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          quantity: quantity,
+          quantity: buyQuantity,
         }),
       });
 
       const data = await response.json();
       if (response.ok) {
-        console.log(`Successfully purchased ${quantity} of ${stock.name}!`);
+        console.log(`Successfully purchased ${buyQuantity} of ${stock.name}!`);
       } else {
         setPurchaseError(data.error || "Error purchasing stock.");
       }
@@ -66,8 +71,58 @@ function StockDetails() {
     }
   };
 
-  const handleQuantityChange = (e) => {
-    setQuantity(Number(e.target.value));
+  const handleSellStock = async () => {
+    if (!selectedPortfolio) {
+      setSellError("Please select a portfolio to sell stocks.");
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/stock/sell/${stock.name}/${selectedPortfolio.id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          quantity: sellQuantity,
+        }),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        console.log(`Successfully sold ${sellQuantity} of ${stock.name}!`);
+      } else {
+        setSellError(data.error || "Error selling stock.");
+      }
+    } catch (error) {
+      setSellError("An error occurred while selling the stock.");
+    }
+  };
+
+  const getOwnedStockQuantity = () => {
+    if (selectedPortfolio) {
+      const stockInPortfolio = selectedPortfolio.stocks.find(
+        (item) => item.stock_name === stock.name
+      );
+      return stockInPortfolio ? stockInPortfolio.quantity : 0; 
+    }
+    return 0;
+  };
+
+  const handleBuyQuantityChange = (e) => {
+    const qty = Number(e.target.value);
+    setBuyQuantity(qty);
+    if (stock) {
+      setBuyTotalValue(qty * stock.volume_weighted_avg_price); 
+    }
+  };
+
+  const handleSellQuantityChange = (e) => {
+    const qty = Number(e.target.value);
+    setSellQuantity(qty);
+    if (stock) {
+      setSellTotalValue(qty * stock.volume_weighted_avg_price); 
+    }
   };
 
   if (error) {
@@ -88,28 +143,61 @@ function StockDetails() {
       <p>Low Price: ${stock.low_price}</p>
       <p>Volume: {stock.volume}</p>
       </div>
+      {/* <div className="portfolio-balance">
+        <p className="titleme">Portfolio Balance: ${selectedPortfolio ? selectedPortfolio.balance.toFixed(2) : "N/A"}</p>
+      </div> */}
 
-      <div className="buy">
-      <p className="titleme">Buy {stock.name} </p>
-      <p className="titleme">Price: ${stock.volume_weighted_avg_price}</p>
-      <input
+<div className="buy">
+        <p className="titleme">Buy order for {stock.name}</p>
+        <p className="titleme">Price: ${stock.volume_weighted_avg_price}</p>
+        <input
           type="number"
-          value={quantity}
-          onChange={handleQuantityChange}
+          value={buyQuantity}
+          onChange={handleBuyQuantityChange}
           min="1"
           className="quantity-input"
         />
+        <p className="total-cost">
+          Total Cost: ${buyTotalValue.toFixed(2)} 
+        </p>
         <button onClick={handleBuyStock} className="buy-button">Buy</button>
         {purchaseError && <p className="error-message">{purchaseError}</p>}
-      
+        <div className="portfolio-balance">
+        <p className="portbal">Portfolio Balance: ${selectedPortfolio ? selectedPortfolio.balance.toFixed(2) : "N/A"}</p>
+        {/* {selectedPortfolio && (
+          <p>
+            Quantity owned: {getOwnedStockQuantity()} 
+          </p>
+        )} */}
+      </div>
       </div>
 
       <div className="sell">
-      <p className="titleme">Sell {stock.name} </p>
-      <p className="titleme">Price: ${stock.volume_weighted_avg_price}</p>
+        <p className="titleme">Sell order for {stock.name}</p>
+        <p className="titleme">Price: ${stock.volume_weighted_avg_price}</p>
+        <input
+          type="number"
+          value={sellQuantity}
+          onChange={handleSellQuantityChange}
+          min="1"
+          className="quantity-input"
+        />
+        <p className="total-cost">
+          Total Value: ${sellTotalValue.toFixed(2)} 
+        </p>
+        <button onClick={handleSellStock} className="buy-button">Sell</button>
+        {sellError && <p className="error-message">{sellError}</p>}
+        <div className="portfolio-balance">
+        {/* <p className="portbal">Portfolio Balance: ${selectedPortfolio ? selectedPortfolio.balance.toFixed(2) : "N/A"}</p> */}
+        {selectedPortfolio && (
+          <p className="portbal">
+            Quantity owned: {getOwnedStockQuantity()} 
+          </p>
+        )}
+      </div>
       </div>
     </div>
-    )
+  );
 }
 
 export default StockDetails;

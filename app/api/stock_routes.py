@@ -170,7 +170,7 @@ def purchase_stock(stock_ticker, portfolio_id):
 def sell_stock(stock_ticker, portfolio_id):
     
     """
-    Sell stock and add to portfolio
+    Sell stock and remove from portfolio
     """
     if not current_user.is_authenticated:
         return jsonify({"error": "Authentication required"}), 401
