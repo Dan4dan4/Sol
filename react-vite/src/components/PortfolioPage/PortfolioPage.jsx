@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux'
-import { thunkAuthenticate } from '../../redux/session';
+// import { thunkAuthenticate } from '../../redux/session';
 import './PortfolioPage.css'
+import { thunkGetPortfolios,thunkSetPortfolio } from '../../redux/portfolio';
 
 function PortfolioPage() {
     const { user_id } = useParams(); 
-    const [portfolios, setPortfolios] = useState([]);
+    // const [portfolios, setPortfolios] = useState([]);
     // const [selectedPortfolio, setSelectedPortfolio] = useState(null);
     const navigate = useNavigate()
     const [newBalance, setNewBalance] = useState('');
@@ -22,37 +23,52 @@ function PortfolioPage() {
     const user = useSelector(state => state.session.user);
     const userBalance = user ? user.account_balance : null;
 
+    const portfolios = useSelector(state => state.portfolio?.portfolios || []);
+    const selectedPortfolio = useSelector(state => state.portfolio?.selectedPortfolio);
+    // const portfolioError = useSelector(state => state.portfolio.error);
+
     useEffect(() => {
-        dispatch(thunkAuthenticate());
-    }, [dispatch])
-
-
+        dispatch(thunkGetPortfolios(user_id));
+    }, [dispatch, user_id]);
+    
     useEffect(() => {
-        const fetchPortfolio = async () => {
-            try {
-                const response = await fetch(`/api/portfolio/${user_id}`, {
-                    method: 'GET',
-                    headers: { 'Content-Type': 'application/json' },
-                });
+        if (selectedPortfolio) {
+          navigate(`/portfolio/${user_id}/${selectedPortfolio.id}`);
+        }
+      }, [selectedPortfolio, navigate, user_id]);
+    
+    const handlePortfolioClick = (portfolio_id) => {
+        dispatch(thunkSetPortfolio(portfolio_id));
+      };
 
-                if (response.ok) {
-                    const data = await response.json();
-                    setPortfolios(data.portfolios || []);
-                } else {
-                    console.error('Error fetching portfolio:', response.status);
-                }
-            } catch (error) {
-                console.error('Error fetching portfolio data:', error);
-            }
-        };
-
-        fetchPortfolio();
-    }, [user_id]);
-
-    const portclick =(portfolio_id) => {
-        navigate(`/portfolio/${user_id}/${portfolio_id}`)
+    // const portclick =(portfolio_id) => {
+    //     navigate(`/portfolio/${user_id}/${portfolio_id}`)
   
-    }
+    // }
+
+
+    // useEffect(() => {
+    //     const fetchPortfolio = async () => {
+    //         try {
+    //             const response = await fetch(`/api/portfolio/${user_id}`, {
+    //                 method: 'GET',
+    //                 headers: { 'Content-Type': 'application/json' },
+    //             });
+
+    //             if (response.ok) {
+    //                 const data = await response.json();
+    //                 setPortfolios(data.portfolios || []);
+    //             } else {
+    //                 console.error('Error fetching portfolio:', response.status);
+    //             }
+    //         } catch (error) {
+    //             console.error('Error fetching portfolio data:', error);
+    //         }
+    //     };
+
+    //     fetchPortfolio();
+    // }, [user_id]);
+
 
     const newPort = async () => {
         if (newBalance === "" || isNaN(newBalance) || parseFloat(newBalance) <= 0) {
@@ -73,8 +89,9 @@ function PortfolioPage() {
             })
 
                 if(response.ok) {
-                    const data = await response.json()
-                    setPortfolios(allports => [...allports, data])
+                    // const data = await response.json()
+                    // setPortfolios(allports => [...allports, data])
+                    dispatch(thunkGetPortfolios(user_id));
                     setNewBalance('')
                     setCreateError('')
                 } else {
@@ -103,7 +120,6 @@ function PortfolioPage() {
             return;
         }
 
-
         try {
             const response = await fetch(`/api/portfolio/${user_id}/${editPortfolioId}`, {
                 method: 'PUT',
@@ -112,12 +128,13 @@ function PortfolioPage() {
             });
 
             if (response.ok) {
-                const updatedPortfolio = await response.json();
-                setPortfolios((prevPortfolios) =>
-                    prevPortfolios.map((portfolio) =>
-                        portfolio.id === updatedPortfolio.id ? updatedPortfolio : portfolio
-                    )
-                );
+                // const updatedPortfolio = await response.json();
+                // setPortfolios((prevPortfolios) =>
+                //     prevPortfolios.map((portfolio) =>
+                //         portfolio.id === updatedPortfolio.id ? updatedPortfolio : portfolio
+                //     )
+                // );
+                dispatch(thunkGetPortfolios(user_id));
                 setEditBalance('');
                 setEditPortfolioId(null);
                 setEditError('')
@@ -129,7 +146,8 @@ function PortfolioPage() {
         }
     };
 
-            
+    // console.log('Portfolios:', portfolios);
+
     return (
         <div className='portfolio'>
             <h1> Account Balance: ${userBalance}</h1>
@@ -144,7 +162,7 @@ function PortfolioPage() {
                     {portfolios.map((portfolio) => (
                         <li className= "nvm" key={portfolio.id}  onClick={(e) => {
                             if (e.target.tagName !== 'BUTTON') {
-                                portclick(portfolio.id);
+                                handlePortfolioClick(portfolio.id);
                             }
                         }}
                     >

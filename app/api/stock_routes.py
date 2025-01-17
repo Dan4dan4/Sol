@@ -176,18 +176,15 @@ def sell_stock(stock_ticker, portfolio_id):
         return jsonify({"error": "Authentication required"}), 401
     
     portfolio = Portfolio.query.filter_by(id= portfolio_id, user_id=current_user.id).first()
-    
     if not portfolio:
         return jsonify({"error": "Portfolio not found for user"}), 404
-
-    response = requests.get(f"https://api.polygon.io/v2/aggs/ticker/{stock_ticker}/prev?adjusted=true&apiKey={POLYGON_API_KEY}")
     
+    response = requests.get(f"https://api.polygon.io/v2/aggs/ticker/{stock_ticker}/prev?adjusted=true&apiKey={POLYGON_API_KEY}")
     if response.status_code != 200:
         return jsonify({"error": "Failed to fetch data from Polygon API"}), 500
     
     data = response.json()
     results = data.get('results', [])
-    
     if not results:
         return jsonify({"error": "Stock data not available from Polygon"}), 404
     
@@ -196,40 +193,29 @@ def sell_stock(stock_ticker, portfolio_id):
     name = stock_ticker.upper()
     
     existing_stock = Stock.query.filter_by(name=name).first()
-    
     if not existing_stock:
         existing_stock = Stock(name=name, price=price)
         db.session.add(existing_stock)
         db.session.commit()
 
     quantity = request.json.get('quantity')
-    
     if not quantity or quantity <= 0:
         return jsonify({"error": "Please provide a valid quantity"}), 400
     
-
     stock_in_portfolio = PortfolioStocks.query.filter_by(portfolio_id=portfolio.id, stock_id=existing_stock.id).first()
-    
     if not stock_in_portfolio or stock_in_portfolio.quantity < quantity:
         return jsonify({"error": "Sell error, either stock isn't in portfolio or quantity exceeded"}), 400
     
-
     sell_cost = price * quantity
-    
-
     portfolio.balance += sell_cost
-    
-
     stock_in_portfolio.quantity -= quantity
     
     if stock_in_portfolio.quantity == 0:
         db.session.delete(stock_in_portfolio)
 
-
     db.session.commit()
     # portfolio.update_total_value()
-    db.session.commit()
-
+    # db.session.commit()
 
     return jsonify({
         "message": "Stock sold successfully!",
