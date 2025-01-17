@@ -4,6 +4,7 @@ from app.models import db,User, Portfolio, Stock
 from datetime import datetime
 # from app.models.portfolio import update_total_value
 import logging
+from decimal import Decimal
 
 portfolio_routes = Blueprint('portfolio', __name__)
 
@@ -39,6 +40,15 @@ def get_specific_portfolio(user_id, portfolio_id):
     if not portfolio:
         return jsonify({"error": "Portfolio not found"})
 
+    total_value = portfolio.balance
+    for portfolio_stock in portfolio.portfolio_stocks:
+        stock = portfolio_stock.stock
+        stock_value = portfolio_stock.quantity * stock.volume_weighted_avg_price
+        total_value += stock_value
+
+    portfolio_dict = portfolio.to_dict()
+    portfolio_dict['total_value'] = total_value
+
     return jsonify({"Portfolio": portfolio.to_dict()}), 200
 
 
@@ -68,6 +78,10 @@ def create_portfolio(user_id):
 
     db.session.add(new_portfolio)
     db.session.commit()
+
+    total_value = new_portfolio.balance 
+    portfolio_dict = new_portfolio.to_dict()
+    portfolio_dict['total_value'] = total_value
 
     return jsonify({"New portfolio created": new_portfolio.to_dict()}),201
 
@@ -130,16 +144,18 @@ def delete_portfolio(user_id, portfolio_id):
     if not portfolio:
         return {"error": "No portfolio found"}, 404
     
-    total_value = portfolio.balance
+    total_value = Decimal(str(portfolio.balance))
     for portfolio_stock in portfolio.portfolio_stocks:  
         stock = portfolio_stock.stock
         stock_value = portfolio_stock.quantity * stock.volume_weighted_avg_price 
         total_value += stock_value
+        db.session.delete(portfolio_stock)
 
     user = User.query.get(user_id)
     if not user:
         return {"error": "User not found"}, 404
 
+    user.account_balance = Decimal(str(user.account_balance))
     user.account_balance += total_value
     db.session.commit()
     db.session.delete(portfolio)

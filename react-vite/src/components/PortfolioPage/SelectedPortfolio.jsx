@@ -87,19 +87,20 @@ function SelectedPortfolio(){
             { portfolio && (
             <div className="portfolio-container">
                 <div className="port-card">
-                <h2>Portfolio ID: {portfolio.id}</h2>
-                <p>Balance: ${portfolio.balance}</p>
-                <p>Created At: {new Date(portfolio.created_at).toLocaleString()}</p>
+                <h2><strong>Portfolio ID</strong>: {portfolio.id}</h2>
+                <p><strong>Created At</strong>: {new Date(portfolio.created_at).toLocaleString()}</p>
+                <p><strong>Balance</strong>: ${portfolio.balance}</p>
+                <p><strong>Portfolio Total Balance</strong>: ${portfolio.total_value}</p>
                 <h3>Stocks:</h3>
                     {portfolio.stocks && portfolio.stocks.length > 0 ? (
                         <ul>
                             {portfolio.stocks.map((stock, index) => (
                                 <li key={index} className="stock-item">
-                                    <p><strong>Name:</strong> {stock.name}</p>
-                                    <p><strong>Price:</strong> ${stock.price}</p>
-                                    <p><strong>Purchase Price:</strong> ${stock.purchase_price}</p>
+                                    <p><strong>Name:</strong> {stock.stock_name}</p>
+                                    <p><strong>Price:</strong> ${stock.volume_weighted_avg_price}</p>
+                                    <p><strong>Purchase Price:</strong> ${stock.volume_weighted_avg_price}</p>
                                     <p><strong>Quantity:</strong> {stock.quantity}</p>
-                                    <p><strong>Date Purchased:</strong> {new Date(stock.date_purchased).toLocaleString()}</p>
+                                    {/* <p><strong>Date Purchased:</strong> {new Date(stock.date_purchased).toLocaleString()}</p> */}
                                 </li>
                             ))}
                         </ul>
