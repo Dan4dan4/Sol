@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import './Stock.css'
+import { thunkGetWatchlist, thunkSetWatchlist} from  '../../redux/watchlist'
+import { useDispatch , useSelector} from 'react-redux';
 
 function Stock() {
   const [stocks, setStocks] = useState([]);
@@ -9,6 +11,10 @@ function Stock() {
   const [searchQuery, setSearchQuery] = useState('');
   const [minVolume, setMinVolume] = useState('');
   const [maxVolume, setMaxVolume] = useState('');
+  const { watchlist } = useSelector((state) => state.watchlist);
+  const [showMenu, setShowMenu] = useState(false);
+  const dispatch = useDispatch()
+  const { user } = useSelector((state) => state.session);
 
   useEffect(() => {
     const fetchStocks = async () => {
@@ -26,8 +32,21 @@ function Stock() {
       }
     };
 
+    dispatch(thunkGetWatchlist(user.id));
     fetchStocks();
-  }, []); 
+  }, [dispatch, user]); 
+
+  const toggleMenu = (e) => {
+    e.stopPropagation(); 
+    setShowMenu(!showMenu); 
+  };
+  
+
+  const handleWatchlistSelect = (watchlist) => {
+    dispatch(thunkSetWatchlist(watchlist.id)); 
+    setShowMenu(false); 
+  };
+  
 
   const handleStockClick = (stock_ticker) => {
     navigate(`/stocks/${stock_ticker}`);
@@ -71,6 +90,17 @@ function Stock() {
   return (
     <>
     <h1>All Stocks listed on Sol</h1>
+    <button className='watchlist' onClick={toggleMenu}>Watchlists</button>
+    {showMenu && (
+      <div className="dropdownwatch">
+        <ul>
+          {watchlist.map((list) => (
+            <li key={list.id} onClick={() => handleWatchlistSelect(list)}>{list.name}</li>
+          ))}
+        </ul>
+      </div>
+    )}
+
     <div className="search-bar-container">
         <input
           type="text"

@@ -8,6 +8,7 @@ import SelectedPortfolio from '../components/PortfolioPage/SelectedPortfolio';
 import Stock from '../components/Stock/Stock';
 import StockDetails from '../components/Stock/StockDetails';
 
+
 export const router = createBrowserRouter([
   {
     element: <Layout />,

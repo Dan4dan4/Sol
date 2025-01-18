@@ -78,7 +78,6 @@ export const thunkAddStockToWatchlist = (userId, watchlistId, stockId) => async 
   
       if (response.ok) {
         const data = await response.json();
-        // console.log("Data:", data);
         dispatch(setSelectedWatchlist(data.watchlist)); 
       } else {
         console.error('Failed to remove stock from watchlist');
