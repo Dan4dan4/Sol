@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router';
 import './Stock.css'
 import { thunkGetWatchlist, thunkSetWatchlist} from  '../../redux/watchlist'
 import { useDispatch , useSelector} from 'react-redux';
+import { FaStar, FaRegStar } from 'react-icons/fa';
 
 function Stock() {
   const [stocks, setStocks] = useState([]);
@@ -15,6 +16,7 @@ function Stock() {
   const [showMenu, setShowMenu] = useState(false);
   const dispatch = useDispatch()
   const { user } = useSelector((state) => state.session);
+  const [starredStocks, setStarredStocks] = useState([]);
 
   useEffect(() => {
     const fetchStocks = async () => {
@@ -86,6 +88,13 @@ function Stock() {
     searchStocks(query);  
   };
 
+   const toggleStockStar = (stockId) => {
+    if (starredStocks.includes(stockId)) {
+      setStarredStocks(starredStocks.filter((id) => id !== stockId));
+    } else {
+      setStarredStocks([...starredStocks, stockId]);
+    }
+  };
 
   return (
     <>
@@ -147,6 +156,12 @@ function Stock() {
               <span className="stock-volume">{stock.volume}</span>
               <span className="stock-close-price">{stock.close_price}</span> 
               <span className="stock-vwap">{stock.volume_weighted_avg_price}</span> 
+              <span
+                className="stock-star"
+                onClick={() => toggleStockStar(stock.id)} 
+              >
+                {starredStocks.includes(stock.id) ? <FaRegStar /> : <FaStar />}
+              </span>
             </li>
           ))}
         </ul>
