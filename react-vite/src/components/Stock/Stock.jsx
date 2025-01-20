@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import './Stock.css'
-import { thunkGetWatchlist, thunkSetWatchlist} from  '../../redux/watchlist'
+import { thunkGetWatchlist, thunkSetWatchlist, thunkAddStockToWatchlist,thunkRemoveStockFromWatchlist} from  '../../redux/watchlist'
 import { useDispatch , useSelector} from 'react-redux';
 import { FaStar, FaRegStar } from 'react-icons/fa';
 
@@ -88,11 +88,19 @@ function Stock() {
     searchStocks(query);  
   };
 
-   const toggleStockStar = (stockId) => {
+  const toggleStockStar = async (stockId) => {
+    const selectedWatchlist = watchlist.find((list) => list.id === user.id);
+
+    if (!selectedWatchlist) {
+      console.error("No selected watchlist found");
+      return;
+    }
     if (starredStocks.includes(stockId)) {
-      setStarredStocks(starredStocks.filter((id) => id !== stockId));
+      await dispatch(thunkRemoveStockFromWatchlist(user.id, selectedWatchlist.id, stockId));
+      setStarredStocks(starredStocks.filter((id) => id !== stockId)); 
     } else {
-      setStarredStocks([...starredStocks, stockId]);
+      await dispatch(thunkAddStockToWatchlist(user.id, selectedWatchlist.id, stockId));
+      setStarredStocks([...starredStocks, stockId]); 
     }
   };
 
