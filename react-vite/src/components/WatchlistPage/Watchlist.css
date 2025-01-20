@@ -1,0 +1,21 @@
+.watchlist-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: 20px;
+  }
+  
+  .delete-watchlist-button {
+    background-color: #e85d75;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 20px;
+    border-radius: 5px;
+  }
+  
+  .delete-watchlist-button:hover {
+    background-color: red;
+  }
+  

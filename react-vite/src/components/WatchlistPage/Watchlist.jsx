@@ -4,6 +4,7 @@ import {  thunkRemoveStockFromWatchlist } from '../../redux/watchlist';
 import { FaStar, FaRegStar } from 'react-icons/fa';
 import { useNavigate } from 'react-router';
 import { thunkDeleteWatchlist } from '../../redux/watchlist';
+import './Watchlist.css'
 
 function Watchlist() {
   const [stocks, setStocks] = useState([]);
