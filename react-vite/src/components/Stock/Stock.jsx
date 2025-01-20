@@ -127,14 +127,20 @@ const isStockStarred = (stock) => {
 };
 
   
-  
+const navigateToWatchlist = () => {
+  if (selectedWatchlist) {
+    navigate(`/watchlist/${selectedWatchlist.id}`);
+  }
+};
   
 
   return (
     <>
     <h1>All Stocks listed on Sol</h1>
     {selectedWatchlist && (
-        <h2>Viewing Watchlist: {selectedWatchlist.name}</h2>
+        <h2>Viewing Watchlist: <span className="watchlist-name" onClick={navigateToWatchlist}>
+        {selectedWatchlist.name}
+      </span></h2>
       )}
     <button className='watchlist' onClick={toggleMenu}>Watchlists</button>
     {showMenu && (
