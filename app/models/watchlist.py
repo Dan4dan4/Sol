@@ -28,7 +28,7 @@ class Watchlist(db.Model):
             'stocks': [
                 {
                     'id': stock.id,
-                    # 'name': stock.name,
+                    'name': stock.name,
                     # 'price': stock.price,
                     # 'industry': stock.industry
                 }

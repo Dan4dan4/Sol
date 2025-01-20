@@ -164,10 +164,7 @@ function Stock() {
               <span className="stock-volume">{stock.volume}</span>
               <span className="stock-close-price">{stock.close_price}</span> 
               <span className="stock-vwap">{stock.volume_weighted_avg_price}</span> 
-              <span
-                className="stock-star"
-                onClick={() => toggleStockStar(stock.id)} 
-              >
+              <span className="stock-star" onClick={(e) => { e.stopPropagation(); toggleStockStar(stock.id); }}>
                 {starredStocks.includes(stock.id) ? <FaRegStar /> : <FaStar />}
               </span>
             </li>
