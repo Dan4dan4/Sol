@@ -1,5 +1,6 @@
 const SET_WATCHLIST = 'watchlist/setWatchlist';
 const SET_SELECTED_WATCHLIST = 'watchlist/setSelectedWatchlist';
+const DELETE_WATCHLIST = 'watchlist/deleteWatchlist'
 
 
 const setWatchlist = (watchlist) => ({
@@ -11,6 +12,13 @@ const setSelectedWatchlist = (watchlist) => ({
     type:SET_SELECTED_WATCHLIST,
     payload: watchlist,
   });
+
+const deleteWatchlist = (watchlistId) => ({
+  type: DELETE_WATCHLIST,
+  payload: watchlistId
+})
+
+
 
 export const thunkGetWatchlist = (userId) => async (dispatch) => {
     try {
@@ -104,6 +112,25 @@ export const thunkRemoveStockFromWatchlist = (userId, watchlistId, stock) => asy
   }
 };
 
+export const thunkDeleteWatchlist = (userId, watchlistId) => async (dispatch) => {
+  try{
+    const response = await fetch(`/api/watchlist/${userId}/${watchlistId}`, {
+      method: 'DELETE',
+      headers:{
+                'Content-Type': 'application/json',
+            },
+        });
+    if (response.ok){
+      dispatch(deleteWatchlist(watchlistId));
+    } else{
+      const errorData = await response.json();
+      console.log('Errror', errorData.error || 'failed to delete')
+    }
+  } catch (error) {
+    console.error('Error deleting watchlsit', error)
+  }
+}
+
 
 const initialState = { 
     watchlist: [],
@@ -117,6 +144,8 @@ function watchlistReducer(state = initialState, action) {
         return { ...state, watchlist: action.payload };
     case SET_SELECTED_WATCHLIST:
         return { ...state, selectedWatchlist: action.payload };
+    case DELETE_WATCHLIST:
+        return{...state, watchlist:state.watchlist.filter(watchlist => watchlist.id !==action.payload)}
     default:
         return state;
   }

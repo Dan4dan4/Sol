@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {  thunkRemoveStockFromWatchlist } from '../../redux/watchlist';
 import { FaStar, FaRegStar } from 'react-icons/fa';
 import { useNavigate } from 'react-router';
+import { thunkDeleteWatchlist } from '../../redux/watchlist';
 
 function Watchlist() {
   const [stocks, setStocks] = useState([]);
@@ -67,10 +68,23 @@ function Watchlist() {
     navigate(`/stocks/${stock_ticker}`);
   };
 
+  const handleDeleteWatchlist = async () => {
+    if(selectedWatchlist && user){
+      await dispatch(thunkDeleteWatchlist(user.id, selectedWatchlist.id))
+      alert('watchlsit deleted');
+      navigate('/stocks')
+    }
+  }
+
   return (
     <div className="watchlist-container">
-      <h1>All Stocks in Your Watchlist</h1>
-      {selectedWatchlist && <h2>Viewing Watchlist: {selectedWatchlist.name}</h2>}
+      <div className="watchlist-header">
+        <h1>All Stocks in Your Watchlist</h1>
+        {selectedWatchlist && <h2>Viewing Watchlist: {selectedWatchlist.name}</h2>}
+        <button className="delete-watchlist-button" onClick={handleDeleteWatchlist}>
+          Delete Watchlist
+        </button>
+      </div>
       <div className="stonks">
         <div className="stock-header">
           <span className="stock-label">Ticker</span>
