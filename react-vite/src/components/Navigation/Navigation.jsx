@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import ProfileButton from "./ProfileButton";
 import "./Navigation.css";
-import sol from '../../../images/sol.png'
+import sol from '../../../images/sol3.png'
 
 function Navigation() {
   return (
