@@ -12,7 +12,7 @@ function Stock() {
   const [searchQuery, setSearchQuery] = useState('');
   const [minVolume, setMinVolume] = useState('');
   const [maxVolume, setMaxVolume] = useState('');
-  const { watchlist } = useSelector((state) => state.watchlist);
+  const { watchlist, selectedWatchlist } = useSelector((state) => state.watchlist);
   const [showMenu, setShowMenu] = useState(false);
   const dispatch = useDispatch()
   const { user } = useSelector((state) => state.session);
@@ -108,15 +108,12 @@ function Stock() {
       console.error('No selected watchlist found');
       return;
     }
-
-    // If the stockName is already starred, remove it from the watchlist
     if (starredStocks.includes(stockName)) {
       await dispatch(thunkRemoveStockFromWatchlist(user.id, selectedWatchlist.id, stockName));
-      setStarredStocks(starredStocks.filter((name) => name !== stockName)); // Remove the stockName from starred
+      setStarredStocks(starredStocks.filter((name) => name !== stockName));
     } else {
-      // If the stockName is not starred, add it to the watchlist
       await dispatch(thunkAddStockToWatchlist(user.id, selectedWatchlist.id, stockName));
-      setStarredStocks([...starredStocks, stockName]); // Add the stockName to starred
+      setStarredStocks([...starredStocks, stockName]);
     }
 };
 
@@ -127,6 +124,9 @@ function Stock() {
   return (
     <>
     <h1>All Stocks listed on Sol</h1>
+    {selectedWatchlist && (
+        <h2>Viewing Watchlist: {selectedWatchlist.name}</h2>
+      )}
     <button className='watchlist' onClick={toggleMenu}>Watchlists</button>
     {showMenu && (
       <div className="dropdownwatch">
