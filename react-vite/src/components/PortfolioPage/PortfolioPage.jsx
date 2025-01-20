@@ -148,9 +148,37 @@ function PortfolioPage() {
 
     // console.log('Portfolios:', portfolios);
 
+    const updateAccountBalance = async () => {
+        const response = await fetch(`/api/users/${user_id}/account_balance`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ account_balance: parseFloat(newBalance) })
+        });
+        if (response.ok) {
+            setNewBalance('');
+        }
+    };
+    
     return (
         <div className='portfolio'>
+            <div className='accounta'>
             <h1> Account Balance: ${userBalance}</h1>
+            <div className="add-funds">
+            <input
+                type="number"
+                placeholder="Enter total amount requested"
+                value={newBalance}
+                onChange={(e) => setNewBalance(e.target.value)}
+            />
+            <button 
+                onClick={updateAccountBalance} 
+                disabled={newBalance === "" || isNaN(newBalance) || parseFloat(newBalance) <= 0}
+            >
+                Free Money Here
+            </button>
+            </div>
+            </div>
+
             {/* <p className="account-balance">
                 Account Balance: ${userBalance}
             </p> */}
