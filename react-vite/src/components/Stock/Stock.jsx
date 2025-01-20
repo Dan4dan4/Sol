@@ -56,6 +56,7 @@ function Stock() {
   const handleWatchlistSelect = (watchlist) => {
     dispatch(thunkSetWatchlist(watchlist.id)); 
     setShowMenu(false); 
+    // navigate(`/watchlist/${watchlist.id}`);
   };
   
 
@@ -111,9 +112,11 @@ function Stock() {
     if (starredStocks.includes(stock)) {
       await dispatch(thunkRemoveStockFromWatchlist(user.id, selectedWatchlist.id, stock));
       setStarredStocks(starredStocks.filter((name) => name !== stock));
+      alert(`${stock.name} has been removed from your watchlist!`);
     } else {
       await dispatch(thunkAddStockToWatchlist(user.id, selectedWatchlist.id, stock));
       setStarredStocks([...starredStocks, stock]);
+      alert(`${stock.name} has been added to your watchlist!`);
     }
 };
 

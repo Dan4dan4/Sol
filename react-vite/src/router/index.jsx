@@ -7,6 +7,7 @@ import PortfolioPage from '../components/PortfolioPage/PortfolioPage';
 import SelectedPortfolio from '../components/PortfolioPage/SelectedPortfolio';
 import Stock from '../components/Stock/Stock';
 import StockDetails from '../components/Stock/StockDetails';
+import Watchlist from '../components/WatchlistPage/Watchlist';
 
 
 export const router = createBrowserRouter([
@@ -40,6 +41,10 @@ export const router = createBrowserRouter([
       {
         path: "stocks/:stock_id",
         element: <StockDetails />,
+      },
+      {
+        path: "watchlist/:watchlist_id",
+        element: <Watchlist />,
       },
     ],
   },
