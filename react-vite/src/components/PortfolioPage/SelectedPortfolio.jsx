@@ -98,7 +98,7 @@ function SelectedPortfolio(){
                 <h2><strong>Portfolio ID</strong>: {portfolio.id}</h2>
                 <p><strong>Created At</strong>: {new Date(portfolio.created_at).toLocaleString()}</p>
                 <p><strong>Balance</strong>: ${portfolio.balance}</p>
-                <p><strong>Portfolio Total Balance</strong>: ${portfolio.total_value}</p>
+                <p><strong>Portfolio Total Value</strong>: ${portfolio.total_value}</p>
                 <h3>Stocks:</h3>
                     {portfolio.stocks && portfolio.stocks.length > 0 ? (
                         <ul>

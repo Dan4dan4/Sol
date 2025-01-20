@@ -1,19 +1,58 @@
-
 .landing-container {
-    padding: 20px; 
-}
-
-
-.landing-container li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 30px;
+  }
+  
+  .landing-container li {
     font-size: 30px;
     list-style: none;
-}
-
-.getstarted {
-    padding: 12px 25px; 
-    font-size: 18px; 
-    background-color: #e85d75 ;
+  }
+  
+  .getstarted {
+    margin-top: 30px;
+    padding: 15px 40px;
+    background: #3498db;
     color: white;
-    border-radius: 5px; 
-    cursor: pointer; 
-}
+    font-size: 20px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .getstarted:hover {
+    background: #0094f7;
+  }
+  
+  .stock-ticker {
+    position: fixed;
+    bottom: 10px; 
+    width: 100%;
+    overflow: hidden;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.8); 
+  }
+  
+  .ticker-content {
+    display: flex;
+    justify-content: space-evenly;
+    animation: scroll-ticker 12s linear infinite;
+  }
+  
+  .ticker-symbol {
+    font-size: 20px;
+    color: white;
+    padding: 0 15px;
+    white-space: nowrap;
+  }
+  
+  @keyframes scroll-ticker {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(-100%);
+    }
+  }
+  

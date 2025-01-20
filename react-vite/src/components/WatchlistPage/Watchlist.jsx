@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { thunkAddStockToWatchlist, thunkRemoveStockFromWatchlist } from '../../redux/watchlist';
+import {  thunkRemoveStockFromWatchlist } from '../../redux/watchlist';
 import { FaStar, FaRegStar } from 'react-icons/fa';
 import { useNavigate } from 'react-router';
 
@@ -56,10 +56,7 @@ function Watchlist() {
       await dispatch(thunkRemoveStockFromWatchlist(user.id, selectedWatchlist.id, stock));
       setStarredStocks(starredStocks.filter((name) => name !== stock.name));
       alert(`${stock.name} has been removed from your watchlist!`);
-    } else {
-      await dispatch(thunkAddStockToWatchlist(user.id, selectedWatchlist.id, stock));
-      setStarredStocks([...starredStocks, stock.name]);
-    }
+    } 
   };
 
   const isStockStarred = (stock) => {
