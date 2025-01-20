@@ -97,7 +97,7 @@ function Stock() {
     searchStocks(query);  
   };
 
-  const toggleStockStar = async (stockName) => {
+  const toggleStockStar = async (stock) => {
     if (!user || !watchlist || !watchlist.length) {
       console.error('User or watchlist not found.');
       return;
@@ -108,13 +108,19 @@ function Stock() {
       console.error('No selected watchlist found');
       return;
     }
-    if (starredStocks.includes(stockName)) {
-      await dispatch(thunkRemoveStockFromWatchlist(user.id, selectedWatchlist.id, stockName));
-      setStarredStocks(starredStocks.filter((name) => name !== stockName));
+    if (starredStocks.includes(stock)) {
+      await dispatch(thunkRemoveStockFromWatchlist(user.id, selectedWatchlist.id, stock));
+      setStarredStocks(starredStocks.filter((name) => name !== stock));
     } else {
-      await dispatch(thunkAddStockToWatchlist(user.id, selectedWatchlist.id, stockName));
-      setStarredStocks([...starredStocks, stockName]);
+      await dispatch(thunkAddStockToWatchlist(user.id, selectedWatchlist.id, stock));
+      setStarredStocks([...starredStocks, stock]);
     }
+};
+
+const isStockStarred = (stock) => {
+  // console.log('Checking stock ID:', stock);
+  // console.log('Starred Stocks:', starredStocks);
+  return starredStocks.includes(stock);
 };
 
   
@@ -185,7 +191,7 @@ function Stock() {
               <span className="stock-close-price">{stock.close_price}</span> 
               <span className="stock-vwap">{stock.volume_weighted_avg_price}</span> 
               <span className="stock-star" onClick={(e) => { e.stopPropagation(); toggleStockStar(stock);}}>
-                {starredStocks.includes(stock.id) ? <FaStar /> : <FaRegStar />}
+                {isStockStarred(stock) ? <FaStar /> : <FaRegStar />}
               </span>
             </li>
           ))}
