@@ -38,6 +38,15 @@ function Stock() {
     fetchStocks();
   }, [dispatch, user]); 
 
+  useEffect(() => {
+    if (watchlist && watchlist.length > 0) {
+      const selectedWatchlist = watchlist.find(list => list.user_id === user.id);
+      if (selectedWatchlist) {
+        setStarredStocks(selectedWatchlist.stocks.map(stock => stock.id)); 
+      }
+    }
+  }, [watchlist, user.id]);
+
   const toggleMenu = (e) => {
     e.stopPropagation(); 
     setShowMenu(!showMenu); 
@@ -88,21 +97,32 @@ function Stock() {
     searchStocks(query);  
   };
 
-  const toggleStockStar = async (stockId) => {
-    const selectedWatchlist = watchlist.find((list) => list.id === user.id);
-
-    if (!selectedWatchlist) {
-      console.error("No selected watchlist found");
+  const toggleStockStar = async (stockName) => {
+    if (!user || !watchlist || !watchlist.length) {
+      console.error('User or watchlist not found.');
       return;
     }
-    if (starredStocks.includes(stockId)) {
-      await dispatch(thunkRemoveStockFromWatchlist(user.id, selectedWatchlist.id, stockId));
-      setStarredStocks(starredStocks.filter((id) => id !== stockId)); 
-    } else {
-      await dispatch(thunkAddStockToWatchlist(user.id, selectedWatchlist.id, stockId));
-      setStarredStocks([...starredStocks, stockId]); 
+
+    const selectedWatchlist = watchlist.find((list) => list.user_id === user.id);
+    if (!selectedWatchlist) {
+      console.error('No selected watchlist found');
+      return;
     }
-  };
+
+    // If the stockName is already starred, remove it from the watchlist
+    if (starredStocks.includes(stockName)) {
+      await dispatch(thunkRemoveStockFromWatchlist(user.id, selectedWatchlist.id, stockName));
+      setStarredStocks(starredStocks.filter((name) => name !== stockName)); // Remove the stockName from starred
+    } else {
+      // If the stockName is not starred, add it to the watchlist
+      await dispatch(thunkAddStockToWatchlist(user.id, selectedWatchlist.id, stockName));
+      setStarredStocks([...starredStocks, stockName]); // Add the stockName to starred
+    }
+};
+
+  
+  
+  
 
   return (
     <>
@@ -164,8 +184,8 @@ function Stock() {
               <span className="stock-volume">{stock.volume}</span>
               <span className="stock-close-price">{stock.close_price}</span> 
               <span className="stock-vwap">{stock.volume_weighted_avg_price}</span> 
-              <span className="stock-star" onClick={(e) => { e.stopPropagation(); toggleStockStar(stock.id); }}>
-                {starredStocks.includes(stock.id) ? <FaRegStar /> : <FaStar />}
+              <span className="stock-star" onClick={(e) => { e.stopPropagation(); toggleStockStar(stock);}}>
+                {starredStocks.includes(stock.id) ? <FaStar /> : <FaRegStar />}
               </span>
             </li>
           ))}

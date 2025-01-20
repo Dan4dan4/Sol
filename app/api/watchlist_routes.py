@@ -80,34 +80,28 @@ def add_stocks_to_watchlist(user_id, watchlist_id):
     if user_id != current_user.id:
         return {"error": "Unauthorized access"}, 403
     
-    watchlist = Watchlist.query.filter_by(id=watchlist_id, user_id= user_id).first()
+    data = request.get_json()
+    print('Request data:', data)  
 
-    if not watchlist:
-        return {"error": "No watchlist found"},404
-    
-    stocks = request.json.get('stocks', [])
-    if not stocks:
-        return {"error": "No stocks provided"}, 400
-    
-    for data in stocks:
-        stock_id= data.get('stock_id')
+    if 'stocks' not in data:
+        return {'error': 'No stocks key found in the request'}, 400
 
+    stock_name = data['stocks'][0]['stock_name']
+    selected_watchlist = Watchlist.query.filter_by(id=watchlist_id, user_id=user_id).first()
 
-        if not stock_id:
-            return {"error": "Please pick a valid stock to add to watchlist"}, 400
+    if not selected_watchlist:
+        return {'error': 'Watchlist not found for this user'}, 404
 
-        stock = Stock.query.get(stock_id)
-        if not stock:
-            return{"error": "Stock not found"},404
-    
-        if stock not in watchlist.stocks:
-            watchlist.stocks.append(stock)
-   
+    stock = Stock.query.filter_by(name=stock_name).first()
 
+    if not stock:
+        return {'error': 'Stock not found'}, 404
+
+    selected_watchlist.stocks.append(stock)
     db.session.commit()
 
-    return jsonify({"message": "Successfully added stock to watchlist", "watchlist": watchlist.to_dict()}), 200
-
+    return {'watchlist': selected_watchlist.to_dict()}, 200
+   
 @watchlist_routes.route('/<int:user_id>/<int:watchlist_id>', methods=['PUT'])
 @login_required
 def remove_stocks_from_watchlist(user_id, watchlist_id):
@@ -117,31 +111,31 @@ def remove_stocks_from_watchlist(user_id, watchlist_id):
     if user_id != current_user.id:
         return {"error": "Unauthorized access"}, 403
     
-    watchlist = Watchlist.query.filter_by(id=watchlist_id, user_id= user_id).first()
+    watchlist = Watchlist.query.filter_by(id=watchlist_id, user_id=user_id).first()
 
     if not watchlist:
-        return {"error": "No watchlist found"},404
+        return {"error": "No watchlist found"}, 404
     
-    stocks = request.json.get('stocks', [])
-    if not stocks:
-        return {"error": "No stocks provided"}, 400
+    data = request.get_json()
+    print("Request Data:", data)
+
+    if 'stocks' not in data:
+        return {"error": "No stocks key found in the request"}, 400
+
+    stock_name = data['stocks'][0]['stock_name']
+    stock = Stock.query.filter_by(name=stock_name).first()
+
+    if not stock:
+        return {"error": "Stock not found"}, 404
     
-    for data in stocks:
-        stock_id= data.get('stock_id')
-
-        if not stock_id:
-            return {"error": "Please pick a valid stock to remove from watchlist"}, 400
-
-        stock = Stock.query.get(stock_id)
-        if not stock:
-            return{"error": "Stock not found"},404
-        
-        if stock not in watchlist.stocks:
-            return {"error": f"Stock '{stock.name}' is not in this watchlist"}, 400
-            
-        watchlist.stocks.remove(stock)
-   
-
-    db.session.commit()
-
-    return jsonify({"message": "Successfully removed stock from watchlist", "watchlist": watchlist.to_dict()}), 200
+    if stock not in watchlist.stocks:
+        return {"error": f"Stock '{stock.name}' is not in this watchlist"}, 400
+    
+    watchlist.stocks.remove(stock)
+    try:
+        db.session.commit()
+        return jsonify({"message": "Successfully removed stock from watchlist", "watchlist": watchlist.to_dict()}), 200
+    except Exception as e:
+        db.session.rollback()
+        logging.error(f"Error removing stock from watchlist: {str(e)}")
+        return jsonify({"error": "An error occurred while removing the stock."}), 500

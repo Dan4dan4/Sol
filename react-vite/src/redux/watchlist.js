@@ -39,53 +39,71 @@ export const thunkSetWatchlist = (watchlistId) => async (dispatch, getState) => 
 };
 
 
-export const thunkAddStockToWatchlist = (userId, watchlistId, stockId) => async (dispatch) => {
-    try {
-      const response = await fetch(`/api/watchlist/${userId}/${watchlistId}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          stocks: [{ stock_id: stockId }],
-        }),
-      });
-  
-      if (response.ok) {
-        const data = await response.json();
-        // console.log("Data:", data);
-        dispatch(setSelectedWatchlist(data.watchlist)); 
-      } else {
-        console.error('Failed to add stock to watchlist');
-      }
-    } catch (error) {
-      console.error('Error adding stock to watchlist:', error);
-    }
-  };
-  
+export const thunkAddStockToWatchlist = (userId, watchlistId, stock) => async (dispatch) => {
 
-  export const thunkRemoveStockFromWatchlist = (userId, watchlistId, stockId) => async (dispatch) => {
-    try {
+  if (!stock || !stock.name) {
+      console.error('Error: stock is undefined or missing name');
+      return; 
+  }
+  console.log('Stock Name being passed:', stock.name); 
+  try {
       const response = await fetch(`/api/watchlist/${userId}/${watchlistId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          stocks: [{ stock_id: stockId }],
-        }),
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            stocks: [
+              { stock_name: stock.name } 
+            ]
+          }),
       });
-  
       if (response.ok) {
-        const data = await response.json();
-        dispatch(setSelectedWatchlist(data.watchlist)); 
+          const data = await response.json();
+          dispatch(setSelectedWatchlist(data.watchlist));
       } else {
-        console.error('Failed to remove stock from watchlist');
+          const errorData = await response.json();
+          console.error('Error:', errorData.error || 'Failed to add stock to watchlist');
       }
-    } catch (error) {
-      console.error('Error removing stock from watchlist:', error);
+  } catch (error) {
+      console.error('Error adding stock to watchlist:', error);
+  }
+};
+
+
+
+
+export const thunkRemoveStockFromWatchlist = (userId, watchlistId, stock) => async (dispatch) => {
+
+  if (!stock || !stock.name) {
+      console.error('Error: stock is undefined or missing name');
+      return; 
+  }
+  console.log('Stock Name being passed for removal:', stock.name); 
+  try {
+    const response = await fetch(`/api/watchlist/${userId}/${watchlistId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        stocks: [
+          { stock_name: stock.name } 
+        ],
+      }),
+    });
+    if (response.ok) {
+      const data = await response.json();
+      dispatch(setSelectedWatchlist(data.watchlist)); 
+    } else {
+      const errorData = await response.json();
+      console.error('Error:', errorData.error || 'Failed to remove stock from watchlist');
     }
-  };
+  } catch (error) {
+    console.error('Error removing stock from watchlist:', error);
+  }
+};
+
 
 const initialState = { 
     watchlist: [],
