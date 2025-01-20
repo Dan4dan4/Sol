@@ -1,7 +1,7 @@
 const SET_WATCHLIST = 'watchlist/setWatchlist';
 const SET_SELECTED_WATCHLIST = 'watchlist/setSelectedWatchlist';
 const DELETE_WATCHLIST = 'watchlist/deleteWatchlist'
-
+const CREATE_WATCHLIST = 'watchlist/createWatchlist'
 
 const setWatchlist = (watchlist) => ({
   type: SET_WATCHLIST,
@@ -18,6 +18,10 @@ const deleteWatchlist = (watchlistId) => ({
   payload: watchlistId
 })
 
+const createWatchlist = (watchlist) => ({
+  type: CREATE_WATCHLIST,
+  payload: watchlist
+})
 
 
 export const thunkGetWatchlist = (userId) => async (dispatch) => {
@@ -131,6 +135,27 @@ export const thunkDeleteWatchlist = (userId, watchlistId) => async (dispatch) =>
   }
 }
 
+export const thunkCreateWatchlist = (userId, name) => async (dispatch) => {
+  try{
+    const response = await fetch(`/api/watchlist/${userId}`, {
+      method: 'POST',
+      headers:{
+                'Content-Type': 'application/json',
+            },
+      body: JSON.stringify({name}),
+        });
+
+    if (response.ok){
+      const data = await response.json();
+      dispatch(createWatchlist(data['New Watchlist created'])); 
+    } else {
+      const errorData = await response.json();
+      console.error('Error creating watchlist:', errorData.error);
+    }
+  } catch (error) {
+    console.error('Error creating watchlist:', error);
+  }
+};
 
 const initialState = { 
     watchlist: [],
@@ -144,6 +169,8 @@ function watchlistReducer(state = initialState, action) {
         return { ...state, watchlist: action.payload };
     case SET_SELECTED_WATCHLIST:
         return { ...state, selectedWatchlist: action.payload };
+    case CREATE_WATCHLIST:
+        return {...state, watchlist: [...state.watchlist, action.payload]}
     case DELETE_WATCHLIST:
         return{...state, watchlist:state.watchlist.filter(watchlist => watchlist.id !==action.payload)}
     default:

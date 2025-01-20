@@ -66,22 +66,22 @@ ul {
 }
 
 .watchlist {
-  background-color: #4CAF50; 
-    color: white; 
-    border: none; 
-    padding: 10px 20px;
-    text-align: center; 
-    text-decoration: none; 
-    display: inline-block; 
-    font-size: 16px; 
-    border-radius: 5px; 
-    cursor: pointer; 
-    transition: background-color 0.3s ease; 
-    margin-left: 20px; 
+  background-color:#e85d75; 
+  color: white; 
+  border: none; 
+  padding: 10px 20px;
+  text-align: center; 
+  text-decoration: none; 
+  display: inline-block; 
+  font-size: 16px; 
+  border-radius: 5px; 
+  cursor: pointer; 
+  transition: background-color 0.3s ease; 
+  margin-left: 20px; 
 }
 
 .watchlist:hover {
-  background-color: #0056b3;
+  background-color: #45a049;
 }
 
 .dropdownwatch {
@@ -89,10 +89,11 @@ ul {
   border: 1px solid #ddd;
   border-radius: 4px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  width: 200px;
+  width: 300px;
   max-height: 300px;
   padding: 20px;
   margin-left: 20px; 
+  margin-top: 1px;
 }
 
 
@@ -111,5 +112,61 @@ ul {
   transform: scale(1.5);
 }
 
+.create-watchlist {
+  display: flex;
+  /* flex-direction: column; */
+  margin-bottom: 10px;
+}
 
+.create-watchlist input {
+  margin-bottom: 5px;
+  border-radius: 4px;
+  width: 100%;
+}
 
+.create-watchlist button {
+  padding: 8px 16px;
+  height: 40px;
+  margin-left: 5px;
+  background-color:#e85d75; 
+  color: white;
+  font-size: 15px;
+  border-radius: 4px;
+  margin-top: 8px;
+}
+
+.create-watchlist button:hover {
+  background-color: #45a049; 
+}
+
+.tittleonstock {
+  margin-left: 20px;
+}
+
+.dropdownwatch ul li {
+  padding: 5px;
+  cursor: pointer;
+}
+
+.dropdownwatch ul li:hover {
+  background-color:#e85d75;
+}
+
+.goto-icon {
+  vertical-align: middle; 
+  cursor: pointer;
+  font-size: 18px; 
+  color: #e85d75;
+  /* transition: color 0.3s ease;  */
+}
+
+.goto-icon:hover {
+  color: #45a049;
+}
+
+.watchlist-name{
+  margin-left: 10px;
+  text-decoration: underline;
+  cursor: pointer;
+  color: #e85d75;
+}

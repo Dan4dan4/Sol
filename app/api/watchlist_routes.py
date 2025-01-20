@@ -35,15 +35,15 @@ def create_watchlist(user_id):
         return {"error": "Unauthorized access"}, 403
 
     name = request.json.get('name')
-    description = request.json.get('description')
+    # description = request.json.get('description')
 
     if not name:
         return {"error": "Please provide a name for watchlist"}, 403
 
-    if not description:
-        return {"error": "Please provide a description for watchlist "}
+    # if not description:
+    #     return {"error": "Please provide a description for watchlist "}
     
-    new_watchlist = Watchlist(user_id = user_id, name= name, description = description)
+    new_watchlist = Watchlist(user_id = user_id, name= name)
 
     db.session.add(new_watchlist)
     db.session.commit()

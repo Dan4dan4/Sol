@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import './Stock.css'
-import { thunkGetWatchlist, thunkSetWatchlist, thunkAddStockToWatchlist,thunkRemoveStockFromWatchlist} from  '../../redux/watchlist'
+import { thunkGetWatchlist, thunkSetWatchlist, thunkAddStockToWatchlist,thunkRemoveStockFromWatchlist, thunkCreateWatchlist} from  '../../redux/watchlist'
 import { useDispatch , useSelector} from 'react-redux';
-import { FaStar, FaRegStar } from 'react-icons/fa';
+import { FaStar, FaRegStar, FaArrowCircleRight } from 'react-icons/fa';
+
 
 function Stock() {
   const [stocks, setStocks] = useState([]);
@@ -17,6 +18,8 @@ function Stock() {
   const dispatch = useDispatch()
   const { user } = useSelector((state) => state.session);
   const [starredStocks, setStarredStocks] = useState([]);
+  const [newWatchlistName, setNewWatchlistName] = useState('');
+
 
   useEffect(() => {
     const fetchStocks = async () => {
@@ -103,8 +106,6 @@ function Stock() {
       console.error('User or watchlist not found.');
       return;
     }
-
-    const selectedWatchlist = watchlist.find((list) => list.user_id === user.id);
     if (!selectedWatchlist) {
       console.error('No selected watchlist found');
       return;
@@ -133,18 +134,39 @@ const navigateToWatchlist = () => {
   }
 };
   
+const handleCreateWatchlist = async () => {
+  if (!newWatchlistName) {
+    alert('Please provide a name for the new watchlist!');
+    return;
+  }
+  await dispatch(thunkCreateWatchlist(user.id, newWatchlistName)); 
+  setNewWatchlistName(''); 
+};
 
   return (
     <>
-    <h1>All Stocks listed on Sol</h1>
+    <h1 className='tittleonstock'>All Stocks listed on Sol</h1>
     {selectedWatchlist && (
-        <h2>Viewing Watchlist: <span className="watchlist-name" onClick={navigateToWatchlist}>
-        {selectedWatchlist.name}
-      </span></h2>
+        <h2 className='tittleonstock'>
+        Modifying Watchlist:  
+        <span className="watchlist-name" onClick={navigateToWatchlist}>
+          {selectedWatchlist.name}
+        </span>
+        <FaArrowCircleRight className="goto-icon" onClick={navigateToWatchlist} />
+      </h2>
       )}
     <button className='watchlist' onClick={toggleMenu}>Watchlists</button>
     {showMenu && (
       <div className="dropdownwatch">
+        <div className="create-watchlist">
+          <input 
+            type="text" 
+            value={newWatchlistName} 
+            onChange={(e) => setNewWatchlistName(e.target.value)} 
+            placeholder="Enter new watchlist name"
+          />
+          <button onClick={handleCreateWatchlist}>Create</button>
+        </div>
         <ul>
           {watchlist.map((list) => (
             <li key={list.id} onClick={() => handleWatchlistSelect(list)}>{list.name}</li>
