@@ -80,6 +80,14 @@ function SelectedPortfolio(){
         navigate('/stocks');
     }
     
+    const handleStockClick = (stock_name) => {
+        if (stock_name) {
+            navigate(`/stocks/${stock_name}`); 
+        } else {
+            console.error("Stock name is missing");
+            alert("Unable to navigate to the stock details. Stock name is missing.");
+        }
+    };
 
     return(
         <div>
@@ -95,12 +103,13 @@ function SelectedPortfolio(){
                     {portfolio.stocks && portfolio.stocks.length > 0 ? (
                         <ul>
                             {portfolio.stocks.map((stock, index) => (
-                                <li key={index} className="stock-item">
+                                <li key={index} className="stock-item" onClick={() => handleStockClick(stock.stock_name)}>
                                     <p><strong>Name:</strong> {stock.stock_name}</p>
                                     <p><strong>Price:</strong> ${stock.volume_weighted_avg_price}</p>
                                     <p><strong>Purchase Price:</strong> ${stock.volume_weighted_avg_price}</p>
                                     <p><strong>Quantity:</strong> {stock.quantity}</p>
                                     {/* <p><strong>Date Purchased:</strong> {new Date(stock.date_purchased).toLocaleString()}</p> */}
+                                    
                                 </li>
                             ))}
                         </ul>
