@@ -2,11 +2,14 @@ import { useEffect, useState } from 'react';
 import './LandingPage.css'; 
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
+import up from '../../../images/upme.avif'
+import up2 from '../../../images/upme2.avif'
 
 function LandingPage() {
   const [stockPrices, setStockPrices] = useState([]); 
   const session = useSelector((state) => state.session.user);
   const navigate = useNavigate();
+  const [currentImage, setCurrentImage] = useState(0);
 
   const getstarted = () => {
     navigate('/signup');
@@ -27,18 +30,44 @@ function LandingPage() {
     };
 
     fetchStockData();
+    const interval = setInterval(() => {
+      setCurrentImage((prev) => (prev === 0 ? 1 : 0));
+    }, 3000);
+
+    return () => clearInterval(interval); // Clean up interval on component unmount
   }, []);
 
+
+  
   return (
     <div className="landing-container">
-      <li>Trading made easy</li>
-      <li>Sol Commission-free trading</li>
-      <li>The price you see, is the price you get!</li>
-      {!session && (
-        <button onClick={getstarted} className="getstarted">
-          Get started
-        </button>
-      )}
+      <div className="text-section">
+        <ul>
+          <li>Trading made easy</li>
+          <li>Sol Commission-free trading</li>
+          <li>The price you see, is the price you get!</li>
+        </ul>
+        {!session && (
+          <button onClick={getstarted} className="getstarted">
+            Get started
+          </button>
+        )}
+      </div>
+
+      <div className="image-section">
+        <div className="image-container">
+          <img
+            src={up}
+            className={`image ${currentImage === 0 ? 'fade-in' : 'fade-out'}`}
+            alt="Up image"
+          />
+          <img
+            src={up2}
+            className={`image ${currentImage === 1 ? 'fade-in' : 'fade-out'}`}
+            alt="Up2 image"
+          />
+        </div>
+      </div>
 
       <div className="stock-ticker">
         <div className="ticker-content">

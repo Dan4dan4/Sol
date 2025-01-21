@@ -144,7 +144,12 @@ function StockDetails() {
         setOnModalClose(() => {
           setSellQuantity(0); 
           setSellTotalValue(0); 
+          navigate(`/portfolio/${user_id}/${selectedPortfolio.id}`);
         });
+
+        // if (selectedPortfolio) {
+        //   navigate(`/portfolio/${user_id}/${selectedPortfolio.id}`);
+        // }
       } else {
         setSellError(data.error || "Error selling stock.");
       }
