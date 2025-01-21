@@ -12,8 +12,13 @@ function Navigation() {
 
 
   const goToPortfolio = () => {
-    dispatch(clearSelectedPortfolio()); 
-    navigate(`/portfolio/${user.id}`); 
+    if (user && user.id) {
+      dispatch(clearSelectedPortfolio()); 
+      navigate(`/portfolio/${user.id}`);
+    } else {
+      console.error("User not logged");
+      navigate("/login");
+    }
   };
 
   return (
@@ -27,13 +32,19 @@ function Navigation() {
 
       <li className="nav-links">
         <NavLink to="/stocks" className="stocks-link">Stocks</NavLink>
-        <NavLink 
-          to={`/portfolio/${user.id}`}
-          className="stocks-link" 
-          onClick={goToPortfolio} // Trigger the goToProfile function before navigating
-        >
-          Portfolio
-        </NavLink>
+        {user && user.id ? (
+          <NavLink 
+            to={`/portfolio/${user.id}`} 
+            className="stocks-link" 
+            onClick={goToPortfolio}
+          >
+            Portfolio
+          </NavLink>
+        ) : (
+          <NavLink to="/login" className="stocks-link">
+            Portfolio
+          </NavLink>
+        )}
         <li className="dropdown">
           <ProfileButton />
         </li>
