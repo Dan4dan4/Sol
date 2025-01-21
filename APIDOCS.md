@@ -275,31 +275,15 @@ Returns all portfolios if you are signed in
    {
     "portfolios": [
         {
-            "balance": 5000,
-            "created_at": "Wed, 08 Jan 2025 21:28:26 GMT",
+            "balance": 50000,
+            "created_at": "Tue, 21 Jan 2025 14:17:07 GMT",
             "id": 1,
-            "stocks": [
-                {
-                    "date_purchased": "Wed, 08 Jan 2025 21:28:26 GMT",
-                    "name": "AAPL",
-                    "price": 250,
-                    "purchase_price": 250,
-                    "quantity": 100,
-                    "stock_id": 1
-                },
-                {
-                    "date_purchased": "Wed, 08 Jan 2025 21:28:26 GMT",
-                    "name": "NVDA",
-                    "price": 150,
-                    "purchase_price": 150,
-                    "quantity": 50,
-                    "stock_id": 2
-                }
-            ],
+            "stocks": [],
+            "total_value": 50000,
             "user_id": 1
         }
     ]
-  }
+    }
     ```
 ## Get your portfolio with specific ID
 
@@ -322,31 +306,15 @@ Returns your specific portfolio if you are signed in
 
     ```json
    {
-    "portfolios": {
-        "balance": 1500,
-        "created_at": "Wed, 08 Jan 2025 22:34:56 GMT",
+    "Portfolio": {
+        "balance": 50000,
+        "created_at": "Tue, 21 Jan 2025 14:17:07 GMT",
         "id": 1,
-        "stocks": [
-            {
-                "date_purchased": "Wed, 08 Jan 2025 22:34:56 GMT",
-                "name": "AAPL",
-                "price": 250,
-                "purchase_price": 50,
-                "quantity": 100,
-                "stock_id": 1
-            },
-            {
-                "date_purchased": "Wed, 08 Jan 2025 22:34:56 GMT",
-                "name": "NVDA",
-                "price": 150,
-                "purchase_price": 100,
-                "quantity": 5000,
-                "stock_id": 2
-            }
-        ],
+        "stocks": [],
+        "total_value": 50000,
         "user_id": 1
     }
-  }
+    }
     ```
 
 * Error response: Portfolio not found
@@ -580,20 +548,23 @@ Returns all the stocks.
     ```json
   [
     {
-        "industry": "Consumer Electronics",
+        "close_price": "0.00",
+        "high_price": "0.00",
+        "low_price": "0.00",
         "name": "AAPL",
-        "price": 236.76
+        "open_price": "0.00",
+        "volume": 0,
+        "volume_weighted_avg_price": "0.00"
     },
     {
-        "industry": "Software - Infrastructure",
+        "close_price": "0.00",
+        "high_price": "0.00",
+        "low_price": "0.00",
         "name": "MSFT",
-        "price": 420.6
+        "open_price": "0.00",
+        "volume": 0,
+        "volume_weighted_avg_price": "0.00"
     },
-    {
-        "industry": "Internet Content & Information",
-        "name": "GOOGL",
-        "price": 193.4509
-    }
   ]
 
     ```
@@ -618,10 +589,13 @@ Returns the details of a stock specified by its id.
 
     ```json
     {
-    "description": "Apple Inc. designs, manufactures, and markets smartphones, personal computers, tablets, wearables, and accessories worldwide. The company offers iPhone, a line of smartphones; Mac, a line of personal computers; iPad, a line of multi-purpose tablets; and wearables, home, and accessories comprising AirPods, Apple TV, Apple Watch, Beats products, and HomePod. It also provides AppleCare support and cloud services; and operates various platforms, including the App Store that allow customers to discover and download applications and digital content, such as books, music, video, games, and podcasts, as well as advertising services include third-party licensing arrangements and its own advertising platforms. In addition, the company offers various subscription-based services, such as Apple Arcade, a game subscription service; Apple Fitness+, a personalized fitness service; Apple Music, which offers users a curated listening experience with on-demand radio stations; Apple News+, a subscription news and magazine service; Apple TV+, which offers exclusive original content; Apple Card, a co-branded credit card; and Apple Pay, a cashless payment service, as well as licenses its intellectual property. The company serves consumers, and small and mid-sized businesses; and the education, enterprise, and government markets. It distributes third-party applications for its products through the App Store. The company also sells its products through its retail and online stores, and direct sales force; and third-party cellular network carriers, wholesalers, retailers, and resellers. Apple Inc. was founded in 1976 and is headquartered in Cupertino, California.",
-    "industry": "Consumer Electronics",
-    "name": "aapl",
-    "price": 242.7
+    "close_price": "0.00",
+    "high_price": "0.00",
+    "low_price": "0.00",
+    "name": "AAPL",
+    "open_price": "0.00",
+    "volume": 0,
+    "volume_weighted_avg_price": "0.00"
     }
 
 * Error response: Couldn't find a stock with the specified id
@@ -662,10 +636,12 @@ Buy a stock and adds to portfolio
 
   ```json
   {
-    "message": "Stock purchased!",
-    "name": "GameStop Corp.",
-    "quantity": 6,
-    "total_cost": 197.76
+    "balance": 49769.5206,
+    "message": "Stock purchased successfully!",
+    "name": "AAPL",
+    "portfolio_total_value": 50000,
+    "quantity": 1,
+    "total_cost": 230.4794
   }
 
 * Error Response: Not enough funds
@@ -677,7 +653,7 @@ Buy a stock and adds to portfolio
 
     ```json
     {
-    "error": "Cannot complete order due to insufficient balance"
+    "error": "Insufficient balance for this transaction"
     }
 
 <!-- ### Update a purchase order 
@@ -745,12 +721,12 @@ Updates an order and returns portfolio
 
     ```json
     {
-    "message": "Stock sold!",
-    "name": "GameStop Corp.",
-    "portfolio_balance": 4769.28,
-    "portfolio_total_value": 230.72,
+    "message": "Stock sold successfully!",
+    "name": "AAPL",
+    "portfolio_balance": 50000,
+    "portfolio_total_value": 50000,
     "quantity": 1,
-    "total_cost": 32.96
+    "sold for": 230.4794
     }
     ```
 
@@ -789,19 +765,28 @@ Get all watchlists
 
 
     ```json
-     {
-        "watchlist": [
+    {
+    "watchlist": [
         {
-        "id": 1,
-        "stock_id": 2,
-        "stock_name": "Tesla Inc.",
-        "price": 500
-        },]
+            "description": "main watchlist for this year",
+            "id": 1,
+            "name": "Main watch",
+            "stocks": [],
+            "user_id": 1
+        },
+        {
+            "description": "MEME watchlist for this year",
+            "id": 2,
+            "name": "Memes watch",
+            "stocks": [],
+            "user_id": 1
+        }
+    ]
     }
     ```
 
 
-* Error response: Please enter all required fields
+* Error response: Unauthorized
 * Status Code: 404
 * Headers:
 * Content-Type: application/json
@@ -810,7 +795,7 @@ Get all watchlists
 
     ```json
     {
-    "message": "Watchlist not found"
+    "error": "Unauthorized access"
     }
    ```
 ### Users should be able to Create watchlists 
@@ -828,7 +813,6 @@ Creates a watchlist
 ```json
   {
     "name": "this a new watchlist",
-    "description": "this new watchlist is dope"
   }
 ```
 
@@ -842,28 +826,16 @@ Creates a watchlist
     ```json
     {
     "New Watchlist created": {
-        "description": "this is a new watchlist that is extremly good at watching",
-        "id": 3,
+        "description": null,
+        "id": 4,
         "name": "this a new watchlist",
         "stocks": [],
         "user_id": 1
-      }
+    }
     }
     ```
 
 
-* Error response: Couldn't find a Watchlist with the specified id
-* Status Code: 404
-* Headers:
-* Content-Type: application/json
-* Body:
-
-
-    ```json
-    {
-      "message": "Watchlist couldn't be found"
-    }
-   ```
 ## Add a stock to watchlist
 
 Adds stock based on watchlist id if user is watchlist owner.
@@ -886,9 +858,12 @@ Adds stock based on watchlist id if user is watchlist owner.
     ```json
    {
     "stocks": [
-      {"stock_id": 2}
+        {
+            "stock_name": "AAPL"
+        }
     ]
-  }
+    }
+
 
     ```
 
@@ -902,22 +877,19 @@ Adds stock based on watchlist id if user is watchlist owner.
 
     ```json
     {
-    "message": "Successfully updated watchlist",
     "watchlist": {
-        "description": "this new watchlist is dope",
-        "id": 6,
-        "name": "this a new watchlist",
+        "description": "main watchlist for this year",
+        "id": 1,
+        "name": "Main watch",
         "stocks": [
             {
-                "id": 2,
-                "industry": "Specialty Retail",
-                "name": "GameStop Corp.",
-                "price": 32.96
-              }
-          ],
-          "user_id": 1
-        }
-      }
+                "id": 1,
+                "name": "AAPL"
+            }
+        ],
+        "user_id": 1
+    }
+    }
 
     ```
 
@@ -931,7 +903,7 @@ Adds stock based on watchlist id if user is watchlist owner.
 
     ```json
     {
-      "message": "No watchlist found"
+      "message": "No watchlist found for this user"
     }
     ```
 ### Users should be able to remove stocks from watchlist based on Watchlist Id
@@ -950,10 +922,13 @@ Removes stock from watchlist
 ```json
 
 {
-  "stocks": [
-    {"stock_id": 1}
-  ]
+    "stocks": [
+        {
+            "stock_name": "AAPL"
+        }
+    ]
 }
+
 ```
 
 
@@ -966,7 +941,14 @@ Removes stock from watchlist
 
     ```json
     {
-      "message": "Successfully deleted stock"
+    "message": "Successfully removed stock from watchlist",
+    "watchlist": {
+        "description": "main watchlist for this year",
+        "id": 1,
+        "name": "Main watch",
+        "stocks": [],
+        "user_id": 1
+    }
     }
     ```
 
@@ -1006,7 +988,7 @@ Deletes an existing watchlist, based on watchlist id.
 
     ```json
     {
-      "message": " Successfully deleted"
+    "message": "Successfuly deleted : Main watchlist"
     }
     ```
 
