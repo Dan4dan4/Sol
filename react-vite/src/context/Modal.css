@@ -22,3 +22,24 @@
   position: absolute;
   background-color:white;
 }
+
+#modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+#modal-content h2 {
+  font-size: 25px;
+  color: #4caf50; 
+}
+
+#modal-content p {
+
+  color: #000000;
+}
+
+#modal-background:hover {
+  cursor: pointer;
+}

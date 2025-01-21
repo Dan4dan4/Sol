@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom"; 
 import './StockDetails.css'
 import { useSelector } from "react-redux";
+import {useModal} from '../../context/Modal'
 
 function StockDetails() {
   const { stock_id } = useParams();
@@ -18,6 +19,8 @@ function StockDetails() {
   const [sellTotalValue, setSellTotalValue] = useState(0);
 
   const selectedPortfolio = useSelector(state => state.portfolio.selectedPortfolio);
+  const { setModalContent, setOnModalClose } = useModal();
+
 
   useEffect(() => {
     const fetchStockDetails = async () => {
@@ -59,10 +62,19 @@ function StockDetails() {
           quantity: buyQuantity,
         }),
       });
-
       const data = await response.json();
       if (response.ok) {
         console.log(`Successfully purchased ${buyQuantity} of ${stock.name}!`);
+        setModalContent(
+          <div>
+            <h2>Success!</h2>
+            <p>You successfully purchased {buyQuantity} shares of {stock.name}.</p>
+          </div>
+        );
+        setOnModalClose(() => {
+          setBuyQuantity(0); 
+          setBuyTotalValue(0); 
+        });
       } else {
         setPurchaseError(data.error || "Error purchasing stock.");
       }
@@ -91,6 +103,16 @@ function StockDetails() {
       const data = await response.json();
       if (response.ok) {
         console.log(`Successfully sold ${sellQuantity} of ${stock.name}!`);
+        setModalContent(
+          <div>
+            <h2>Success!</h2>
+            <p>You successfully sold {sellQuantity} shares of {stock.name}.</p>
+          </div>
+        );
+        setOnModalClose(() => {
+          setSellQuantity(0); 
+          setSellTotalValue(0); 
+        });
       } else {
         setSellError(data.error || "Error selling stock.");
       }
