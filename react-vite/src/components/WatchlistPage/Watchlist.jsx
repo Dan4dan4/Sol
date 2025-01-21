@@ -1,17 +1,18 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {  thunkRemoveStockFromWatchlist } from '../../redux/watchlist';
-import { FaStar, FaRegStar } from 'react-icons/fa';
+import { FaStar } from 'react-icons/fa';
 import { useNavigate } from 'react-router';
 import { thunkDeleteWatchlist } from '../../redux/watchlist';
 import './Watchlist.css'
 
 function Watchlist() {
   const [stocks, setStocks] = useState([]);
-  const { watchlist, selectedWatchlist } = useSelector((state) => state.watchlist);
+  // const { watchlist, selectedWatchlist } = useSelector((state) => state.watchlist);
+  const { selectedWatchlist } = useSelector((state) => state.watchlist);
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.session);
-  const [starredStocks, setStarredStocks] = useState([]);
+  // const [starredStocks, setStarredStocks] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -39,14 +40,14 @@ function Watchlist() {
     fetchStockDetails();
   }, [selectedWatchlist]);
 
-  useEffect(() => {
-    if (watchlist && watchlist.length > 0) {
-      const selectedWatchlist = watchlist.find((list) => list.user_id === user.id);
-      if (selectedWatchlist) {
-        setStarredStocks(selectedWatchlist.stocks.map((stock) => stock.name));
-      }
-    }
-  }, [watchlist, user.id]);
+  // useEffect(() => {
+  //   if (watchlist && watchlist.length > 0) {
+  //     const selectedWatchlist = watchlist.find((list) => list.user_id === user.id);
+  //     if (selectedWatchlist) {
+  //       setStarredStocks(selectedWatchlist.stocks.map((stock) => stock.name));
+  //     }
+  //   }
+  // }, [watchlist, user.id]);
 
   const handleToggleWatchlist = async (stock) => {
     if (!user || !selectedWatchlist) {
@@ -54,16 +55,14 @@ function Watchlist() {
       return;
     }
 
-    if (isStockStarred(stock)) {
-      await dispatch(thunkRemoveStockFromWatchlist(user.id, selectedWatchlist.id, stock));
-      setStarredStocks(starredStocks.filter((name) => name !== stock.name));
-      alert(`${stock.name} has been removed from your watchlist!`);
-    } 
-  };
+    await dispatch(thunkRemoveStockFromWatchlist(user.id, selectedWatchlist.id, stock));
+    setStocks(stocks.filter((item) => item.name !== stock.name));
+    alert(`${stock.name} has been removed from your watchlist!`);
+    };
 
-  const isStockStarred = (stock) => {
-    return starredStocks.includes(stock.name);
-  };
+  // const isStockStarred = (stock) => {
+  //   return starredStocks.includes(stock.name);
+  // };
 
   const handleStockClick = (stock_ticker) => {
     navigate(`/stocks/${stock_ticker}`);
@@ -118,7 +117,7 @@ function Watchlist() {
                     handleToggleWatchlist(stock); 
                   }}
                 >
-                  {isStockStarred(stock) ? <FaStar /> : <FaRegStar />}
+                  <FaStar />
                 </span>
               </li>
             ))
