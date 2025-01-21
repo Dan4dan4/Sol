@@ -4,7 +4,7 @@ import './Stock.css'
 import { thunkGetWatchlist, thunkSetWatchlist, thunkAddStockToWatchlist,thunkRemoveStockFromWatchlist, thunkCreateWatchlist} from  '../../redux/watchlist'
 import { useDispatch , useSelector} from 'react-redux';
 import { FaStar, FaRegStar, FaArrowCircleRight } from 'react-icons/fa';
-
+import {useModal} from '../../context/Modal'
 
 function Stock() {
   const [stocks, setStocks] = useState([]);
@@ -19,7 +19,7 @@ function Stock() {
   const { user } = useSelector((state) => state.session);
   const [starredStocks, setStarredStocks] = useState([]);
   const [newWatchlistName, setNewWatchlistName] = useState('');
-
+  const { setModalContent, setOnModalClose } = useModal();
 
   useEffect(() => {
     const fetchStocks = async () => {
@@ -113,11 +113,28 @@ function Stock() {
     if (starredStocks.includes(stock)) {
       await dispatch(thunkRemoveStockFromWatchlist(user.id, selectedWatchlist.id, stock));
       setStarredStocks(starredStocks.filter((name) => name !== stock));
-      alert(`${stock.name} has been removed from your watchlist!`);
+      // alert(`${stock.name} has been removed from your watchlist!`);
+      setModalContent(
+        <div>
+          <h2>Success!</h2>
+          <p>{stock.name} has been removed from your watchlist!</p>
+        </div>
+      );
+      setOnModalClose(() => {
+      });
     } else {
       await dispatch(thunkAddStockToWatchlist(user.id, selectedWatchlist.id, stock));
       setStarredStocks([...starredStocks, stock]);
-      alert(`${stock.name} has been added to your watchlist!`);
+      // alert(`${stock.name} has been added to your watchlist!`);
+      setModalContent(
+        <div>
+          <h2>Success!</h2>
+          <p>{stock.name} has been added to your watchlist!</p>
+        </div>
+      );
+      setOnModalClose(() => {
+      });
+
     }
 };
 
