@@ -94,9 +94,16 @@ function PortfolioPage() {
                 if(response.ok) {
                     // const data = await response.json()
                     // setPortfolios(allports => [...allports, data])
+                    // dispatch(thunkGetPortfolios(user_id));
+                    // setNewBalance('')
+                    // setCreateError('')
+
                     dispatch(thunkGetPortfolios(user_id));
-                    setNewBalance('')
-                    setCreateError('')
+                    const updatedBalance = userBalance - parseFloat(newBalance);
+                    // setNewAccBalance(updatedBalance.toString());
+                    dispatch(thunkUpdateAccountBalance(user_id, updatedBalance)); 
+                    // setNewBalance('');
+                    setCreateError('');
                 } else {
                     console.error('Error creating portfolio:', response.status);
                 }

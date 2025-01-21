@@ -155,8 +155,8 @@ def delete_portfolio(user_id, portfolio_id):
     if not user:
         return {"error": "User not found"}, 404
 
-    user.account_balance = Decimal(str(user.account_balance))
-    user.account_balance += total_value
+    user.account_balance = float(str(user.account_balance))
+    user.account_balance += float(total_value)
     db.session.commit()
     db.session.delete(portfolio)
     db.session.commit()
