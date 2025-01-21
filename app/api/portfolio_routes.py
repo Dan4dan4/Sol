@@ -120,7 +120,7 @@ def update_portfolio(user_id, portfolio_id):
         stock_value = portfolio_stock.quantity * stock.volume_weighted_avg_price
         total_value += stock_value  
 
-    portfolio.total_value = total_value  
+    portfolio.total_value = float(total_value)  
     db.session.commit()
 
     # user = User.query.get(user_id)

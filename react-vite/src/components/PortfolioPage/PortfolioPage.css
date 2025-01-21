@@ -21,7 +21,7 @@
 }
 
 .portfolio li {
-    width: 700px;
+    width: 650px;
     background-color: #fff;
     border: 1px solid #ddd;
     padding: 15px;
@@ -105,8 +105,9 @@
     height: 270px;
 }
 
-/* .accounta{ */
+.accounta{ 
     /* display: flex; */
     /* flex-wrap: column; */
     /* justify-content: space-between; */
-/* } */
+    margin-right: 30px;
+ } 

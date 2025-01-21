@@ -15,7 +15,7 @@ function Navigation() {
 
       <li className="nav-links">
         <NavLink to="/stocks" className="stocks-link">Stocks</NavLink>
-        <NavLink to="/portfolio/:user_id" className="stocks-link">Portfolio</NavLink>
+        {/* <NavLink to="/portfolio/" className="stocks-link">Portfolio</NavLink> */}
         <li className="dropdown">
           <ProfileButton />
         </li>
