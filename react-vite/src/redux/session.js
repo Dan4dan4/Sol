@@ -1,5 +1,6 @@
 const SET_USER = 'session/setUser';
 const REMOVE_USER = 'session/removeUser';
+const SET_ACCOUNT_BALANCE = 'session/setAccountBalance'
 
 const setUser = (user) => ({
   type: SET_USER,
@@ -63,6 +64,27 @@ export const thunkLogout = () => async (dispatch) => {
   dispatch(removeUser());
 };
 
+const setAccountBalance = (balance) => ({
+  type: SET_ACCOUNT_BALANCE,
+  payload: balance,
+});
+
+export const thunkUpdateAccountBalance = (user_id, newBalance) => async (dispatch) => {
+  const response = await fetch(`/api/users/${user_id}/account_balance`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ account_balance: parseFloat(newBalance) }), 
+  });
+
+  if (response.ok) {
+    const data = await response.json();
+    dispatch(setAccountBalance(data.account_balance));
+  } else {
+    console.error('Error updating account balance:', response.status);
+  }
+};
+
+
 const initialState = { user: null };
 
 function sessionReducer(state = initialState, action) {
@@ -71,6 +93,14 @@ function sessionReducer(state = initialState, action) {
       return { ...state, user: action.payload };
     case REMOVE_USER:
       return { ...state, user: null };
+    case SET_ACCOUNT_BALANCE:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          account_balance: action.payload,
+        },
+      };
     default:
       return state;
   }

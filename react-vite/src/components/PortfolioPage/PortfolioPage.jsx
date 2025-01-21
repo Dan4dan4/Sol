@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from 'react-redux'
 // import { thunkAuthenticate } from '../../redux/session';
 import './PortfolioPage.css'
 import { thunkGetPortfolios,thunkSetPortfolio } from '../../redux/portfolio';
+import { thunkUpdateAccountBalance } from '../../redux/session';
 
 function PortfolioPage() {
     const { user_id } = useParams(); 
@@ -18,6 +19,8 @@ function PortfolioPage() {
     const dispatch = useDispatch()
     const [editPortfolioId, setEditPortfolioId] = useState(null); 
     const [editBalance, setEditBalance] = useState('');
+    const [newAccBalance, setNewAccBalance] = useState('');
+    
 
 
     const user = useSelector(state => state.session.user);
@@ -149,14 +152,11 @@ function PortfolioPage() {
     // console.log('Portfolios:', portfolios);
 
     const updateAccountBalance = async () => {
-        const response = await fetch(`/api/users/${user_id}/account_balance`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ account_balance: parseFloat(newBalance) })
-        });
-        if (response.ok) {
-            setNewBalance('');
+        if (newAccBalance === "" || isNaN(newAccBalance) || parseFloat(newAccBalance) <= 0) {
+            return;
         }
+        dispatch(thunkUpdateAccountBalance(user_id, newAccBalance)); 
+        setNewAccBalance(''); 
     };
     
     return (
@@ -166,13 +166,13 @@ function PortfolioPage() {
             <div className="add-funds">
             <input
                 type="number"
-                placeholder="Enter total amount requested"
-                value={newBalance}
-                onChange={(e) => setNewBalance(e.target.value)}
+                placeholder="Enter total amount for Account Balance"
+                value={newAccBalance}
+                onChange={(e) => setNewAccBalance(e.target.value)}
             />
             <button 
                 onClick={updateAccountBalance} 
-                disabled={newBalance === "" || isNaN(newBalance) || parseFloat(newBalance) <= 0}
+                disabled={newAccBalance === "" || isNaN(newAccBalance) || parseFloat(newAccBalance) <= 0}
             >
                 Free Money Here
             </button>

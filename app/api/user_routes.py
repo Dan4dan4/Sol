@@ -30,7 +30,6 @@ def user(id):
 def update_account_balance(id):
     """
     Update the account balance for a specific user by id.
-    Only the user themselves or an admin should be able to update the balance.
     """
     if current_user.id != id: 
         return jsonify({'error': 'Unauthorized'}), 403
