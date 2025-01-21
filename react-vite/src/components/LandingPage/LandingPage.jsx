@@ -46,10 +46,10 @@ function LandingPage() {
         <ul>
           <li>Trading made easy</li>
           <li>Sol Commission-free trading</li>
-          <li>The price you see, is the price you get</li>
+          <li>The price you see, is the price you get </li>
           <li>Real time stock data and volume</li>
           <li>Demo accounts available for new traders</li>
-          {/* <li>24/7 live support</li> */}
+          <li>Instant execution on trades</li>
         </ul>
         {!session && (
           <button onClick={getstarted} className="getstarted">
