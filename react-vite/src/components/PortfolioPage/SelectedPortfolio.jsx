@@ -82,7 +82,7 @@ function SelectedPortfolio(){
                     {error && <p className="error-message">{error}</p>}
             </div>
             <div className="trade-button-container">
-                <button onClick={tradenav} className="trade-button">Trade on this portfolio
+                <button onClick={tradenav} className="trade-button">Select Portfolio to trade
                 </button>
             </div>
         </div>
