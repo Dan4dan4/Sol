@@ -7,6 +7,7 @@ import { thunkLogout, thunkLogin } from "../../redux/session";
 // import SignupFormModal from "../SignupFormModal";
 import "./ProfileButton.css";
 import { useNavigate } from "react-router";
+import { clearSelectedPortfolio } from "../../redux/portfolio";
 
 function ProfileButton() {
   const dispatch = useDispatch();
@@ -54,6 +55,7 @@ function ProfileButton() {
   };
 
   const goToProfile = () => {
+    dispatch(clearSelectedPortfolio)
     navigate(`/portfolio/${user.id}`);
     closeMenu();
   };
