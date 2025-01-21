@@ -181,7 +181,7 @@ function PortfolioPage() {
                 onClick={updateAccountBalance} 
                 disabled={newAccBalance === "" || isNaN(newAccBalance) || parseFloat(newAccBalance) <= 0}
             >
-                Free Money Here
+                Request funding
             </button>
             </div>
             </div>
