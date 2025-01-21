@@ -2,6 +2,8 @@ const SET_WATCHLIST = 'watchlist/setWatchlist';
 const SET_SELECTED_WATCHLIST = 'watchlist/setSelectedWatchlist';
 const DELETE_WATCHLIST = 'watchlist/deleteWatchlist'
 const CREATE_WATCHLIST = 'watchlist/createWatchlist'
+const CLEAR_WATCHLIST = 'watchlist/clearWatchlist'
+
 
 const setWatchlist = (watchlist) => ({
   type: SET_WATCHLIST,
@@ -23,6 +25,13 @@ const createWatchlist = (watchlist) => ({
   payload: watchlist
 })
 
+const clearWatchlist = () => ({
+  type: CLEAR_WATCHLIST
+})
+
+export const thunkClearWatchlist = () => async (dispatch) => {
+  dispatch(clearWatchlist());
+};
 
 export const thunkGetWatchlist = (userId) => async (dispatch) => {
     try {
@@ -173,7 +182,9 @@ function watchlistReducer(state = initialState, action) {
         return {...state, watchlist: [...state.watchlist, action.payload]}
     case DELETE_WATCHLIST:
         return{...state, watchlist:state.watchlist.filter(watchlist => watchlist.id !==action.payload)}
-    default:
+    case CLEAR_WATCHLIST:
+      return{...state,selectedWatchlist:null}
+        default:
         return state;
   }
 }

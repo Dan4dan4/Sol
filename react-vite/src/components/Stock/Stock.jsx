@@ -60,6 +60,16 @@ function Stock() {
     dispatch(thunkSetWatchlist(watchlist.id)); 
     setShowMenu(false); 
     // navigate(`/watchlist/${watchlist.id}`);
+    setModalContent(
+      <div>
+        <h2>Watchlist Selected:{watchlist.name}</h2>
+        <p>Click the star on any stock to add it to &quot;{watchlist.name}&quot; from this page!</p>
+        {/* <p></p> */}
+      </div>
+    );
+    setOnModalClose(() => {
+      // Any additional logic you want when closing the modal
+    });
   };
   
 
@@ -108,6 +118,14 @@ function Stock() {
     }
     if (!selectedWatchlist) {
       console.error('No selected watchlist found');
+      setModalContent(
+        <div>
+          <h2>No Watchlist Selected</h2>
+          <p>Please select a watchlist</p>
+        </div>
+      );
+      setOnModalClose(() => {
+      });
       return;
     }
     if (starredStocks.includes(stock)) {

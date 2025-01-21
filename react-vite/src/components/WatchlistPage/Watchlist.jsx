@@ -3,8 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import {  thunkRemoveStockFromWatchlist } from '../../redux/watchlist';
 import { FaStar } from 'react-icons/fa';
 import { useNavigate } from 'react-router';
-import { thunkDeleteWatchlist } from '../../redux/watchlist';
+import { thunkDeleteWatchlist , thunkClearWatchlist} from '../../redux/watchlist';
 import './Watchlist.css'
+import {useModal} from '../../context/Modal'
 
 function Watchlist() {
   const [stocks, setStocks] = useState([]);
@@ -14,6 +15,7 @@ function Watchlist() {
   const { user } = useSelector((state) => state.session);
   // const [starredStocks, setStarredStocks] = useState([]);
   const navigate = useNavigate();
+  const { setModalContent, setOnModalClose } = useModal();
 
   useEffect(() => {
     const fetchStockDetails = async () => {
@@ -71,7 +73,17 @@ function Watchlist() {
   const handleDeleteWatchlist = async () => {
     if(selectedWatchlist && user){
       await dispatch(thunkDeleteWatchlist(user.id, selectedWatchlist.id))
-      alert('watchlsit deleted');
+      // alert('watchlsit deleted');
+      dispatch(thunkClearWatchlist());
+      
+      setModalContent(
+        <div>
+          <h2>&quot;{selectedWatchlist.name}&quot; deleted</h2>
+        </div>
+      );
+      setOnModalClose(() => {
+      });
+      dispatch(thunkClearWatchlist());
       navigate('/stocks')
     }
   }
