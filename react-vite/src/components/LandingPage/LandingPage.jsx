@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import up from '../../../images/upme.avif'
 import up2 from '../../../images/upme2.avif'
+import up3 from '../../../images/upme5.webp'
 
 function LandingPage() {
   const [stockPrices, setStockPrices] = useState([]); 
@@ -31,10 +32,10 @@ function LandingPage() {
 
     fetchStockData();
     const interval = setInterval(() => {
-      setCurrentImage((prev) => (prev === 0 ? 1 : 0));
+      setCurrentImage((prev) => (prev === 2 ? 0 : prev+1));
     }, 3000);
 
-    return () => clearInterval(interval); // Clean up interval on component unmount
+    return () => clearInterval(interval); 
   }, []);
 
 
@@ -66,6 +67,11 @@ function LandingPage() {
             src={up2}
             className={`image ${currentImage === 1 ? 'fade-in' : 'fade-out'}`}
             alt="Up2 image"
+          />
+          <img
+            src={up3}
+            className={`image ${currentImage === 2 ? 'fade-in' : 'fade-out'}`}
+            alt="Up3 image"
           />
         </div>
       </div>
