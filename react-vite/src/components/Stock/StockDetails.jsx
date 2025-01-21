@@ -14,9 +14,9 @@ function StockDetails() {
   const [purchaseError, setPurchaseError] = useState(null);
   const [sellError, setSellError] = useState(null);
 
-  const [buyQuantity, setBuyQuantity] = useState(0);
+  const [buyQuantity, setBuyQuantity] = useState("");
   const [buyTotalValue, setBuyTotalValue] = useState(0);
-  const [sellQuantity, setSellQuantity] = useState(0);
+  const [sellQuantity, setSellQuantity] = useState("");
   const [sellTotalValue, setSellTotalValue] = useState(0);
 
   const selectedPortfolio = useSelector(state => state.portfolio.selectedPortfolio);
