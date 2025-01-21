@@ -59,7 +59,14 @@ function Watchlist() {
 
     await dispatch(thunkRemoveStockFromWatchlist(user.id, selectedWatchlist.id, stock));
     setStocks(stocks.filter((item) => item.name !== stock.name));
-    alert(`${stock.name} has been removed from your watchlist!`);
+    // alert(`${stock.name} has been removed from your watchlist!`);
+    setModalContent(
+      <div>
+        <h2>&quot;{stock.name}&quot; has been removed from watchlist</h2>
+      </div>
+    );
+    setOnModalClose(() => {
+    });
     };
 
   // const isStockStarred = (stock) => {

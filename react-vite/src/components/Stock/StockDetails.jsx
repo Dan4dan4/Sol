@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom"; 
+import { useParams, useNavigate } from "react-router-dom"; 
 import './StockDetails.css'
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import {useModal} from '../../context/Modal'
+import { thunkPurchaseStock } from "../../redux/portfolio";
 
 function StockDetails() {
   const { stock_id } = useParams();
@@ -20,7 +21,9 @@ function StockDetails() {
 
   const selectedPortfolio = useSelector(state => state.portfolio.selectedPortfolio);
   const { setModalContent, setOnModalClose } = useModal();
-
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const user_id = useSelector(state => state.session.user?.id);
 
   useEffect(() => {
     const fetchStockDetails = async () => {
@@ -46,42 +49,71 @@ function StockDetails() {
     }
   }, [stock_id]);
 
+  // const handleBuyStock = async () => {
+  //   if (!selectedPortfolio) {
+  //     setPurchaseError("Please select a portfolio to buy stocks.");
+  //     return;
+  //   }
+
+  //   try {
+  //     const response = await fetch(`/api/stock/buy/${stock.name}/${selectedPortfolio.id}`, {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({
+  //         quantity: buyQuantity,
+  //       }),
+  //     });
+  //     const data = await response.json();
+  //     if (response.ok) {
+  //       console.log(`Successfully purchased ${buyQuantity} of ${stock.name}!`);
+  //       setModalContent(
+  //         <div>
+  //           <h2>Success!</h2>
+  //           <p>You successfully purchased {buyQuantity} shares of {stock.name}.</p>
+  //         </div>
+  //       );
+  //       setOnModalClose(() => {
+  //         setBuyQuantity(0); 
+  //         setBuyTotalValue(0); 
+  //       });
+  //     } else {
+  //       setPurchaseError(data.error || "Error purchasing stock.");
+  //     }
+  //   } catch (error) {
+  //     setPurchaseError("An error occurred while purchasing the stock.");
+  //   }
+  // };
+
   const handleBuyStock = async () => {
     if (!selectedPortfolio) {
       setPurchaseError("Please select a portfolio to buy stocks.");
       return;
     }
+    const data = await dispatch(thunkPurchaseStock(selectedPortfolio.id, stock.name, buyQuantity));
 
-    try {
-      const response = await fetch(`/api/stock/buy/${stock.name}/${selectedPortfolio.id}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          quantity: buyQuantity,
-        }),
+    if (data?.error) {
+      setPurchaseError(data.error);
+    } else {
+      console.log(`Successfully purchased ${buyQuantity} of ${stock.name}!`);
+      setModalContent(
+        <div>
+          <h2>Success!</h2>
+          <p>You successfully purchased {buyQuantity} shares of {stock.name}.</p>
+        </div>
+      );
+      setOnModalClose(() => {
+        setBuyQuantity(0); 
+        setBuyTotalValue(0); 
       });
-      const data = await response.json();
-      if (response.ok) {
-        console.log(`Successfully purchased ${buyQuantity} of ${stock.name}!`);
-        setModalContent(
-          <div>
-            <h2>Success!</h2>
-            <p>You successfully purchased {buyQuantity} shares of {stock.name}.</p>
-          </div>
-        );
-        setOnModalClose(() => {
-          setBuyQuantity(0); 
-          setBuyTotalValue(0); 
-        });
-      } else {
-        setPurchaseError(data.error || "Error purchasing stock.");
+
+      if (selectedPortfolio) {
+        navigate(`/portfolio/${user_id}/${selectedPortfolio.id}`);
       }
-    } catch (error) {
-      setPurchaseError("An error occurred while purchasing the stock.");
     }
   };
+
 
   const handleSellStock = async () => {
     if (!selectedPortfolio) {
@@ -155,6 +187,10 @@ function StockDetails() {
     return <div>No data available</div>;
   }
 
+  const navigatePort = () => {
+    navigate(`/portfolio/${user_id}`)
+  }
+
   return (
     <div className="twobox">
       <div className="details">
@@ -183,7 +219,14 @@ function StockDetails() {
           Total Cost: ${buyTotalValue.toFixed(2)} 
         </p>
         <button onClick={handleBuyStock} className="buy-button">Buy</button>
-        {purchaseError && <p className="error-message">{purchaseError}</p>}
+        {purchaseError && (
+          <div>
+            <p className="error-message">{purchaseError}</p>
+            <button onClick={navigatePort} className="select-portfolio-button">
+              Select Portfolio
+            </button>
+          </div>
+        )}
         <div className="portfolio-balance">
         <p className="portbal">Portfolio Balance: ${selectedPortfolio ? selectedPortfolio.balance.toFixed(2) : "N/A"}</p>
         {/* {selectedPortfolio && (
@@ -207,8 +250,15 @@ function StockDetails() {
         <p className="total-cost">
           Total Value: ${sellTotalValue.toFixed(2)} 
         </p>
-        <button onClick={handleSellStock} className="buy-button">Sell</button>
-        {sellError && <p className="error-message">{sellError}</p>}
+        <button onClick={handleSellStock} className="sell-button">Sell</button>
+        {sellError && (
+          <div>
+            <p className="error-message">{sellError}</p>
+            <button onClick={navigatePort} className="select-portfolio-button">
+              Select Portfolio
+            </button>
+          </div>
+        )}
         <div className="portfolio-balance">
         {/* <p className="portbal">Portfolio Balance: ${selectedPortfolio ? selectedPortfolio.balance.toFixed(2) : "N/A"}</p> */}
         {selectedPortfolio && (
