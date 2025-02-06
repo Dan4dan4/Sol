@@ -45,9 +45,9 @@ function Navigation() {
             Portfolio
           </NavLink>
         )}
+        </li>
         <li className="dropdown">
           <ProfileButton />
-        </li>
       </li>
     </ul>
   );

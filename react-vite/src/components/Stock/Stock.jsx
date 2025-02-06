@@ -24,10 +24,10 @@ function Stock() {
   useEffect(() => {
     const fetchStocks = async () => {
       try {
-        const response = await fetch('api/stock'); 
+        const response = await fetch('api/stock');
         if (response.ok) {
           const data = await response.json();
-          setStocks(data); 
+          setStocks(data);
           setFilteredStocks(data);
         } else {
           console.error('Error fetching stocks:', response.status);
@@ -36,19 +36,24 @@ function Stock() {
         console.error('Error fetching stocks:', error);
       }
     };
-
-    dispatch(thunkGetWatchlist(user.id));
-    fetchStocks();
-  }, [dispatch, user]); 
-
-  useEffect(() => {
-    if (watchlist && watchlist.length > 0) {
-      const selectedWatchlist = watchlist.find(list => list.user_id === user.id);
-      if (selectedWatchlist) {
-        setStarredStocks(selectedWatchlist.stocks.map(stock => stock.id)); 
-      }
+    
+    fetchStocks(); 
+  
+    if (user && user.id) {
+      dispatch(thunkGetWatchlist(user.id));
     }
-  }, [watchlist, user.id]);
+  }, [dispatch, user]); 
+  
+  
+
+  // useEffect(() => {
+  //   if (watchlist && watchlist.length > 0) {
+  //     const selectedWatchlist = watchlist.find(list => list.user_id === user.id);
+  //     if (selectedWatchlist) {
+  //       setStarredStocks(selectedWatchlist.stocks.map(stock => stock.id)); 
+  //     }
+  //   }
+  // }, [watchlist, user.id]);
 
   const toggleMenu = (e) => {
     e.stopPropagation(); 
@@ -178,93 +183,103 @@ const handleCreateWatchlist = async () => {
   setNewWatchlistName(''); 
 };
 
-  return (
-    <>
+return (
+  <>
     <h1 className='tittleonstock'>All Stocks listed on Sol</h1>
-    {selectedWatchlist && (
-        <h2 className='tittleonstock'>
+
+    {/* Conditional rendering based on user existence */}
+    {user && selectedWatchlist && (
+      <h2 className='tittleonstock'>
         Modifying Watchlist:  
         <span className="watchlist-name" onClick={navigateToWatchlist}>
           {selectedWatchlist.name}
         </span>
         <FaArrowCircleRight className="goto-icon" onClick={navigateToWatchlist} />
       </h2>
-      )}
-    <button className='watchlist' onClick={toggleMenu}>Watchlists</button>
-    {showMenu && (
-      <div className="dropdownwatch">
-        <div className="create-watchlist">
-          <input 
-            type="text" 
-            value={newWatchlistName} 
-            onChange={(e) => setNewWatchlistName(e.target.value)} 
-            placeholder="Enter new watchlist name"
-          />
-          <button onClick={handleCreateWatchlist}>Create</button>
-        </div>
-        <ul>
-          {watchlist.map((list) => (
-            <li key={list.id} onClick={() => handleWatchlistSelect(list)}>{list.name}</li>
-          ))}
-        </ul>
-      </div>
+    )}
+
+    {/* Watchlist button only visible if the user is logged in */}
+    {user && (
+      <>
+        <button className='watchlist' onClick={toggleMenu}>Watchlists</button>
+        {showMenu && (
+          <div className="dropdownwatch">
+            <div className="create-watchlist">
+              <input 
+                type="text" 
+                value={newWatchlistName} 
+                onChange={(e) => setNewWatchlistName(e.target.value)} 
+                placeholder="Enter new watchlist name"
+              />
+              <button onClick={handleCreateWatchlist}>Create</button>
+            </div>
+            <ul>
+              {watchlist.map((list) => (
+                <li key={list.id} onClick={() => handleWatchlistSelect(list)}>{list.name}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </>
     )}
 
     <div className="search-bar-container">
+      <input
+        type="text"
+        value={searchQuery}
+        onChange={handleSearchChange}
+        placeholder="Search by stock name..."
+        className='searcher'
+      />
+      <div className="volume-filters">
         <input
-          type="text"
-          value={searchQuery}
-          onChange={handleSearchChange}
-          placeholder="Search by stock name..."
-          className='searcher'
+          type="number"
+          name="minVolume"
+          value={minVolume}
+          onChange={handleVolumeFilterChange}
+          placeholder="Minimum Volume"
         />
-        <div className="volume-filters">
-          <input
-            type="number"
-            name="minVolume"
-            value={minVolume}
-            onChange={handleVolumeFilterChange}
-            placeholder="Minimum Volume"
-          />
-          <input
-            type="number"
-            name="maxVolume"
-            value={maxVolume}
-            onChange={handleVolumeFilterChange}
-            placeholder="Maximum Volume"
-          />
-        </div>
+        <input
+          type="number"
+          name="maxVolume"
+          value={maxVolume}
+          onChange={handleVolumeFilterChange}
+          placeholder="Maximum Volume"
+        />
       </div>
+    </div>
 
-      <div className='stonks'>
-        <div className="stock-header">
+    <div className='stonks'>
+      <div className="stock-header">
         <span className="stock-label">Ticker</span>
-          <span className="stock-label">Open Price</span>
-          <span className="stock-label">High Price</span>
-          <span className="stock-label">Low Price</span>
-          <span className="stock-label">Volume</span>
-          <span className="stock-label">Close Price</span>  
-          <span className="stock-label">Price</span>
-        </div>
-        <ul>
-          {filteredStocks.map((stock, index) => (
-            <li key={index} className="stock-item" onClick={() => handleStockClick(stock.name)}>
-              <span className="stock-name">{stock.name}</span>
-              <span className="stock-open-price">{stock.open_price}</span>
-              <span className="stock-high-price">{stock.high_price}</span>
-              <span className="stock-low-price">{stock.low_price}</span>
-              <span className="stock-volume">{stock.volume}</span>
-              <span className="stock-close-price">{stock.close_price}</span> 
-              <span className="stock-vwap">{stock.volume_weighted_avg_price}</span> 
-              <span className="stock-star" onClick={(e) => { e.stopPropagation(); toggleStockStar(stock);}}>
+        <span className="stock-label">Open Price</span>
+        <span className="stock-label">High Price</span>
+        <span className="stock-label">Low Price</span>
+        <span className="stock-label">Volume</span>
+        <span className="stock-label">Close Price</span>  
+        <span className="stock-label">Price</span>
+      </div>
+      <ul>
+        {filteredStocks.map((stock, index) => (
+          <li key={index} className="stock-item" onClick={() => handleStockClick(stock.name)}>
+            <span className="stock-name">{stock.name}</span>
+            <span className="stock-open-price">{stock.open_price}</span>
+            <span className="stock-high-price">{stock.high_price}</span>
+            <span className="stock-low-price">{stock.low_price}</span>
+            <span className="stock-volume">{stock.volume}</span>
+            <span className="stock-close-price">{stock.close_price}</span> 
+            <span className="stock-vwap">{stock.volume_weighted_avg_price}</span> 
+            {user && (
+              <span className="stock-star" onClick={(e) => { e.stopPropagation(); toggleStockStar(stock); }}>
                 {isStockStarred(stock) ? <FaStar /> : <FaRegStar />}
               </span>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </>
-  );
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </>
+);
 }
 
 
