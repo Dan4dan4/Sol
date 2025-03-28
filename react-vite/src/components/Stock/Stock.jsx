@@ -21,14 +21,38 @@ function Stock() {
   const [newWatchlistName, setNewWatchlistName] = useState('');
   const { setModalContent, setOnModalClose } = useModal();
 
+  // useEffect(() => {
+  //   const fetchStocks = async () => {
+  //     try {
+  //       const response = await fetch('api/stock');
+  //       if (response.ok) {
+  //         const data = await response.json();
+  //         setStocks(data);
+  //         setFilteredStocks(data);
+  //       } else {
+  //         console.error('Error fetching stocks:', response.status);
+  //       }
+  //     } catch (error) {
+  //       console.error('Error fetching stocks:', error);
+  //     }
+  //   };
+    
+  //   fetchStocks(); 
+  
+  //   if (user && user.id) {
+  //     dispatch(thunkGetWatchlist(user.id));
+  //   }
+  // }, [dispatch, user]); 
+  
   useEffect(() => {
     const fetchStocks = async () => {
       try {
-        // Dynamically decide the base URL (based on protocol)
-        const baseURL = window.location.protocol === 'https:' 
-          ? window.location.origin // Use HTTPS if in production
+        // Always use HTTPS in production
+        const baseURL = process.env.NODE_ENV === 'production'
+          ? 'https://capstone-ybmg.onrender.com' // Ensure HTTPS in production
           : 'http://localhost:5000'; // Use HTTP for local dev
   
+        // Ensure the fetch URL uses HTTPS for production
         const response = await fetch(`${baseURL}/api/stock`);
         if (response.ok) {
           const data = await response.json();
@@ -42,12 +66,12 @@ function Stock() {
       }
     };
   
-    fetchStocks(); 
+    fetchStocks();
   
     if (user && user.id) {
       dispatch(thunkGetWatchlist(user.id));
     }
-  }, [dispatch, user]); 
+  }, [dispatch, user]);
   
   
 
