@@ -24,7 +24,12 @@ function Stock() {
   useEffect(() => {
     const fetchStocks = async () => {
       try {
-        const response = await fetch('api/stock');
+        // Dynamically decide the base URL (based on protocol)
+        const baseURL = window.location.protocol === 'https:' 
+          ? window.location.origin // Use HTTPS if in production
+          : 'http://localhost:5000'; // Use HTTP for local dev
+  
+        const response = await fetch(`${baseURL}/api/stock`);
         if (response.ok) {
           const data = await response.json();
           setStocks(data);
@@ -36,7 +41,7 @@ function Stock() {
         console.error('Error fetching stocks:', error);
       }
     };
-    
+  
     fetchStocks(); 
   
     if (user && user.id) {
