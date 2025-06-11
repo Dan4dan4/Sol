@@ -47,7 +47,7 @@ function Stock() {
 useEffect(() => {
   const fetchStocks = async () => {
     try {
-      const protocol = window.location.protocol;
+      // const protocol = window.location.protocol;
       const baseURL = window.location.origin;
 
 
