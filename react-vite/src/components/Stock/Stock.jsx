@@ -49,7 +49,7 @@ useEffect(() => {
     try {
       // const baseURL = window.location.origin; 
 
-      const response = await fetch(`https://capstone-ybmg.onrender.com/api/stock`);
+      const response = await fetch(`https://capstone-ybmg.onrender.com/api/stocks`);
       if (response.ok) {
         const data = await response.json();
         setStocks(data);
