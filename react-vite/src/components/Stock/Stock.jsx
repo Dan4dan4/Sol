@@ -48,10 +48,8 @@ useEffect(() => {
   const fetchStocks = async () => {
     try {
       const protocol = window.location.protocol;
-      const baseURL =
-        protocol === 'https:'
-          ? 'https://capstone-ybmg.onrender.com'
-          : 'http://localhost:8000';
+      const baseURL = window.location.origin;
+
 
       const response = await fetch(`${baseURL}/api/stock`);
       if (response.ok) {
