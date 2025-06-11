@@ -47,11 +47,9 @@ function Stock() {
 useEffect(() => {
   const fetchStocks = async () => {
     try {
-      // const protocol = window.location.protocol;
-      // const baseURL = window.location.origin;
+      const baseURL = window.location.origin; 
 
-
-      const response = await fetch(`/stocks`);
+      const response = await fetch(`${baseURL}/api/stock`);
       if (response.ok) {
         const data = await response.json();
         setStocks(data);
@@ -70,6 +68,7 @@ useEffect(() => {
     dispatch(thunkGetWatchlist(user.id));
   }
 }, [dispatch, user]);
+
 
   
   
