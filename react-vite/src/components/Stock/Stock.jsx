@@ -47,9 +47,9 @@ function Stock() {
 useEffect(() => {
   const fetchStocks = async () => {
     try {
-      const baseURL = window.location.origin; 
+      // const baseURL = window.location.origin; 
 
-      const response = await fetch(`${baseURL}/api/stock`);
+      const response = await fetch(`https://capstone-ybmg.onrender.com/api/stock`);
       if (response.ok) {
         const data = await response.json();
         setStocks(data);
