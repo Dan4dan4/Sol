@@ -35,7 +35,7 @@ export const router = createBrowserRouter([
         element: <SelectedPortfolio />,
       },
       {
-        path: "stock",
+        path: "stocks",
         element: <Stock />,
       },
       {
