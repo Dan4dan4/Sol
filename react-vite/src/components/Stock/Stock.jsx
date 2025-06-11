@@ -51,7 +51,7 @@ useEffect(() => {
       const baseURL = window.location.origin;
 
 
-      const response = await fetch(`${baseURL}/api/stock`);
+      const response = await fetch(`${baseURL}/stock`);
       if (response.ok) {
         const data = await response.json();
         setStocks(data);

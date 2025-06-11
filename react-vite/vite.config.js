@@ -40,7 +40,7 @@ export default defineConfig({
       ? {} // Disable proxy in production (let direct HTTPS calls work)
       : {
           "/api": {
-            target: "http://localhost:5000", // Local dev API
+            target: "http://localhost:8000", // Local dev API
             changeOrigin: true,
             secure: false,
           },
